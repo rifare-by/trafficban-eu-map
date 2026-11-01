@@ -345,6 +345,45 @@ function showCountry(code,bans){
 }
 try{
  if(!window.L)throw new Error("Не загрузилась библиотека интерактивной карты. Проверьте доступ к unpkg.com.");
+ const roadLayerGroups={closure:L.layerGroup(),restriction:L.layerGroup(),other:L.layerGroup()};
+ const roadControls=document.createElement("div");
+ roadControls.style.cssText="display:flex;flex-wrap:wrap;gap:9px;margin:9px 0;padding:10px;border:1px solid #b9d5dd;border-radius:10px;background:#f1fafc;font-size:12px";
+ roadControls.innerHTML='<strong style="width:100%">События NAPSPAN · данные агрегатора, не подтверждены ведомствами</strong><label><input type="checkbox" data-road="closure" checked> ⛔ Перекрытия <span data-count="closure">0</span></label><label><input type="checkbox" data-road="restriction" checked> 🚚 Ограничения грузовиков <span data-count="restriction">0</span></label><label><input type="checkbox" data-road="other"> ⚠️ Другие события <span data-count="other">0</span></label>';
+ document.getElementById("map").insertAdjacentElement("beforebegin",roadControls);
+ function roadCategory(e){
+  const raw=[e.type,e.event_type,e.category,e.subcategory,e.title,e.description,e.eventType,e.road_event_type].filter(Boolean).join(" ").toLowerCase();
+  if(/closur|closed|blocked|gesperrt|fermeture|chiusura|zamkn|uzav|stängd/.test(raw))return "closure";
+  if(/truck|hgv|heavy.goods|freight|lorry|weight|height|width|restriction|verbot|lkw|camion|pojazd|náklad/.test(raw))return "restriction";
+  return "other";
+ }
+ function roadCoordinates(e){
+  const g=e.geometry||e.geojson||e.location?.geometry||null;
+  if(g&&g.type==="Point"&&Array.isArray(g.coordinates))return [Number(g.coordinates[1]),Number(g.coordinates[0])];
+  const p=e.location||e.position||e.coordinates||e;
+  if(Array.isArray(p)&&p.length>=2)return [Number(p[1]),Number(p[0])];
+  const lat=Number(p.latitude??p.lat),lon=Number(p.longitude??p.lon??p.lng);
+  return [lat,lon];
+ }
+ function safeRoadText(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+ roadControls.querySelectorAll("input[data-road]").forEach(input=>input.addEventListener("change",()=>{const group=roadLayerGroups[input.dataset.road];if(input.checked)group.addTo(map);else map.removeLayer(group);}));
+ fetch("./data/road-events.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=>{
+  if(!data||!Array.isArray(data.events))return;
+  const counts={closure:0,restriction:0,other:0};let unmapped=0;
+  for(const e of data.events){
+   const cat=roadCategory(e),point=roadCoordinates(e);
+   if(!point.every(Number.isFinite)||Math.abs(point[0])>90||Math.abs(point[1])>180){unmapped++;continue;}
+   counts[cat]++;
+   const color={closure:"#b91c1c",restriction:"#c97700",other:"#3777a6"}[cat];
+   const marker=L.circleMarker(point,{radius:5,color,fillColor:color,weight:1,fillOpacity:.75});
+   const name=e.title||e.description||e.event_type||e.type||"Дорожное событие";
+   const road=e.road_name||e.road||e.route||"";
+   marker.bindPopup("<b>"+safeRoadText(name)+"</b>"+(road?"<p>Дорога: "+safeRoadText(road)+"</p>":"")+"<small>Источник: NAPSPAN · не подтверждено официальным ведомством</small>");
+   marker.addTo(roadLayerGroups[cat]);
+  }
+  for(const [cat,count] of Object.entries(counts))roadControls.querySelector('[data-count="'+cat+'"]').textContent=count;
+  for(const cat of ["closure","restriction"])roadLayerGroups[cat].addTo(map);
+  roadControls.insertAdjacentHTML("beforeend","<small style='width:100%'>Без координат: "+unmapped+". Категории определены автоматически; проверьте исходный источник перед поездкой.</small>");
+ }).catch(error=>console.warn("NAPSPAN map overlay:",error));
  const map=L.map("map",{zoomControl:true,scrollWheelZoom:true,touchZoom:true,dragging:true,doubleClickZoom:true,zoomAnimation:false,markerZoomAnimation:false,minZoom:3,maxZoom:13}).setView([51.2,13.5],4);
  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
  document.getElementById("zoomIn").addEventListener("click",()=>map.zoomIn());
