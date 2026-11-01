@@ -27,7 +27,7 @@ async function request(country,a,b){
   if(response.status!==429&&response.status<500)break;
   await sleep(1500*(attempt+1));lastCall=Date.now();
  }
- if(!response.ok||json.ok===false||json.success===false||!json.data)throw new Error("Nakordoni "+country+" "+a+".."+b+" HTTP "+response.status+" "+JSON.stringify(json.error||{}));
+ if(!response.ok||json.ok===false||json.success===false||!json.data)throw new Error("Nakordoni "+country+" "+a+".."+b+" HTTP "+response.status+"; response_keys="+Object.keys(json).join(",")+"; error="+JSON.stringify(json.error||json.message||json.status||null)+"; data_type="+typeof json.data);
  const data=json.data;
  const rows=[...extract(data.current_bans,country),...extract(data.upcoming_bans,country),...extract(data.bans_by_country,country)];
  const stats=data.returned??data.total_bans?.returned;
