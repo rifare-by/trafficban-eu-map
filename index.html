@@ -35,6 +35,7 @@ const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"
 const covered=new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK"]);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function allPoints(x,out=[]){if(Array.isArray(x)&&typeof x[0]==="number")out.push(x);else if(Array.isArray(x))x.forEach(v=>allPoints(v,out));return out;}
+const merc=p=>{const lat=Math.max(-85.0511,Math.min(85.0511,p[1]))*Math.PI/180;return [(p[0]+180)/360, (1-Math.log(Math.tan(lat)+1/Math.cos(lat))/Math.PI)/2];};
 function pathRing(ring,proj){return ring.map((p,i)=>{const q=proj(p);return (i?"L":"M")+q[0].toFixed(2)+","+q[1].toFixed(2)}).join("")+"Z";}
 function geometryPath(g,proj){const polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;return polys.map(poly=>poly.map(r=>pathRing(r,proj)).join(" ")).join(" ");}
 function showCountry(code,bans){
@@ -55,11 +56,22 @@ try{
  const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  if(features.length!==27)throw new Error("Загружено стран: "+features.length+" из 27");
  const pts=features.flatMap(f=>allPoints(f.geometry.coordinates));
- const minX=Math.min(...pts.map(p=>p[0])),maxX=Math.max(...pts.map(p=>p[0])),minY=Math.min(...pts.map(p=>p[1])),maxY=Math.max(...pts.map(p=>p[1]));
+ const world=pts.map(merc),minX=Math.min(...world.map(p=>p[0])),maxX=Math.max(...world.map(p=>p[0])),minY=Math.min(...world.map(p=>p[1])),maxY=Math.max(...world.map(p=>p[1]));
  const pad=24,scale=Math.min((1000-2*pad)/(maxX-minX),(650-2*pad)/(maxY-minY));
  const w=(maxX-minX)*scale,h=(maxY-minY)*scale,ox=(1000-w)/2,oy=(650-h)/2;
- const project=p=>[ox+(p[0]-minX)*scale,650-oy-(p[1]-minY)*scale];
+ const project=p=>{const q=merc(p);return [ox+(q[0]-minX)*scale,oy+(q[1]-minY)*scale];};
  svg.replaceChildren();
+ // OpenStreetMap raster tiles as a geographic background, aligned to the country polygons.
+ const z=5,n=Math.pow(2,z),tileSize=256;
+ const left=Math.floor(minX*n),right=Math.floor(maxX*n),top=Math.floor(minY*n),bottom=Math.floor(maxY*n);
+ for(let tx=left;tx<=right;tx++)for(let ty=top;ty<=bottom;ty++){
+  const img=document.createElementNS(NS,"image");
+  img.setAttribute("x",ox+(tx/n-minX)*scale);img.setAttribute("y",oy+(ty/n-minY)*scale);
+  img.setAttribute("width",tileSize*n*scale/256);img.setAttribute("height",tileSize*n*scale/256);
+  img.setAttribute("href","https://tile.openstreetmap.org/"+z+"/"+tx+"/"+ty+".png");
+  img.setAttribute("preserveAspectRatio","none");svg.appendChild(img);
+ }
+
  const active=new Set((bans?.bans||[]).map(b=>b.country_code));
  for(const f of features){
   const code=f.properties["ISO3166-1-Alpha-3"],c=iso2[code],has=covered.has(c),hasBan=active.has(c);
@@ -69,6 +81,7 @@ try{
   const countryPts=allPoints(f.geometry.coordinates),cx=(Math.min(...countryPts.map(p=>p[0]))+Math.max(...countryPts.map(p=>p[0])))/2,cy=(Math.min(...countryPts.map(p=>p[1]))+Math.max(...countryPts.map(p=>p[1])))/2;
   const pos=project([cx,cy]),label=document.createElementNS(NS,"text");label.setAttribute("x",pos[0]);label.setAttribute("y",pos[1]);label.setAttribute("class","country-label");label.textContent=names[code];label.addEventListener("click",()=>showCountry(code,bans));svg.appendChild(label);
  }
+ const attribution=document.createElementNS(NS,"text");attribution.setAttribute("x","990");attribution.setAttribute("y","640");attribution.setAttribute("text-anchor","end");attribution.setAttribute("font-size","10");attribution.setAttribute("fill","#263746");attribution.textContent="© OpenStreetMap contributors";svg.appendChild(attribution);
  status.textContent=bans?"Карта загружена: 27 стран ЕС. Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по 18 из 27 стран.":"Границы загружены. Календарь запретов временно недоступен.";
 }catch(e){status.textContent="Ошибка загрузки карты: "+e.message;svg.replaceChildren();const t=document.createElementNS(NS,"text");t.setAttribute("x","500");t.setAttribute("y","325");t.setAttribute("text-anchor","middle");t.setAttribute("fill","#a22");t.textContent="Не удалось загрузить данные карты";svg.appendChild(t);console.error(e);}
 })();
