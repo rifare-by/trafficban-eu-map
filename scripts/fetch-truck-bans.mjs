@@ -14,7 +14,10 @@ const batches = [];
 for (let i=0;i<countries.length;i+=3) batches.push(countries.slice(i,i+3));
 
 const payloads = [];
-for (const batch of batches) {
+for (let index = 0; index < batches.length; index++) {
+  const batch = batches[index];
+  // Nakordoni plan limit: 2 requests per second. Keep a safe 750 ms gap.
+  if (index > 0) await new Promise(resolve => setTimeout(resolve, 750));
   const url = new URL("https://nakordoni.eu/api/v2/data/truck-bans");
   url.searchParams.set("country",batch.join(","));
   url.searchParams.set("date_from",from);
