@@ -459,7 +459,9 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
   }
   function show(code){
    selectedCountry=code;const rows=rowsFor(code),all=records.filter(r=>r.country_code===iso2[code]);
-   let html='<h3>'+flag(code)+' '+esc(EU[code])+'</h3><p><b>Дата:</ '+esc(selectedDate)+'</p><p><b>NAPSPAN:</b> '+napCount(code)+' дорожных событий в загруженном наборе (без подтверждения официальными ведомствами).</p><p><a href="https://transport.ec.europa.eu/transport-themes/smart-mobility/road/its-directive-and-action-plan/national-access-points_en" target="_blank" rel="noopener noreferrer">Официальный каталог национальных дорожных источников ЕС</a></p>';
+   const currentStatus=countryStatus(code);
+   const statusText=currentStatus==="ban"?"🔴 Запрет указан":currentStatus==="no-ban"?"🟢 Запрета нет":"⚪ Нет данных";
+   let html='<h3>'+flag(code)+' '+esc(EU[code])+'</h3><p><b>Статус на выбранную дату: '+statusText+'</b></p>';<p><b>Дата:</ '+esc(selectedDate)+'</p><p><b>NAPSPAN:</b> '+napCount(code)+' дорожных событий в загруженном наборе (без подтверждения официальными ведомствами).</p><p><a href="https://transport.ec.europa.eu/transport-themes/smart-mobility/road/its-directive-and-action-plan/national-access-points_en" target="_blank" rel="noopener noreferrer">Официальный каталог национальных дорожных источников ЕС</a></p>';
    if(code==="DEU"){
     const dow=new Date(selectedDate+"T12:00:00Z").getUTCDay();
     html+='<section style="background:#e8f6f0;padding:12px;border-radius:10px;margin:10px 0"><b>Официальные правила Германии (§30 StVO)</b><p>Грузовики свыше 7,5 т и грузовики с прицепом: воскресенья и установленные праздники, 00:00–22:00. Исключения и региональные праздники необходимо проверять отдельно.</p>'+(dow===0?'<p><b>На выбранную дату приходится воскресенье: действует общий воскресный запрет 00:00–22:00 (с учётом исключений).</b></p>':'<p>Выбранная дата не является воскресеньем. Возможны праздничные, региональные и сезонные запреты.</p>')+'<p>Июль–август: дополнительные субботние запреты 07:00–20:00 на определённых дорогах.</p><a href="https://verwaltung.bund.de/leistungsverzeichnis/EN/leistung/99108058006000/herausgeber/MV-105760631/region/130000000000" target="_blank" rel="noopener noreferrer">Государственный источник Германии</a></section>';
@@ -526,7 +528,9 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
   }
   // A green country has an explicit source-backed no-general-ban classification
   // AND no nationwide restriction for the selected day; missing records alone stay grey.
-  const countryStatus=code=>rowsFor(code).length?"ban":noGeneralBan(code)?"no-ban":"unknown";
+  const hasExplicitNoBan=code=>rawRecords.some(r=>r.country_code===iso2[code]&&r.date===selectedDate&&["no ban","no-ban","none"].includes(String(r.restriction_type||"").trim().toLowerCase())&&["official_confirmed_no_ban","verified_no_ban","confirmed"].includes(String(r.verification_status||"").toLowerCase()));
+  // No record is not proof of no ban. A green status needs affirmative evidence.
+  const countryStatus=code=>rowsFor(code).length?"ban":(hasExplicitNoBan(code)||noGeneralBan(code))?"no-ban":"unknown";
   const hasVerifiedNoBan=code=>countryStatus(code)==="no-ban";
   const style=f=>{const code=f.properties["ISO3166-1-Alpha-3"];return {color:"#287e80",weight:1.5,fillColor:countryStatus(code)==="ban"?"#e74c62":hasVerifiedNoBan(code)?"#168e89":"#9ba9af",fillOpacity:.48};};
   const layer=L.geoJSON({type:"FeatureCollection",features},{style,onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.on("click",()=>{show(code);showSelectedOnMap(code);});}}).addTo(map);
