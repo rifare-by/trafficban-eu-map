@@ -20,11 +20,11 @@ main{max-width:1100px;margin:auto;padding:14px}#map{height:65vh;min-height:430px
 <main>
 <div id="map"></div>
 <div class="downloads" style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0"><button id="kmlBtn" disabled style="padding:12px 16px;border:0;border-radius:9px;background:#174f91;color:white;font-weight:700">Скачать KML</button><button id="kmzBtn" disabled style="padding:12px 16px;border:0;border-radius:9px;background:#174f91;color:white;font-weight:700">Скачать KMZ</button></div>
-<p class="note">Границы стран показаны для ориентира. Синяя заливка имеет прозрачность 70%. Сведения о запретах движения отображаются только в официальном виджете TrafficBan ниже; автоматическое извлечение данных в подписи стран пока не подключено.</p>
+<p class="note">Границы стран показаны для ориентира. Синяя заливка имеет прозрачность 70%. Нажми на страну или её название, чтобы посмотреть запреты из тестового источника Nakordoni на ближайшие 7 дней. Данные обновляются автоматически через GitHub Actions каждые 6 часов.</p>
 <section class="widget"><h2>Запреты TrafficBan</h2>
 <iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&language=ru" title="TrafficBan — запреты движения" loading="lazy"></iframe>
 </section>
-<p class="note">Географические границы: Natural Earth через набор datasets/geo-countries. Данные о запретах: только TrafficBan.</p>
+<p class="note">Границы: datasets/geo-countries. Тестовые данные о запретах: Nakordoni. Официальный виджет TrafficBan приведён отдельно ниже.</p>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -32,17 +32,31 @@ main{max-width:1100px;margin:auto;padding:14px}#map{height:65vh;min-height:430px
 const eu = new Set(["AUT","BEL","BGR","HRV","CYP","CZE","DNK","EST","FIN","FRA","DEU","GRC","HUN","IRL","ITA","LVA","LTU","LUX","MLT","NLD","POL","PRT","ROU","SVK","SVN","ESP","SWE"]);
 const ru = {AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция"};
 let euFeatures=[];
+let banData=null;
+const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
 const map=L.map("map").setView([51,12],4);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
+fetch("data/truck-bans.json").then(r=>r.ok?r.json():null).then(d=>{banData=d;}).catch(()=>{banData=null;});
+const banPopup=(code)=>{
+ const c=iso2[code], name=ru[code]||code;
+ if(!banData) return "<b>"+name+"</b><br>Данные календаря пока не загружены. Запусти обновление в GitHub Actions.";
+ if((banData.countries_not_covered||[]).includes(c)) return "<b>"+name+"</b><br>Источник пока не предоставляет данные для этой страны.";
+ if(!(banData.covered_countries||[]).includes(c)) return "<b>"+name+"</b><br>Страна пока не подтверждена как охваченная источником.";
+ const rows=(banData.bans||[]).filter(b=>b.country_code===c);
+ let html="<b>"+name+"</b><br><small>Источник: Nakordoni · "+banData.window.from+" — "+banData.window.to+"</small><hr>";
+ if(!rows.length) return html+"Запретов в полученном календаре нет.";
+ html+=rows.map(b=>"<p><b>"+(b.date||"")+"</b><br>"+(b.time_from||"")+(b.time_until?"–"+b.time_until:"")+"<br>"+(b.restriction_type||"Ограничение")+(b.restriction_details?" — "+b.restriction_details:"")+(b.min_weight_tons?"<br>От "+b.min_weight_tons+" т":"")+(b.details_url?"<br><a href=\\""+b.details_url+"\\" target=\\"_blank\\">Подробнее</a>":"")+"</p>").join("");
+ return html;
+};
 fetch("https://raw.githubusercontent.com/datasets/geo-countries/main/data/countries.geojson")
 .then(r=>{if(!r.ok)throw new Error("Не удалось загрузить границы");return r.json()})
 .then(data=>{
  const features=data.features.filter(f=>eu.has(f.properties["ISO3166-1-Alpha-3"]));
  euFeatures=features;
- const layer=L.geoJSON(features,{style:{color:"#174f91",weight:1.5,fillColor:"#3185d5",fillOpacity:.3}}).addTo(map);
+ const layer=L.geoJSON(features,{style:{color:"#174f91",weight:1.5,fillColor:"#3185d5",fillOpacity:.3},onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.bindPopup(()=>banPopup(code));}}).addTo(map);
  features.forEach(f=>{
   const code=f.properties["ISO3166-1-Alpha-3"], countryLayer=L.geoJSON(f), center=countryLayer.getBounds().getCenter();
-  L.marker(center,{interactive:false,icon:L.divIcon({className:"country-label",html:ru[code]||code,iconSize:null})}).addTo(map);
+  L.marker(center,{interactive:true,icon:L.divIcon({className:"country-label",html:ru[code]||code,iconSize:null})}).addTo(map).bindPopup(()=>banPopup(code));
  });
  map.fitBounds(layer.getBounds(),{padding:[12,12]});
  document.getElementById("kmlBtn").disabled=false;
