@@ -33,9 +33,7 @@ for (let index = 0; index < batches.length; index++) {
 const bans = [];
 const covered = new Set();
 const notCovered = new Set();
-const completeness = [];
 for (const data of payloads) {
-  completeness.push({returned:data.returned ?? null,total_available:data.total_available ?? null,truncated:data.truncated ?? null,total_bans:data.total_bans ?? null});
   for (const c of data.covered_countries || []) covered.add(c);
   for (const c of data.countries_not_covered || []) notCovered.add(c);
   for (const ban of [...(data.current_bans || []),...(data.upcoming_bans || [])]) bans.push(ban);
@@ -53,11 +51,8 @@ const output = {
   window:{from,to,days:7},
   covered_countries:[...covered].sort(),
   countries_not_covered:[...notCovered].sort(),
-  completeness,
-  incomplete:completeness.some(x=>x.truncated===true || (Number.isFinite(x.total_available) && Number.isFinite(x.returned) && x.returned<x.total_available)),
   bans:[...unique.values()].sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.country_code||"").localeCompare(b.country_code||"")||(a.time_from||"").localeCompare(b.time_from||""))
 };
 await fs.mkdir("data",{recursive:true});
 await fs.writeFile("data/truck-bans.json",JSON.stringify(output,null,2)+"\n");
 console.log("Saved "+output.bans.length+" bans. Covered: "+output.covered_countries.join(", ")+"; not covered: "+output.countries_not_covered.join(", "));
-if (output.incomplete) console.warn("WARNING: Nakordoni response is truncated or incomplete; check completeness metadata.");
