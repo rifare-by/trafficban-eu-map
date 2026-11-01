@@ -206,6 +206,19 @@ main{max-width:1440px;padding-top:26px}
  .map-column,.widget{margin-left:0;margin-right:0}
  #map{touch-action:pan-x pan-y}
 }
+
+/* Dedicated finger-scroll lanes beside the interactive map and TrafficBan */
+@media(max-width:680px){
+ .dashboard{margin-inline:0!important;padding-inline:0!important}
+ .map-column{width:calc(100% - 52px)!important;margin-inline:26px!important;min-width:0}
+ #map{width:100%!important;margin-inline:0!important}
+ #trafficban{width:calc(100% - 52px)!important;margin-left:26px!important;margin-right:26px!important;box-sizing:border-box}
+ #trafficban iframe{width:100%!important;max-width:100%!important}
+}
+@media(max-width:390px){
+ .map-column{width:calc(100% - 44px)!important;margin-inline:22px!important}
+ #trafficban{width:calc(100% - 44px)!important;margin-left:22px!important;margin-right:22px!important}
+}
 </style>
 </head>
 <body>
