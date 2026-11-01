@@ -9,7 +9,7 @@
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:#172033;background:#f4f7fb}
 header{padding:16px;background:#123d70;color:white}h1{font-size:21px;margin:0 0 6px}header p{margin:0;font-size:14px}
 main{max-width:1100px;margin:auto;padding:14px}#map{height:65vh;min-height:430px;border-radius:14px;border:1px solid #ccd5e1;z-index:1}
-.note{font-size:13px;color:#526174;line-height:1.5;margin:12px 2px 18px}.widget{background:white;padding:14px;border-radius:14px;margin-top:16px;box-shadow:0 2px 10px #00000012}
+.note{font-size:13px;color:#526174;line-height:1.5;margin:12px 2px 18px}.legend{display:flex;gap:12px;flex-wrap:wrap;margin:10px 2px;font-size:13px;color:#34445a}.legend span{display:inline-flex;align-items:center;gap:6px}.dot{width:12px;height:12px;border-radius:3px;display:inline-block}.widget{background:white;padding:14px;border-radius:14px;margin-top:16px;box-shadow:0 2px 10px #00000012}
 .widget h2{font-size:18px;margin:0 0 10px}iframe{width:100%;height:620px;border:1px solid #bbb}
 .country-label{background:transparent;border:0;color:#102a43;font-weight:700;text-shadow:0 1px 2px white,1px 0 2px white,-1px 0 2px white,0 -1px 2px white;font-size:12px;white-space:nowrap}
 @media(max-width:600px){#map{height:58vh;min-height:390px}iframe{height:620px}}
@@ -18,13 +18,14 @@ main{max-width:1100px;margin:auto;padding:14px}#map{height:65vh;min-height:430px
 <body>
 <header><h1>Запреты движения грузовиков — Европейский союз</h1><p>Карта стран ЕС и официальный виджет TrafficBan</p></header>
 <main>
+<div class="legend"><span><i class="dot" style="background:#dc5555"></i> Есть запреты в ближайшие 7 дней</span><span><i class="dot" style="background:#3185d5"></i> Данные есть, запретов нет</span><span><i class="dot" style="background:#aab4c0"></i> Нет данных</span></div>
 <div id="map"></div>
 <div class="downloads" style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0"><button id="kmlBtn" disabled style="padding:12px 16px;border:0;border-radius:9px;background:#174f91;color:white;font-weight:700">Скачать KML</button><button id="kmzBtn" disabled style="padding:12px 16px;border:0;border-radius:9px;background:#174f91;color:white;font-weight:700">Скачать KMZ</button></div>
-<p class="note">Границы стран показаны для ориентира. Синяя заливка имеет прозрачность 70%. Нажми на страну или её название, чтобы посмотреть запреты из тестового источника Nakordoni на ближайшие 7 дней. Данные обновляются автоматически через GitHub Actions каждые 6 часов.</p>
+<p class="note">Границы стран показаны для ориентира. Синяя заливка имеет прозрачность 70%. Нажми на страну или её название, чтобы посмотреть реальные запреты движения грузовиков из Nakordoni на ближайшие 7 дней. Данные обновляются автоматически через GitHub Actions каждые 6 часов.</p>
 <section class="widget"><h2>Запреты TrafficBan</h2>
 <iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&language=ru" title="TrafficBan — запреты движения" loading="lazy"></iframe>
 </section>
-<p class="note">Границы: datasets/geo-countries. Тестовые данные о запретах: Nakordoni. Официальный виджет TrafficBan приведён отдельно ниже.</p>
+<p class="note" id="dataStatus">Данные о запретах загружаются из Nakordoni. Официальный виджет TrafficBan приведён отдельно ниже.</p>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -36,24 +37,35 @@ let banData=null;
 const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
 const map=L.map("map").setView([51,12],4);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
-fetch("data/truck-bans.json").then(r=>r.ok?r.json():null).then(d=>{banData=d;}).catch(()=>{banData=null;});
+const banDataPromise=fetch("data/truck-bans.json").then(r=>{if(!r.ok)throw new Error("Не удалось загрузить календарь запретов");return r.json();});
+const escHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const coveredEu=new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK"]);
 const banPopup=(code)=>{
  const c=iso2[code], name=ru[code]||code;
- if(!banData) return "<b>"+name+"</b><br>Данные календаря пока не загружены. Запусти обновление в GitHub Actions.";
- if((banData.countries_not_covered||[]).includes(c)) return "<b>"+name+"</b><br>Источник пока не предоставляет данные для этой страны.";
- if(!(banData.covered_countries||[]).includes(c)) return "<b>"+name+"</b><br>Страна пока не подтверждена как охваченная источником.";
- const rows=(banData.bans||[]).filter(b=>b.country_code===c);
- let html="<b>"+name+"</b><br><small>Источник: Nakordoni · "+banData.window.from+" — "+banData.window.to+"</small><hr>";
- if(!rows.length) return html+"Запретов в полученном календаре нет.";
- html+=rows.map(b=>"<p><b>"+(b.date||"")+"</b><br>"+(b.time_from||"")+(b.time_until?"–"+b.time_until:"")+"<br>"+(b.restriction_type||"Ограничение")+(b.restriction_details?" — "+b.restriction_details:"")+(b.min_weight_tons?"<br>От "+b.min_weight_tons+" т":"")+(b.details_url?"<br><a href=\\""+b.details_url+"\\" target=\\"_blank\\">Подробнее</a>":"")+"</p>").join("");
- return html;
+ if(!banData) return "<b>"+escHtml(name)+"</b><br>Календарь запретов пока не загружен.";
+ if(!coveredEu.has(c)) return "<b>"+escHtml(name)+"</b><br><b>Нет данных Nakordoni</b> по этой стране. Это не означает, что запретов нет.";
+ const rows=(banData.bans||[]).filter(b=>b.country_code===c).sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.time_from||"").localeCompare(b.time_from||""));
+ let out="<b>"+escHtml(name)+"</b><br><small>Источник: Nakordoni · "+escHtml(banData.window?.from)+" — "+escHtml(banData.window?.to)+"</small><hr>";
+ if(!rows.length) return out+"В календаре на этот период запреты не указаны.";
+ out+="<b>Запреты: "+rows.length+"</b>";
+ out+=rows.map(b=>{
+  const url=String(b.details_url||"");
+  const safeUrl=/^https:\\/\\//i.test(url)?escHtml(url):"";
+  return "<p><b>"+escHtml(b.date)+"</b><br>"+escHtml(b.time_from||"Весь день")+(b.time_until?"–"+escHtml(b.time_until):"")+"<br><b>"+escHtml(b.restriction_type||"Ограничение")+"</b>"+(b.restriction_details?"<br>"+escHtml(b.restriction_details):"")+(b.min_weight_tons?"<br>От "+escHtml(b.min_weight_tons)+" т":"")+(safeUrl?"<br><a href=\\""+safeUrl+"\\" target=\\"_blank\\" rel=\\"noopener\\">Подробнее на Nakordoni</a>":"")+"</p>";
+ }).join("");
+ return out;
 };
-fetch("https://raw.githubusercontent.com/datasets/geo-countries/main/data/countries.geojson")
-.then(r=>{if(!r.ok)throw new Error("Не удалось загрузить границы");return r.json()})
-.then(data=>{
+Promise.all([
+ fetch("https://raw.githubusercontent.com/datasets/geo-countries/main/data/countries.geojson").then(r=>{if(!r.ok)throw new Error("Не удалось загрузить границы");return r.json();}),
+ banDataPromise
+]).then(([data,bans])=>{
+ banData=bans;
+ const activeCodes=new Set((banData.bans||[]).map(b=>b.country_code));
  const features=data.features.filter(f=>eu.has(f.properties["ISO3166-1-Alpha-3"]));
  euFeatures=features;
- const layer=L.geoJSON(features,{style:{color:"#174f91",weight:1.5,fillColor:"#3185d5",fillOpacity:.3},onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.bindPopup(()=>banPopup(code));}}).addTo(map);
+ const layer=L.geoJSON(features,{style:f=>{const c=iso2[f.properties["ISO3166-1-Alpha-3"]];const fill=!coveredEu.has(c)?"#aab4c0":activeCodes.has(c)?"#dc5555":"#3185d5";return {color:"#174f70",weight:1.5,fillColor:fill,fillOpacity:.42};},onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.bindPopup(()=>banPopup(code));}}).addTo(map);
+ const activeEu=[...activeCodes].filter(c=>coveredEu.has(c)).length;
+ document.getElementById("dataStatus").textContent="Обновлено: "+new Date(banData.generated_at).toLocaleString("ru-RU")+". В календаре "+(banData.bans||[]).length+" записей по "+activeEu+" странам ЕС; данные доступны по 18 из 27 стран. Нажмите на красную страну, чтобы открыть расписание запретов.";
  features.forEach(f=>{
   const code=f.properties["ISO3166-1-Alpha-3"], countryLayer=L.geoJSON(f), center=countryLayer.getBounds().getCenter();
   L.marker(center,{interactive:true,icon:L.divIcon({className:"country-label",html:ru[code]||code,iconSize:null})}).addTo(map).bindPopup(()=>banPopup(code));
@@ -74,6 +86,6 @@ ${euFeatures.map(f=>{const code=f.properties["ISO3166-1-Alpha-3"],name=ru[code]|
  document.getElementById("kmlBtn").onclick=()=>download(new Blob([kml()],{type:"application/vnd.google-earth.kml+xml"}),"trafficban-eu-map.kml");
  document.getElementById("kmzBtn").onclick=async()=>{const zip=new JSZip();zip.file("doc.kml",kml());download(await zip.generateAsync({type:"blob"}),"trafficban-eu-map.kmz")};
 })
-.catch(e=>{document.querySelector(".note").textContent="Не удалось загрузить границы стран. Проверьте подключение к интернету и обновите страницу.";console.error(e)});
+.catch(e=>{document.getElementById("dataStatus").textContent="Не удалось загрузить карту или календарь запретов. Проверьте подключение и обновите страницу.";console.error(e)});
 </script>
 </body></html>
