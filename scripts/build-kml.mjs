@@ -46,6 +46,13 @@ function keepEuropeanPart(feature) {
     const lon=(Math.min(...ring.map(p=>p[0]))+Math.max(...ring.map(p=>p[0])))/2;
     const lat=(Math.min(...ring.map(p=>p[1]))+Math.max(...ring.map(p=>p[1])))/2;
     if(lon < -12||lon > 45||lat < 34||lat > 72)return false;
+    // Hide remote Atlantic specks and the small Mediterranean islands marked for removal.
+    if(lon < -5 && lat > 57 && lat < 66)return false;
+    if(code==="ESP" && lon > 0 && lon < 5 && lat > 38 && lat < 41)return false; // Balearics
+    if(code==="ESP" && lon < -4 && lat < 37)return false; // southern offshore enclaves
+    if(code==="ITA" && lon > 7 && lon < 10 && lat > 38 && lat < 42)return false; // Sardinia
+    if(code==="GRC" && lon > 22 && lon < 28 && lat < 36.5)return false; // Crete
+
     if(code==="DNK"&&lat>59)return false; // Faroe Islands
     if(code==="NOR"&&lat>72)return false; // Svalbard
     if(code==="FRA"&&(lon < -6||lon > 10||lat < 41||lat > 52))return false;
