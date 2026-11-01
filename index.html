@@ -50,7 +50,7 @@ const banPopup=(code)=>{
  out+="<b>Запреты: "+rows.length+"</b>";
  out+=rows.map(b=>{
   const url=String(b.details_url||"");
-  const safeUrl=/^https:\\/\\//i.test(url)?escHtml(url):"";
+  const safeUrl=/^https:\/\//i.test(url)?escHtml(url):"";
   return "<p><b>"+escHtml(b.date)+"</b><br>"+escHtml(b.time_from||"Весь день")+(b.time_until?"–"+escHtml(b.time_until):"")+"<br><b>"+escHtml(b.restriction_type||"Ограничение")+"</b>"+(b.restriction_details?"<br>"+escHtml(b.restriction_details):"")+(b.min_weight_tons?"<br>От "+escHtml(b.min_weight_tons)+" т":"")+(safeUrl?"<br><a href=\\""+safeUrl+"\\" target=\\"_blank\\" rel=\\"noopener\\">Подробнее на Nakordoni</a>":"")+"</p>";
  }).join("");
  return out;
