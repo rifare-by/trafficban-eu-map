@@ -36,10 +36,15 @@ const covered=new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","L
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function allPoints(x,out=[]){if(Array.isArray(x)&&typeof x[0]==="number")out.push(x);else if(Array.isArray(x))x.forEach(v=>allPoints(v,out));return out;}
 const merc=p=>{const lat=Math.max(-85.0511,Math.min(85.0511,p[1]))*Math.PI/180;return [(p[0]+180)/360,(1-Math.log(Math.tan(lat)+1/Math.cos(lat))/Math.PI)/2];};
-const inEurope=p=>p[0]>=-32&&p[0]<=45&&p[1]>=25&&p[1]<=72;
+// Show the contiguous European geography of each EU member, excluding remote overseas territories.
+const EUROPE={west:-12,east:35,south:34,north:72};
 function clipEuropeanGeometry(g){
  const polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;
- const kept=polys.filter(poly=>{const pts=allPoints(poly);if(!pts.length)return false;const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),cx=(Math.min(...xs)+Math.max(...xs))/2,cy=(Math.min(...ys)+Math.max(...ys))/2;return inEurope([cx,cy]);});
+ const kept=polys.filter(poly=>{
+  const pts=allPoints(poly);if(!pts.length)return false;
+  const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
+  return Math.max(...xs)>=EUROPE.west&&Math.min(...xs)<=EUROPE.east&&Math.max(...ys)>=EUROPE.south&&Math.min(...ys)<=EUROPE.north;
+ });
  return kept.length?{type:"MultiPolygon",coordinates:kept}:null;
 }
 function pathRing(ring,proj){return ring.map((p,i)=>{const q=proj(p);return (i?"L":"M")+q[0].toFixed(2)+","+q[1].toFixed(2)}).join("")+"Z";}
@@ -71,11 +76,13 @@ try{
  const geo=await geoResp.json();let bans=null;
  if(banResp.ok)bans=await banResp.json();
  const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
- if(features.length!==27)throw new Error("Загружено стран: "+features.length+" из 27");
+ if(features.length!==27)throw new Error("В исходных границах найдено "+features.length+" стран ЕС вместо 27");
  const display=features.map(f=>({feature:f,geometry:clipEuropeanGeometry(f.geometry)})).filter(x=>x.geometry);
+ const missing=features.filter(f=>!display.some(x=>x.feature===f)).map(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
+ if(missing.length)throw new Error("Не найдены на европейской карте: "+missing.join(", "));
  const pts=display.flatMap(x=>allPoints(x.geometry.coordinates));
  const world=pts.map(merc),minX=Math.min(...world.map(p=>p[0])),maxX=Math.max(...world.map(p=>p[0])),minY=Math.min(...world.map(p=>p[1])),maxY=Math.max(...world.map(p=>p[1]));
- const pad=30,scale=Math.min((1000-2*pad)/(maxX-minX),(650-2*pad)/(maxY-minY));
+ const pad=58,scale=Math.min((1000-2*pad)/(maxX-minX),(650-2*pad)/(maxY-minY));
  const w=(maxX-minX)*scale,h=(maxY-minY)*scale,ox=(1000-w)/2,oy=(650-h)/2;
  const project=p=>{const q=merc(p);return [ox+(q[0]-minX)*scale,oy+(q[1]-minY)*scale];};
  svg.replaceChildren();
@@ -100,7 +107,7 @@ try{
   const pos=project([cx,cy]),label=document.createElementNS(NS,"text");label.setAttribute("x",pos[0]);label.setAttribute("y",pos[1]);label.setAttribute("class","country-label");label.textContent=names[code];label.addEventListener("click",()=>showCountry(code,bans));mapLayer.appendChild(label);
  }
  const attribution=document.createElementNS(NS,"text");attribution.setAttribute("x","990");attribution.setAttribute("y","640");attribution.setAttribute("text-anchor","end");attribution.setAttribute("font-size","10");attribution.setAttribute("fill","#263746");attribution.textContent="© OpenStreetMap contributors";svg.appendChild(attribution);
- status.textContent=bans?"Карта загружена: 27 стран ЕС. Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по 18 из 27 стран.":"Границы загружены. Календарь запретов временно недоступен.";
+ status.textContent=bans?"Карта загружена: все 27 стран ЕС. Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по 18 из 27 стран.":"Границы загружены. Календарь запретов временно недоступен.";
 }catch(e){status.textContent="Ошибка загрузки карты: "+e.message;svg.replaceChildren();const t=document.createElementNS(NS,"text");t.setAttribute("x","500");t.setAttribute("y","325");t.setAttribute("text-anchor","middle");t.setAttribute("fill","#a22");t.textContent="Не удалось загрузить данные карты";svg.appendChild(t);console.error(e);}
 })();
 </script>
