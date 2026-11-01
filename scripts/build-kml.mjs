@@ -30,6 +30,8 @@ const [geoResp, bans] = await Promise.all([
 if (!geoResp.ok) throw new Error("GeoJSON fetch failed: "+geoResp.status);
 const geo = await geoResp.json();
 const features = geo.features.filter(f => EU[f.properties["ISO3166-1-Alpha-3"]]);
+await fs.mkdir("data", { recursive: true });
+await fs.writeFile("data/eu-countries.geojson", JSON.stringify({type:"FeatureCollection",features}));
 if (features.length !== 27) throw new Error("Expected 27 EU countries, got "+features.length);
 const from=bans.window?.from||"", to=bans.window?.to||"";
 const generated=bans.generated_at||"";
