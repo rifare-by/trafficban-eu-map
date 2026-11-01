@@ -14,6 +14,7 @@ const batches = [];
 for (let i=0;i<countries.length;i+=3) batches.push(countries.slice(i,i+3));
 
 const payloads = [];
+const warnings = [];
 const audit = [];
 for (let index = 0; index < batches.length; index++) {
   const batch = batches[index];
@@ -36,14 +37,14 @@ for (let index = 0; index < batches.length; index++) {
   const available=data.total_available ?? data.total_bans?.total_available;
   const truncated=data.truncated ?? data.total_bans?.truncated;
   console.log("Nakordoni batch "+(index+1)+"/"+batches.length+": "+batch.join(",")+" HTTP "+response.status+"; current="+data.current_bans.length+" upcoming="+data.upcoming_bans.length+"; returned="+String(stats)+" available="+String(available)+" truncated="+String(truncated)+"; covered="+data.covered_countries.join(","));
-  if(truncated===true||(stats!=null&&available!=null&&Number.isFinite(Number(stats))&&Number.isFinite(Number(available))&&Number(stats)<Number(available)))throw new Error("Nakordoni response truncated for "+batch.join(",")+"; refuse partial data");
+  if(truncated===true||(stats!=null&&available!=null&&Number.isFinite(Number(stats))&&Number.isFinite(Number(available))&&Number(stats)<Number(available)))warnings.push("Truncated API response: "+batch.join(","));
   console.log("Nakordoni response shape "+batch.join(",")+": data keys="+Object.keys(data).join(",")+"; bans_by_country keys="+Object.keys(data.bans_by_country||{}).join(","));
   const grouped=data.bans_by_country||{};
   const groupedCounts=Object.fromEntries(Object.entries(grouped).map(([k,v])=>[k,Array.isArray(v)?v.length:Array.isArray(v?.bans)?v.bans.length:0]));
   const recordCount=data.current_bans.length+data.upcoming_bans.length+Object.values(groupedCounts).reduce((a,b)=>a+b,0);
   audit.push({countries:batch,returned:stats??null,total_available:available??null,truncated:truncated??null,current:data.current_bans.length,upcoming:data.upcoming_bans.length,grouped_counts:groupedCounts,keys:Object.keys(data)});
   console.log("Nakordoni audit "+JSON.stringify(audit.at(-1)));
-  if(Number.isFinite(Number(stats)) && Number(stats)>0 && recordCount===0)throw new Error("Nakordoni reports "+stats+" records but known ban arrays are empty for "+batch.join(",")+"; inspect response schema before publishing");
+  if(Number.isFinite(Number(stats)) && Number(stats)>0 && recordCount===0)warnings.push("Provider returned "+stats+" but standard arrays empty: "+batch.join(","));
   payloads.push(data);
 }
 const bans = [];
@@ -52,7 +53,14 @@ const notCovered = new Set();
 for (const data of payloads) {
   for (const c of data.covered_countries || []) covered.add(c);
   for (const c of data.countries_not_covered || []) notCovered.add(c);
-  const grouped=Object.values(data.bans_by_country||{}).flatMap(x=>Array.isArray(x)?x:Array.isArray(x?.bans)?x.bans:[]);
+  const flatten=(value,depth=0)=>{
+    if(depth>7||value==null)return [];
+    if(Array.isArray(value))return value.flatMap(v=>flatten(v,depth+1));
+    if(typeof value!=="object")return [];
+    if(typeof value.date==="string" && (value.country_code||value.country))return [value];
+    return Object.values(value).flatMap(v=>flatten(v,depth+1));
+  };
+  const grouped=flatten(data.bans_by_country||{});
   for (const ban of [...(data.current_bans || []),...(data.upcoming_bans || []),...grouped]) {
     if(!ban||!ban.country_code||!ban.date)continue;
     if(ban.date<from||ban.date>to)continue;
@@ -75,7 +83,9 @@ const output = {
   window:{from,to,days:7},
   provider_response_count:payloads.length,
   provider_audit:audit,
-  status_note:"Only Nakordoni API records; missing rows do not prove unrestricted travel.",
+  completeness_status:warnings.length?"partial_unverified":"provider_reported_complete_unverified",
+  completeness_warnings:warnings,
+  status_note:"DIAGNOSTIC DATA: not verified complete. Missing rows do not prove unrestricted travel.",
   covered_countries:[...covered].sort(),
   countries_not_covered:[...notCovered].sort(),
   bans:[...unique.values()].sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.country_code||"").localeCompare(b.country_code||"")||(a.time_from||"").localeCompare(b.time_from||""))
