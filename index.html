@@ -386,7 +386,22 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
    });
    return kept.length?{...f,geometry:kept.length===1?{type:"Polygon",coordinates:kept[0]}:{type:"MultiPolygon",coordinates:kept}}:null;
   }).filter(Boolean);
-    const records=Array.isArray(bans?.bans)?bans.bans:[];
+    const rawRecords=Array.isArray(bans?.bans)?bans.bans:[];
+  // Only broad country-level truck restrictions may determine the country's map colour.
+  // Excluded records remain in the downloaded source data for possible future road-level layers.
+  function isNationalTruckBan(r){
+   const type=String(r.restriction_type||"").toLowerCase();
+   const detail=String(r.restriction_details||"").toLowerCase();
+   const text=type+" "+detail;
+   if(!type)return false; // incomplete API rows have no verified scope
+   if(/\b(adr|hazmat|dangerous goods|dangerous cargo|hazardous|опасн(?:ых|ые) груз|gefährliche güter)\b/i.test(text))return false;
+   if(/\b(regional|local|municipal|city|urban|province|provincial|district|state-specific|border crossing|specific road|route-specific)\b/i.test(text))return false;
+   if(/\b(autoroutes?|motorways?|highways?|expressways?|first-class roads?|roads?\s+[a-z]?\d|routes?\s+[a-z]?\d|interchange|ferry port|junction|tunnel|bridge|corridor|section|stretch|autobahn|autostrada)\b/i.test(detail)&&!/nationwide|all roads|entire country|countrywide/i.test(detail))return false;
+   if(/\b(?:[a-z]{1,3}-?\d{1,4})(?:\b|,)/i.test(detail)&&!/nationwide|all roads|entire country|countrywide/i.test(detail))return false;
+   if(/\b(ile-de-france|paris\s*->|catalonia|catalunya|basque|tirol|tyrol|brenner|bw, by|by, nw|slovenian border)\b/i.test(detail))return false;
+   return true;
+  }
+  const records=rawRecords.filter(isNationalTruckBan);
   const roadData=nr.ok?await nr.json():null;
   const roadEvents=Array.isArray(roadData?.events)?roadData.events:[];
   const napCount=code=>roadEvents.filter(e=>[e.jurisdiction,e.country,e.country_code,e.countryCode,e.iso3,e.location?.country].some(v=>String(v||"").toUpperCase()===code||String(v||"").toUpperCase()===iso2[code])).length;
