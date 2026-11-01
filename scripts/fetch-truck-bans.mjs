@@ -28,6 +28,7 @@ for (let index = 0; index < batches.length; index++) {
   if (!response.ok || json.ok !== true) {
     throw new Error("Nakordoni API request failed ("+response.status+"): "+(json.error?.code || "unknown_error")+" — "+(json.error?.message || ""));
   }
+  if (!json.data || !Array.isArray(json.data.covered_countries) || !Array.isArray(json.data.current_bans) || !Array.isArray(json.data.upcoming_bans)) throw new Error("Nakordoni returned incomplete API response for "+batch.join(","));
   payloads.push(json.data);
 }
 const bans = [];
@@ -43,6 +44,9 @@ for (const ban of bans) {
   const k = [ban.country_code,ban.date,ban.time_from,ban.time_until,ban.restriction_type,ban.details_url].join("|");
   unique.set(k,ban);
 }
+// Never silently publish a suspiciously sparse calendar as complete coverage.
+// A missing restriction is NOT proof that truck traffic is permitted.
+if (unique.size < 2) throw new Error("Only "+unique.size+" truck-ban records returned for "+countries.length+" countries over 7 days. Refusing to overwrite published data until API coverage is verified.");
 const output = {
   source:"Nakordoni",
   attribution:"Data by nakordoni.eu",
