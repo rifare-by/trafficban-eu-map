@@ -225,7 +225,7 @@ try{
  map.on("zoomend moveend",()=>{refreshCountryLabels();});
  let euBounds=null;
  document.getElementById("zoomReset").addEventListener("click",()=>{if(euBounds)map.fitBounds(euBounds,{padding:[18,18]});});
- const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson"),fetch("./data/truck-bans.json")]);
+ const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson?v=20261101-2",{cache:"no-store"}),fetch("./data/truck-bans.json?v=20261101-2",{cache:"no-store"})]);
  if(!geoResp.ok)throw new Error("GeoJSON: HTTP "+geoResp.status);
  const geo=await geoResp.json();let bans=null;if(banResp.ok)bans=await banResp.json();
  const lieFeature={type:"Feature",properties:{"ISO3166-1-Alpha-3":"LIE","ISO3166-1-Alpha-2":"LI",name:"Liechtenstein"},geometry:{type:"Polygon",coordinates:[[[9.476,47.057],[9.484,47.053],[9.501,47.049],[9.518,47.052],[9.532,47.057],[9.548,47.062],[9.565,47.073],[9.579,47.087],[9.588,47.103],[9.597,47.119],[9.609,47.134],[9.622,47.151],[9.629,47.169],[9.623,47.185],[9.611,47.201],[9.596,47.216],[9.581,47.229],[9.561,47.236],[9.542,47.231],[9.525,47.221],[9.511,47.208],[9.499,47.191],[9.489,47.174],[9.481,47.155],[9.475,47.136],[9.472,47.117],[9.472,47.097],[9.473,47.078],[9.476,47.057]]]} };
