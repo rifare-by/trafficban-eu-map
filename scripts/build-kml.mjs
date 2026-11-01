@@ -11,7 +11,15 @@ const EU = {
 };
 const ISO2 = {AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
 const covered = new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK"]);
-const isMainTruckBan = b => ["sunday","holiday","regional holiday"].includes(String(b?.restriction_type||"").trim().toLowerCase());
+const isMainTruckBan = b => {
+  const type = String(b?.restriction_type || "").trim().toLowerCase();
+  const details = String(b?.restriction_details || "").toLowerCase();
+  if (type === "local") return false;
+  if (/dangerous goods|hazardous goods|hazmat|dangerous cargo|adr|gefahrgut|mati[eè]res dangereuses|mercanc[ií]as peligrosas|merci pericolose|gevaarlijke stoffen|опасн\w* груз|опасн\w* веществ/i.test(details)) return false;
+  if (/\broads?\b|\broad network\b|\bautoroutes?\b|\bmotorways?\b|\bhighways?\b|\bfreeways?\b|\bcarriageways?\b|дорог\w*|автотрасс\w*/i.test(details)) return false;
+  if (/\b(?:A|AP|N|D|E|M|R|B|L|SR|Z)\s?-?\d{1,4}\b/i.test(details)) return false;
+  return true;
+};
 const mainBans = list => (list||[]).filter(isMainTruckBan);
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
 const coordsXml = ring => ring.map(p => p[0]+","+p[1]+",0").join(" ");
