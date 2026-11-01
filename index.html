@@ -265,21 +265,50 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
 <script>
-(function(){
- const ids=["summaryStats","countryInfo"];
- for(const id of ids){const el=document.getElementById(id);if(el)el.innerHTML='<p style="color:#607d83">Информация удалена</p>';}
- const status=document.getElementById("status");if(status)status.textContent="Карта без данных об ограничениях движения.";
- document.querySelectorAll(".exports").forEach(el=>el.style.display="none");
- document.querySelectorAll(".date-strip").forEach(el=>el.style.display="none");
- document.querySelectorAll(".legend").forEach(el=>el.style.display="none");
+(async function(){
+ const EU={AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция"};
+ const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
+ const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ const info=document.getElementById("countryInfo"),stats=document.getElementById("summaryStats"),status=document.getElementById("dataStatus"),strip=document.getElementById("dateStrip");
+ document.querySelectorAll(".exports").forEach(e=>e.style.display="none");
+ document.querySelectorAll('a[href="#exports"]').forEach(e=>e.style.display="none");
+ document.querySelector(".map-date-note").textContent="27 стран Евросоюза · выберите страну для просмотра доступных записей";
+ const map=L.map("map",{zoomControl:true,minZoom:2,maxZoom:13}).setView([51.2,13.5],4);
+ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+ document.getElementById("zoomIn")?.addEventListener("click",()=>map.zoomIn());
+ document.getElementById("zoomOut")?.addEventListener("click",()=>map.zoomOut());
+ document.getElementById("zoomReset")?.addEventListener("click",()=>map.setView([51.2,13.5],4));
  try{
-  const map=L.map("map",{zoomControl:true,minZoom:3,maxZoom:13}).setView([51.2,13.5],4);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
-  document.getElementById("zoomIn")?.addEventListener("click",()=>map.zoomIn());
-  document.getElementById("zoomOut")?.addEventListener("click",()=>map.zoomOut());
-  document.querySelectorAll(".map-tools button.reset").forEach(b=>b.addEventListener("click",()=>map.setView([51.2,13.5],4)));
-  setTimeout(()=>map.invalidateSize(),150);
- }catch(error){if(status)status.textContent="Не удалось загрузить карту: "+error.message;}
+  const [gr,br]=await Promise.all([fetch("./data/eu-countries.geojson",{cache:"no-store"}),fetch("./data/truck-bans.json",{cache:"no-store"})]);
+  if(!gr.ok)throw Error("Не удалось загрузить границы стран");
+  const geo=await gr.json(),bans=br.ok?await br.json():null;
+  const features=(geo.features||[]).filter(f=>EU[f.properties?.["ISO3166-1-Alpha-3"]]);
+  const records=Array.isArray(bans?.bans)?bans.bans:[];
+  const days=[...new Set(records.map(r=>r.date).filter(Boolean))].sort();
+  const today=new Date().toISOString().slice(0,10);
+  let selectedDate=days.find(d=>d>=today)||days[0]||today;
+  let selectedCountry=null;
+  function rowsFor(code){return records.filter(r=>r.country_code===iso2[code]&&r.date===selectedDate);}
+  function render(){
+   stats.innerHTML='<div class="stat-row"><span>Страны Евросоюза на карте</span><b>'+features.length+' / 27</b></div><div class="stat-row uncertain"><span>Страны с записями на дату</span><b>'+new Set(records.filter(r=>r.date===selectedDate).map(r=>r.country_code)).size+'</b></div>';
+   strip.innerHTML='<label style="display:flex;align-items:center;gap:10px;padding:8px">Дата ограничений: <select id="banDate" style="padding:9px;border-radius:9px;border:1px solid #b9cbd0">'+(days.length?days:[today]).map(d=>'<option value="'+esc(d)+'" '+(d===selectedDate?'selected':'')+'>'+esc(d)+'</option>').join("")+'</select></label>';
+   document.getElementById("banDate").onchange=e=>{selectedDate=e.target.value;render();layer.setStyle(style);if(selectedCountry)show(selectedCountry);};
+   if(selectedCountry)show(selectedCountry);
+  }
+  function show(code){
+   selectedCountry=code;const rows=rowsFor(code),all=records.filter(r=>r.country_code===iso2[code]);
+   let html='<h3>'+esc(EU[code])+'</h3><p><b>Дата:</b> '+esc(selectedDate)+'</p>';
+   if(rows.length){html+='<p><b>Записи об ограничениях: '+rows.length+'</b></p>'+rows.slice(0,30).map(r=>'<section style="padding:8px;margin:7px 0;background:#fff;border-radius:8px"><b>'+esc(r.restriction_type||"Ограничение")+'</b><div>'+esc(r.time_from||"")+(r.time_until?' — '+esc(r.time_until):"")+'</div><small>'+esc(r.restriction_details||"")+'</small>'+(r.details_url&&/^https:\/\//.test(r.details_url)?'<div><a target="_blank" rel="noopener noreferrer" href="'+esc(r.details_url)+'">Источник записи</a></div>':"")+'</section>').join("");}
+   else html+='<p>На эту дату подтверждённых записей в подключённом календаре нет. <b>Это не означает, что движение разрешено.</b></p>';
+   html+='<small>Источник доступных записей: ранее загруженный Nakordoni; данные могут быть неполными или устаревшими. '+(all.length?'Всего записей по стране в файле: '+all.length+'.':'Нет записей по стране.')+' Проверяйте актуальные ограничения по официальным правилам и в виджете TrafficBan ниже.</small>';
+   info.innerHTML=html;
+  }
+  const style=f=>{const code=f.properties["ISO3166-1-Alpha-3"];return {color:"#287e80",weight:1.5,fillColor:rowsFor(code).length?"#e9996c":"#a7cfc9",fillOpacity:.48};};
+  const layer=L.geoJSON({type:"FeatureCollection",features},{style,onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.bindTooltip(EU[code],{sticky:true});l.on("click",()=>show(code));}}).addTo(map);
+  if(layer.getLayers().length)map.fitBounds(layer.getBounds(),{padding:[15,15]});
+  render();
+  status.textContent="Отображены границы стран ЕС. Цвет выделяет страны с записями на выбранную дату; отсутствие записи не означает отсутствие запрета. Календарь Nakordoni имеет неполное покрытие. TrafficBan доступен внизу страницы.";
+ }catch(e){status.textContent="Ошибка данных карты: "+e.message;stats.textContent="Данные временно недоступны";}
 })();
 </script>
 </body></html>
