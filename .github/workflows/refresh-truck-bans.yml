@@ -33,7 +33,7 @@ jobs:
           node scripts/build-kml.mjs
       - name: Commit refreshed data and map files
         run: |
-          git add -f data/truck-bans.json downloads/trafficban-eu-map.kml downloads/trafficban-eu-map.kmz
+          git add -f data/truck-bans.json data/eu-countries.geojson downloads/trafficban-eu-map.kml downloads/trafficban-eu-map.kmz
           if git diff --cached --quiet; then
             echo "No data changes"
             exit 0
