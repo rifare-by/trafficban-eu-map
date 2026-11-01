@@ -369,6 +369,12 @@ try{
  const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson"),fetch("./data/truck-bans.json")]);
  if(!geoResp.ok)throw new Error("GeoJSON: HTTP "+geoResp.status);
  const geo=await geoResp.json();let bans=null;if(banResp.ok)bans=await banResp.json();
+ const importNotice=document.createElement("div");
+ importNotice.setAttribute("role","status");
+ importNotice.style.cssText="margin:10px 0;padding:11px 14px;border:1px solid #e6c989;border-radius:10px;background:#fff8e7;color:#75521d;font-size:13px;line-height:1.5";
+ const incomplete=!bans||bans.completeness_status!=="provider_reported_complete_unverified";
+ importNotice.innerHTML=incomplete?'<strong>⚠ Данные запретов неполные</strong><div>Импорт Nakordoni не подтверждён для всех стран. Отсутствие запрета на карте не означает разрешение движения.</div>':'<strong>Данные Nakordoni загружены</strong><div>Ограничения ещё не сверены с официальными источниками.</div>';
+ const mapElement=document.getElementById("map");mapElement?.parentElement?.insertBefore(importNotice,mapElement);
  if(bans){for(const c of (bans.covered_countries||[]))if(/^[A-Z]{2}$/.test(c))covered.add(c);}drawDateStrip(bans);
  const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  const countryLabelMarkers=[];
