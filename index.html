@@ -222,6 +222,7 @@ main{max-width:1440px;padding-top:26px}
 
 /* Countries are the clickable targets; no permanent labels obscure the map. */
 #map .leaflet-interactive{cursor:pointer}
+.popup-country-heading{display:flex;align-items:center;gap:10px}.popup-country-heading b{display:block;font-size:17px;color:#17383d}.popup-country-heading small{display:block;color:#607780;font-size:11px;margin-top:3px}.popup-country-flag{font-size:31px;line-height:1;flex:0 0 38px;text-align:center}
 </style>
 </head>
 <body>
@@ -369,7 +370,7 @@ try{
   const tomorrowState={label:!tomorrowKnown?"НЕТ ДАННЫХ":tomorrowRows.length?"ЕСТЬ ЗАПИСЬ":"НЕТ ПОДТВЕРЖДЕНИЯ",cls:!tomorrowKnown?"unknown":tomorrowRows.length?"yes":"unknown"};
   const dateLabel=ruDate(today),tomorrowLabel=ruDate(tomorrowKey);
   function renderDay(title,date,rows,known){let out='<section style="margin:7px 0"><b>'+title+' — '+esc(date)+'</b><br>';if(!known)return out+'<span style="color:#66717e">Нет данных на эту дату</span></section>';if(!rows.length)return out+'<span style="color:#16723a"><b>Запретов в календаре не указано</b></span></section>';out+='<b style="color:#c62828">Ограничений: '+rows.length+'</b>';rows.slice(0,5).forEach(b=>{out+='<p style="margin:5px 0 0"><b>'+esc(b.time_from||"Весь день")+(b.time_until?"–"+esc(b.time_until):"")+'</b> · '+esc(ruType(b.restriction_type))+(b.min_weight_tons?'<br>Для транспорта от '+esc(b.min_weight_tons)+' т':'')+(b.restriction_details?'<br>'+esc(ruDetails(b.restriction_details)):"")+'</p>';});if(rows.length>5)out+='<small>И ещё '+(rows.length-5)+' ограничений</small>';const url=rows.find(b=>/^https:\/\//i.test(b.details_url||""))?.details_url;if(url)out+='<p style="margin:6px 0 0"><a target="_blank" rel="noopener" href="'+esc(url)+'">Подробнее</a></p>';return out+'</section>';}
-  let popupHtml='<div class="country-popup"><b>'+esc(names[code])+'</b><br><small>Информация по календарю запретов</small><hr style="margin:6px 0">';
+  let popupHtml='<div class="country-popup"><div class="popup-country-heading"><span class="popup-country-flag" aria-hidden="true">'+flagEmoji(c)+'</span><div><b>'+esc(names[code])+'</b><small>Информация по календарю запретов</small></div></div><hr style="margin:8px 0">';
   popupHtml+=renderDay("СЕГОДНЯ",dateLabel,dayBans,todayKnown);
   popupHtml+=renderDay("ЗАВТРА",tomorrowLabel,tomorrowRows,tomorrowKnown);
   popupHtml+='<small style="color:#66717e">«Нет данных» не означает отсутствие запрета.</small></div>';
