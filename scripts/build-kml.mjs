@@ -11,16 +11,8 @@ const EU = {
 };
 const ISO2 = {AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
 const covered = new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK"]);
-const isMainTruckBan = b => {
-  const type = String(b?.restriction_type || "").trim().toLowerCase();
-  const details = String(b?.restriction_details || "").toLowerCase();
-  if (type === "local") return false;
-  if (/dangerous goods|hazardous goods|hazmat|dangerous cargo|adr|gefahrgut|mati[eè]res dangereuses|mercanc[ií]as peligrosas|merci pericolose|gevaarlijke stoffen|опасн\w* груз|опасн\w* веществ/i.test(details)) return false;
-  if (/\broads?\b|\broad network\b|\bautoroutes?\b|\bmotorways?\b|\bhighways?\b|\bfreeways?\b|\bcarriageways?\b|дорог\w*|автотрасс\w*/i.test(details)) return false;
-  if (/\b(?:A|AP|N|D|E|M|R|B|L|SR|Z)\s?-?\d{1,4}\b/i.test(details)) return false;
-  return true;
-};
-const mainBans = list => (list||[]).filter(isMainTruckBan);
+// Preserve every API restriction type, including local, seasonal, road-specific and ADR.
+const mainBans = list => Array.isArray(list) ? list : [];
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
 const coordsXml = ring => ring.map(p => p[0]+","+p[1]+",0").join(" ");
 const ringXml = ring => "<LinearRing><coordinates>"+coordsXml(ring)+"</coordinates></LinearRing>";
@@ -49,11 +41,11 @@ const placemarks = features.map(f => {
   const code=f.properties["ISO3166-1-Alpha-3"], iso=ISO2[code], name=EU[code];
   const hasData=covered.has(iso);
   const rows=hasData?mainBans(bans.bans).filter(b=>b.country_code===iso):[];
-  const style=!hasData?"noData":rows.length?"hasBans":"noBans";
+  const style=!hasData?"noData":rows.length?"hasBans":"noData";
   let desc="<h2>"+esc(name)+"</h2><p><b>Период:</b> "+esc(from)+" — "+esc(to)+"</p>";
   desc+="<p><b>Источник календаря:</b> Nakordoni. Обновлено: "+esc(generated)+"</p>";
   if(!hasData) desc+="<p><b>Нет данных по этой стране.</b> Это не означает, что запретов нет.</p>";
-  else if(!rows.length) desc+="<p>На выбранный период запреты в календаре не указаны.</p>";
+  else if(!rows.length) desc+="<p>Нет подтверждённых записей в API. Это не означает отсутствие ограничений.</p>";
   else {
     desc+="<p><b>Записей о запретах: "+rows.length+"</b></p><ol>";
     for(const b of rows) {
