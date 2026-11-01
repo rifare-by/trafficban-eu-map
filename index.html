@@ -55,17 +55,21 @@ const banPopup=(code)=>{
  }).join("");
  return out;
 };
-Promise.all([
- fetch("https://raw.githubusercontent.com/datasets/geo-countries/main/data/countries.geojson").then(r=>{if(!r.ok)throw new Error("Не удалось загрузить границы");return r.json();}),
+Promise.allSettled([
+ fetch("https://cdn.jsdelivr.net/gh/datasets/geo-countries@main/data/countries.geojson").then(r=>{if(!r.ok)throw new Error("Не удалось загрузить границы стран (HTTP "+r.status+")");return r.json();}),
  banDataPromise
-]).then(([data,bans])=>{
+]).then(results=>{
+ const geoResult=results[0], banResult=results[1];
+ if(geoResult.status!=="fulfilled") throw geoResult.reason;
+ const data=geoResult.value;
+ const bans=banResult.status==="fulfilled"?banResult.value:{source:"Недоступен",bans:[],window:{from:"",to:""},generated_at:null};
  banData=bans;
  const activeCodes=new Set((banData.bans||[]).map(b=>b.country_code));
  const features=data.features.filter(f=>eu.has(f.properties["ISO3166-1-Alpha-3"]));
  euFeatures=features;
  const layer=L.geoJSON(features,{style:f=>{const c=iso2[f.properties["ISO3166-1-Alpha-3"]];const fill=!coveredEu.has(c)?"#aab4c0":activeCodes.has(c)?"#dc5555":"#3185d5";return {color:"#174f70",weight:1.5,fillColor:fill,fillOpacity:.42};},onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.bindPopup(()=>banPopup(code));}}).addTo(map);
  const activeEu=[...activeCodes].filter(c=>coveredEu.has(c)).length;
- document.getElementById("dataStatus").textContent="Обновлено: "+new Date(banData.generated_at).toLocaleString("ru-RU")+". В календаре "+(banData.bans||[]).length+" записей по "+activeEu+" странам ЕС; данные доступны по 18 из 27 стран. Нажмите на красную страну, чтобы открыть расписание запретов.";
+ document.getElementById("dataStatus").textContent=banResult.status==="fulfilled"?"Обновлено: "+new Date(banData.generated_at).toLocaleString("ru-RU")+". В календаре "+(banData.bans||[]).length+" записей; данные доступны по 18 из 27 стран ЕС.":"Границы стран загружены. Календарь запретов временно недоступен; карта остаётся доступной.";
  features.forEach(f=>{
   const code=f.properties["ISO3166-1-Alpha-3"], countryLayer=L.geoJSON(f), center=countryLayer.getBounds().getCenter();
   L.marker(center,{interactive:true,icon:L.divIcon({className:"country-label",html:ru[code]||code,iconSize:null})}).addTo(map).bindPopup(()=>banPopup(code));
@@ -122,6 +126,6 @@ Promise.all([
  document.getElementById("kmlBtn").onclick=()=>download(new Blob([kml()],{type:"application/vnd.google-earth.kml+xml"}),"trafficban-eu-map.kml");
  document.getElementById("kmzBtn").onclick=async()=>{const zip=new JSZip();zip.file("doc.kml",kml());download(await zip.generateAsync({type:"blob"}),"trafficban-eu-map.kmz")};
 })
-.catch(e=>{document.getElementById("dataStatus").textContent="Не удалось загрузить карту или календарь запретов. Проверьте подключение и обновите страницу.";console.error(e)});
+.catch(e=>{document.getElementById("dataStatus").textContent="Не удалось загрузить границы стран: "+(e&&e.message?e.message:"ошибка сети")+". Обновите страницу или попробуйте другую сеть.";document.getElementById("map").style.background="#e8eef5";console.error("Map loading error:",e)});
 </script>
 </body></html>
