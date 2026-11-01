@@ -326,7 +326,7 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
 </section>
 <nav class="date-strip" id="dateStrip" aria-label="Даты календаря запретов"></nav>
 <aside class="summary-column"><div class="summary-heading"><span class="summary-icon">🇪🇺</span><div><h2>Европа</h2><p>Ограничения на выбранную дату</p></div></div><h3>Информация по стране</h3><div class="info" id="countryInfo"><div class="empty-country"><div class="empty-country-icon">⌖</div><div><strong>Выберите страну на карте</strong><span>Нажмите на флажок или контур страны, чтобы посмотреть ограничения.</span></div></div></div><div class="summary-stats" id="summaryStats"><div class="stat-row uncertain">Загрузка информации…</div></div></aside>
-<section aria-labelledby="twoDayHeading"><h2 class="two-day-heading" id="twoDayHeading">🇪🇺 Ограничения по странам — сегодня и завтра</h2><p class="note">Нажмите на страну, чтобы открыть подробности. Отсутствие записей Nakordoni не означает отсутствие запрета.</p><div id="twoDayGrid" class="two-day-grid" aria-live="polite"></div></section>
+
 
 <p class="note" id="dataStatus">Загрузка данных…</p>
 <section class="quick-links"><a href="#countryInfo">⌖ <span>Подробно по странам</span></a><a href="#trafficban">▦ <span>Календарь запретов</span></a><a href="https://t.me/rifare_by" target="_blank" rel="noopener">✈ <span>Сообщество водителей</span></a><a href="#exports">⇩ <span>Экспорт KML / KMZ</span></a></section>
@@ -605,7 +605,6 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
   refreshMapLabels();
   if(layer.getLayers().length)map.fitBounds(layer.getBounds(),{padding:[15,15]});
   render();
-  renderTwoDays();
   status.textContent="Красный — общенациональный запрет указан; зелёный — по справочнику нет общего запрета; серый — нет достаточных данных. отсутствие записи не означает отсутствие запрета. Календарь Nakordoni имеет неполное покрытие. События NAPSPAN доступны по странам, но не являются подтверждённым календарём запретов. TrafficBan доступен внизу страницы.";
  }catch(e){status.textContent="Ошибка данных карты: "+e.message;stats.textContent="Данные временно недоступны";}
 })();
