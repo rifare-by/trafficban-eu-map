@@ -1,0 +1,33 @@
+name: Refresh truck bans data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Fetch Nakordoni truck bans
+        run: node scripts/fetch-truck-bans.mjs
+        env:
+          NKD_API_KEY: ${{ secrets.NKD_API_KEY }}
+      - name: Commit refreshed data
+        run: |
+          if git diff --quiet -- data/truck-bans.json; then
+            echo "No data changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/truck-bans.json
+          git commit -m "Refresh truck bans data"
+          git push
