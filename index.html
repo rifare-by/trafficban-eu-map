@@ -334,7 +334,11 @@ header .brand-mark svg{width:54px!important;height:54px!important;display:block!
   const [gr,br,nr]=await Promise.all([fetch("./data/eu-countries.geojson",{cache:"no-store"}),fetch("./data/truck-bans.json",{cache:"no-store"}),fetch("./data/road-events.json",{cache:"no-store"})]);
   if(!gr.ok)throw Error("Не удалось загрузить границы стран");
   const geo=await gr.json(),bans=br.ok?await br.json():null;
-  const features=(geo.features||[]).filter(f=>EU[f.properties?.["ISO3166-1-Alpha-3"]]);
+  const features=(geo.features||[]).filter(f=>EU[f.properties?.["ISO3166-1-Alpha-3"]]).map(f=>{
+   if(f.properties["ISO3166-1-Alpha-3"]!=="FRA"||f.geometry?.type!=="MultiPolygon")return f;
+   const polygons=f.geometry.coordinates.filter(poly=>poly[0].some(([lon,lat])=>lon>=-6&&lon<=10&&lat>=41&&lat<=52));
+   return {...f,geometry:polygons.length===1?{type:"Polygon",coordinates:polygons[0]}:{type:"MultiPolygon",coordinates:polygons}};
+  });
   const records=Array.isArray(bans?.bans)?bans.bans:[];
   const roadData=nr.ok?await nr.json():null;
   const roadEvents=Array.isArray(roadData?.events)?roadData.events:[];
