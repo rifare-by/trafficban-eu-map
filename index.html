@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Запреты движения грузовиков — ЕС</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:#172033;background:#f4f7fb}
+header{padding:16px;background:#123d70;color:white}h1{font-size:21px;margin:0 0 6px}header p{margin:0;font-size:14px}
+main{max-width:1100px;margin:auto;padding:14px}#map{height:65vh;min-height:430px;border-radius:14px;border:1px solid #ccd5e1;z-index:1}
+.note{font-size:13px;color:#526174;line-height:1.5;margin:12px 2px 18px}.widget{background:white;padding:14px;border-radius:14px;margin-top:16px;box-shadow:0 2px 10px #00000012}
+.widget h2{font-size:18px;margin:0 0 10px}iframe{width:100%;height:620px;border:1px solid #bbb}
+.country-label{background:transparent;border:0;color:#102a43;font-weight:700;text-shadow:0 1px 2px white,1px 0 2px white,-1px 0 2px white,0 -1px 2px white;font-size:12px;white-space:nowrap}
+@media(max-width:600px){#map{height:58vh;min-height:390px}iframe{height:620px}}
+</style>
+</head>
+<body>
+<header><h1>Запреты движения грузовиков — Европейский союз</h1><p>Карта стран ЕС и официальный виджет TrafficBan</p></header>
+<main>
+<div id="map"></div>
+<p class="note">Границы стран показаны для ориентира. Синяя заливка имеет прозрачность 70%. Сведения о запретах движения отображаются только в официальном виджете TrafficBan ниже; автоматическое извлечение данных в подписи стран пока не подключено.</p>
+<section class="widget"><h2>Запреты TrafficBan</h2>
+<iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&language=ru" title="TrafficBan — запреты движения" loading="lazy"></iframe>
+</section>
+<p class="note">Географические границы: Natural Earth через набор datasets/geo-countries. Данные о запретах: только TrafficBan.</p>
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const eu = new Set(["AUT","BEL","BGR","HRV","CYP","CZE","DNK","EST","FIN","FRA","DEU","GRC","HUN","IRL","ITA","LVA","LTU","LUX","MLT","NLD","POL","PRT","ROU","SVK","SVN","ESP","SWE"]);
+const ru = {AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция"};
+const map=L.map("map").setView([51,12],4);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
+fetch("https://raw.githubusercontent.com/datasets/geo-countries/main/data/countries.geojson")
+.then(r=>{if(!r.ok)throw new Error("Не удалось загрузить границы");return r.json()})
+.then(data=>{
+ const features=data.features.filter(f=>eu.has(f.properties["ISO3166-1-Alpha-3"]));
+ const layer=L.geoJSON(features,{style:{color:"#174f91",weight:1.5,fillColor:"#3185d5",fillOpacity:.3}}).addTo(map);
+ features.forEach(f=>{
+  const code=f.properties["ISO3166-1-Alpha-3"], countryLayer=L.geoJSON(f), center=countryLayer.getBounds().getCenter();
+  L.marker(center,{interactive:false,icon:L.divIcon({className:"country-label",html:ru[code]||code,iconSize:null})}).addTo(map);
+ });
+ map.fitBounds(layer.getBounds(),{padding:[12,12]});
+})
+.catch(e=>{document.querySelector(".note").textContent="Не удалось загрузить границы стран. Проверьте подключение к интернету и обновите страницу.";console.error(e)});
+</script>
+</body></html>
