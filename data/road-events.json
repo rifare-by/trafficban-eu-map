@@ -1,7 +1,7 @@
 {
   "source": "NAPSPAN",
   "source_url": "https://napspan.com/docs.html",
-  "generated_at": "2026-11-01T16:35:28.464Z",
+  "generated_at": "2026-11-01T16:40:44.718Z",
   "status": "partial_unverified",
   "events": [
     {
@@ -2509,6 +2509,56 @@
       "verification_status": "aggregator_unverified"
     },
     {
+      "id": "by-evt-3473185242271033186",
+      "source_id": "DE.3473185242271033186",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "restriction",
+      "severity": "moderate",
+      "status": "active",
+      "title": "Traffic Disturbance",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.27791,
+          49.16254
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T16:13:51.650934Z",
+      "last_updated": "2026-11-01T16:39:49.673387Z",
+      "created_at": "2026-11-01T16:13:51.650934Z",
+      "latitude": 49.16254,
+      "longitude": 9.27791,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-1525609801541477137",
+      "source_id": "DE.1525609801541477137",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "restriction",
+      "severity": "moderate",
+      "status": "active",
+      "title": "Traffic Disturbance",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          8.93659,
+          50.03569
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T16:18:54.787003Z",
+      "last_updated": "2026-11-01T16:39:49.673387Z",
+      "created_at": "2026-11-01T16:18:54.787003Z",
+      "latitude": 50.03569,
+      "longitude": 8.93659,
+      "verification_status": "aggregator_unverified"
+    },
+    {
       "id": "by-evt-3861414433514420776",
       "source_id": "DE.3861414433514420776",
       "source": "NAPSPAN",
@@ -2534,8 +2584,8 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-1525609801541477137",
-      "source_id": "DE.1525609801541477137",
+      "id": "by-evt-3275921578531439349",
+      "source_id": "DE.3275921578531439349",
       "source": "NAPSPAN",
       "jurisdiction": "DEU-BY",
       "type": "restriction",
@@ -2546,41 +2596,41 @@
       "location": {
         "type": "Point",
         "coordinates": [
-          8.93608,
-          50.03679
+          9.30954,
+          49.15649
         ]
       },
       "affected_roads": [],
-      "start_time": "2026-11-01T16:18:54.787003Z",
-      "last_updated": "2026-11-01T16:34:30.811315Z",
-      "created_at": "2026-11-01T16:18:54.787003Z",
-      "latitude": 50.03679,
-      "longitude": 8.93608,
+      "start_time": "2026-11-01T16:24:08.897919Z",
+      "last_updated": "2026-11-01T16:24:08.897919Z",
+      "created_at": "2026-11-01T16:24:08.897919Z",
+      "latitude": 49.15649,
+      "longitude": 9.30954,
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-3473185242271033186",
-      "source_id": "DE.3473185242271033186",
+      "id": "by-evt-1461523554248694286",
+      "source_id": "DE.1461523554248694286",
       "source": "NAPSPAN",
       "jurisdiction": "DEU-BY",
       "type": "restriction",
       "severity": "moderate",
       "status": "active",
-      "title": "Traffic Disturbance",
+      "title": "Traffic Disturbance: Closed Lanes",
       "description": "",
       "location": {
         "type": "Point",
         "coordinates": [
-          9.27946,
-          49.16205
+          9.04225,
+          48.70474
         ]
       },
       "affected_roads": [],
-      "start_time": "2026-11-01T16:13:51.650934Z",
-      "last_updated": "2026-11-01T16:29:17.795289Z",
-      "created_at": "2026-11-01T16:13:51.650934Z",
-      "latitude": 49.16205,
-      "longitude": 9.27946,
+      "start_time": "2026-11-01T16:24:08.897919Z",
+      "last_updated": "2026-11-01T16:24:08.897919Z",
+      "created_at": "2026-11-01T16:24:08.897919Z",
+      "latitude": 48.70474,
+      "longitude": 9.04225,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -20124,72 +20174,81 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "DEU-BY-evt-VIZ-BY/r_TIC-VIZ-BY/62/BY/phase[123173]_f7d6561_f0706011_TIC-VIZ-BY/1.0",
-      "source_id": "VIZ-BY/r_TIC-VIZ-BY/62/BY/phase[123173]_f7d6561_f0706011_TIC-VIZ-BY/1.0",
+      "id": "by-evt-4473129106086498459",
+      "source_id": "DE.4473129106086498459",
       "source": "NAPSPAN",
       "jurisdiction": "DEU-BY",
-      "type": "restriction",
-      "severity": "moderate",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
       "status": "active",
-      "title": "Restriction — B469",
-      "description": "B469 Wörth a.Main Richtung Amorbach\nzwischen Laudenbach und Kleinheubach\nFahrbahnverengung, Brückenarbeiten, bis 11.11.2026 07:29 Uhr",
+      "title": "Road Closed",
+      "description": "",
       "location": {
-        "type": "LineString",
+        "type": "Point",
         "coordinates": [
-          [
-            9.203393,
-            49.721405
-          ],
-          [
-            9.20385,
-            49.71942
-          ]
-        ]
-      },
-      "affected_roads": [
-        "B469"
-      ],
-      "start_time": "2025-12-29T06:30:00Z",
-      "end_time": "2026-11-11T06:29:00Z",
-      "effective_end_time": "2026-11-11T06:29:00Z",
-      "last_updated": "2026-10-28T12:13:27.579623Z",
-      "created_at": "2026-05-21T18:42:37.530249Z",
-      "latitude": 49.721405,
-      "longitude": 9.203393,
-      "road_class": "local",
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "DEU-evt-LMS/r_LMS/1031527_LMS-HB/64.0",
-      "source_id": "LMS/r_LMS/1031527_LMS-HB/64.0",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU",
-      "type": "restriction",
-      "severity": "moderate",
-      "status": "active",
-      "title": "Restriction",
-      "description": "Bremen, Autobahnzubringer Hemelingen\nin Höhe Hannoversche Straße\nFahrbahnverengung, bis 06.11.2026 15:00 Uhr",
-      "location": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            8.88477,
-            53.05062
-          ],
-          [
-            8.884283,
-            53.05227
-          ]
+          9.22416,
+          49.19394
         ]
       },
       "affected_roads": [],
-      "start_time": "2026-10-28T08:00:00Z",
-      "end_time": "2026-11-06T14:00:00Z",
-      "effective_end_time": "2026-11-06T14:00:00Z",
-      "last_updated": "2026-10-28T12:03:27.849096Z",
-      "created_at": "2026-10-28T12:03:27.849096Z",
-      "latitude": 53.05062,
-      "longitude": 8.88477,
+      "start_time": "2026-10-31T04:02:26.365024Z",
+      "last_updated": "2026-11-01T16:39:49.673387Z",
+      "created_at": "2026-10-31T04:02:26.365024Z",
+      "latitude": 49.19394,
+      "longitude": 9.22416,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-3569405825777851521",
+      "source_id": "DE.3569405825777851521",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.10122,
+          48.72539
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-31T04:02:26.365024Z",
+      "last_updated": "2026-11-01T16:39:49.673387Z",
+      "created_at": "2026-10-31T04:02:26.365024Z",
+      "latitude": 48.72539,
+      "longitude": 9.10122,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-3053949338759919988",
+      "source_id": "DE.3053949338759919988",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.36899,
+          49.48039
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-09-29T05:03:41.49902Z",
+      "last_updated": "2026-11-01T16:39:49.673387Z",
+      "created_at": "2026-09-29T05:03:41.49902Z",
+      "latitude": 49.48039,
+      "longitude": 9.36899,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -20382,12 +20441,121 @@
       },
       "affected_roads": [],
       "start_time": "2026-11-01T14:33:28Z",
-      "end_time": "2026-11-01T17:15:00Z",
-      "effective_end_time": "2026-11-01T17:15:00Z",
-      "last_updated": "2026-11-01T16:34:00.4424Z",
+      "end_time": "2026-11-01T20:00:00Z",
+      "effective_end_time": "2026-11-01T20:00:00Z",
+      "last_updated": "2026-11-01T16:39:18.524909Z",
       "created_at": "2026-11-01T15:15:51.391486Z",
       "latitude": 51.65394,
       "longitude": 7.04674,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "nw-evt-570f72a1ad545551",
+      "source_id": "CLOSURE__mobilithek.viz__LMS-NW/r_LMS-NW/1061780_D  NW LMS-NW.0",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-NW",
+      "type": "closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Entry/exit closed",
+      "description": "",
+      "location": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            7.04566,
+            51.65394
+          ],
+          [
+            7.0456794,
+            51.6540997
+          ],
+          [
+            7.0457,
+            51.65427
+          ],
+          [
+            7.0457192,
+            51.6543898
+          ],
+          [
+            7.04574,
+            51.65452
+          ],
+          [
+            7.04578,
+            51.65464
+          ],
+          [
+            7.04583,
+            51.65474
+          ],
+          [
+            7.04592,
+            51.65483
+          ],
+          [
+            7.04605,
+            51.65491
+          ],
+          [
+            7.04621,
+            51.65496
+          ],
+          [
+            7.04638,
+            51.65498
+          ],
+          [
+            7.04656,
+            51.65498
+          ],
+          [
+            7.04673,
+            51.65495
+          ],
+          [
+            7.04689,
+            51.65488
+          ],
+          [
+            7.04701,
+            51.6548
+          ],
+          [
+            7.04709,
+            51.6547
+          ],
+          [
+            7.04712,
+            51.65458
+          ],
+          [
+            7.04711,
+            51.65446
+          ],
+          [
+            7.04704,
+            51.65436
+          ],
+          [
+            7.04693,
+            51.6542
+          ],
+          [
+            7.04674,
+            51.65394
+          ]
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T15:14:33Z",
+      "end_time": "2026-11-01T20:00:00Z",
+      "effective_end_time": "2026-11-01T20:00:00Z",
+      "last_updated": "2026-11-01T16:39:18.524909Z",
+      "created_at": "2026-11-01T15:15:51.391486Z",
+      "latitude": 51.65394,
+      "longitude": 7.04566,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -20521,6 +20689,32 @@
       "verification_status": "aggregator_unverified"
     },
     {
+      "id": "by-evt-4085027662569252352",
+      "source_id": "DE.4085027662569252352",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.05609,
+          48.51016
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T16:24:08.897919Z",
+      "last_updated": "2026-11-01T16:24:08.897919Z",
+      "created_at": "2026-11-01T16:24:08.897919Z",
+      "latitude": 48.51016,
+      "longitude": 9.05609,
+      "verification_status": "aggregator_unverified"
+    },
+    {
       "id": "by-evt-4004224142808589541",
       "source_id": "DE.4004224142808589541",
       "source": "NAPSPAN",
@@ -20544,6 +20738,32 @@
       "created_at": "2026-09-24T22:05:10.827763Z",
       "latitude": 48.59037,
       "longitude": 9.23709,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-2802696178239029914",
+      "source_id": "DE.2802696178239029914",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.06928,
+          47.72348
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T16:24:08.897919Z",
+      "last_updated": "2026-11-01T16:24:08.897919Z",
+      "created_at": "2026-11-01T16:24:08.897919Z",
+      "latitude": 47.72348,
+      "longitude": 9.06928,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -20596,6 +20816,58 @@
       "created_at": "2026-10-31T04:02:26.365024Z",
       "latitude": 49.46988,
       "longitude": 8.99427,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-1915559846556445983",
+      "source_id": "DE.1915559846556445983",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.06908,
+          47.72325
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T16:24:08.897919Z",
+      "last_updated": "2026-11-01T16:24:08.897919Z",
+      "created_at": "2026-11-01T16:24:08.897919Z",
+      "latitude": 47.72325,
+      "longitude": 9.06908,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-1025487076021699013",
+      "source_id": "DE.1025487076021699013",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.77578,
+          48.65994
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T16:24:08.897919Z",
+      "last_updated": "2026-11-01T16:24:08.897919Z",
+      "created_at": "2026-11-01T16:24:08.897919Z",
+      "latitude": 48.65994,
+      "longitude": 9.77578,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -23641,32 +23913,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-3782293524458072367",
-      "source_id": "DE.3782293524458072367",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.14939,
-          48.77173
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T15:22:10.679808Z",
-      "last_updated": "2026-11-01T15:22:10.679808Z",
-      "created_at": "2026-11-01T15:22:10.679808Z",
-      "latitude": 48.77173,
-      "longitude": 9.14939,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-270606535034928251",
       "source_id": "DE.270606535034928251",
       "source": "NAPSPAN",
@@ -23849,32 +24095,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-3053949338759919988",
-      "source_id": "DE.3053949338759919988",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.40097,
-          49.47651
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-09-29T05:03:41.49902Z",
-      "last_updated": "2026-11-01T15:17:09.521368Z",
-      "created_at": "2026-09-29T05:03:41.49902Z",
-      "latitude": 49.47651,
-      "longitude": 9.40097,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-2799122070722176210",
       "source_id": "DE.2799122070722176210",
       "source": "NAPSPAN",
@@ -23979,115 +24199,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "nw-evt-570f72a1ad545551",
-      "source_id": "CLOSURE__mobilithek.viz__LMS-NW/r_LMS-NW/1061780_D  NW LMS-NW.0",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-NW",
-      "type": "closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Entry/exit closed",
-      "description": "",
-      "location": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            7.04566,
-            51.65394
-          ],
-          [
-            7.0456794,
-            51.6540997
-          ],
-          [
-            7.0457,
-            51.65427
-          ],
-          [
-            7.0457192,
-            51.6543898
-          ],
-          [
-            7.04574,
-            51.65452
-          ],
-          [
-            7.04578,
-            51.65464
-          ],
-          [
-            7.04583,
-            51.65474
-          ],
-          [
-            7.04592,
-            51.65483
-          ],
-          [
-            7.04605,
-            51.65491
-          ],
-          [
-            7.04621,
-            51.65496
-          ],
-          [
-            7.04638,
-            51.65498
-          ],
-          [
-            7.04656,
-            51.65498
-          ],
-          [
-            7.04673,
-            51.65495
-          ],
-          [
-            7.04689,
-            51.65488
-          ],
-          [
-            7.04701,
-            51.6548
-          ],
-          [
-            7.04709,
-            51.6547
-          ],
-          [
-            7.04712,
-            51.65458
-          ],
-          [
-            7.04711,
-            51.65446
-          ],
-          [
-            7.04704,
-            51.65436
-          ],
-          [
-            7.04693,
-            51.6542
-          ],
-          [
-            7.04674,
-            51.65394
-          ]
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T15:14:33Z",
-      "end_time": "2026-11-01T16:15:00Z",
-      "effective_end_time": "2026-11-01T16:15:00Z",
-      "last_updated": "2026-11-01T15:15:51.391486Z",
-      "created_at": "2026-11-01T15:15:51.391486Z",
-      "latitude": 51.65394,
-      "longitude": 7.04566,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-869166991489966916",
       "source_id": "DE.869166991489966916",
       "source": "NAPSPAN",
@@ -24111,32 +24222,6 @@
       "created_at": "2026-11-01T15:11:59.356455Z",
       "latitude": 48.73151,
       "longitude": 9.3231,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-4626065441734841148",
-      "source_id": "DE.4626065441734841148",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.18866,
-          48.77434
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T15:11:59.356455Z",
-      "last_updated": "2026-11-01T15:11:59.356455Z",
-      "created_at": "2026-11-01T15:11:59.356455Z",
-      "latitude": 48.77434,
-      "longitude": 9.18866,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -24761,32 +24846,6 @@
       "created_at": "2026-10-31T04:02:26.365024Z",
       "latitude": 49.46589,
       "longitude": 8.98972,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-4473129106086498459",
-      "source_id": "DE.4473129106086498459",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.22332,
-          49.19398
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-31T04:02:26.365024Z",
-      "last_updated": "2026-11-01T14:55:58.936171Z",
-      "created_at": "2026-10-31T04:02:26.365024Z",
-      "latitude": 49.19398,
-      "longitude": 9.22332,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -25750,32 +25809,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-1100825023796212308",
-      "source_id": "DE.1100825023796212308",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.5822,
-          48.71726
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T14:29:59.858451Z",
-      "last_updated": "2026-11-01T14:29:59.858451Z",
-      "created_at": "2026-11-01T14:29:59.858451Z",
-      "latitude": 48.71726,
-      "longitude": 9.5822,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-842108633680594643",
       "source_id": "DE.842108633680594643",
       "source": "NAPSPAN",
@@ -26189,58 +26222,6 @@
       "created_at": "2026-10-31T13:22:38.120064Z",
       "latitude": 50.5367,
       "longitude": 12.40193,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-970615840151717303",
-      "source_id": "DE.970615840151717303",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.21815,
-          49.14332
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T09:29:11.226704Z",
-      "last_updated": "2026-11-01T14:08:52.801796Z",
-      "created_at": "2026-11-01T09:29:11.226704Z",
-      "latitude": 49.14332,
-      "longitude": 9.21815,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-4480556417368771291",
-      "source_id": "DE.4480556417368771291",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          10.0672,
-          48.82511
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-31T18:16:42.240336Z",
-      "last_updated": "2026-11-01T14:08:52.801796Z",
-      "created_at": "2026-10-31T18:16:42.240336Z",
-      "latitude": 48.82511,
-      "longitude": 10.0672,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -27466,32 +27447,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-3604386208033544080",
-      "source_id": "DE.3604386208033544080",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          10.12861,
-          48.89682
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T13:00:15.462557Z",
-      "last_updated": "2026-11-01T13:00:15.462557Z",
-      "created_at": "2026-11-01T13:00:15.462557Z",
-      "latitude": 48.89682,
-      "longitude": 10.12861,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-2600670015790072854",
       "source_id": "DE.2600670015790072854",
       "source": "NAPSPAN",
@@ -28555,32 +28510,6 @@
       "created_at": "2026-10-31T15:02:50.468745Z",
       "latitude": 50.45228,
       "longitude": 9.56735,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-3569405825777851521",
-      "source_id": "DE.3569405825777851521",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.10143,
-          48.72669
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-31T04:02:26.365024Z",
-      "last_updated": "2026-11-01T11:36:13.384812Z",
-      "created_at": "2026-10-31T04:02:26.365024Z",
-      "latitude": 48.72669,
-      "longitude": 9.10143,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -33574,6 +33503,58 @@
       "verification_status": "aggregator_unverified"
     },
     {
+      "id": "by-evt-1855944036858407700",
+      "source_id": "DE.1855944036858407700",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.49085,
+          48.4143
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-31T15:55:46.232128Z",
+      "last_updated": "2026-10-31T15:55:46.232128Z",
+      "created_at": "2026-10-31T15:55:46.232128Z",
+      "latitude": 48.4143,
+      "longitude": 9.49085,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-1167475195120164260",
+      "source_id": "DE.1167475195120164260",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.06027,
+          48.53909
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-31T12:35:13.21399Z",
+      "last_updated": "2026-10-31T15:55:46.232128Z",
+      "created_at": "2026-10-31T12:35:13.21399Z",
+      "latitude": 48.53909,
+      "longitude": 9.06027,
+      "verification_status": "aggregator_unverified"
+    },
+    {
       "id": "FRA-evt-261020-000568-1",
       "source_id": "261020-000568-1",
       "source": "NAPSPAN",
@@ -35230,6 +35211,43 @@
       "verification_status": "aggregator_unverified"
     },
     {
+      "id": "FRA-d81338987a3b8bbd",
+      "source_id": "d81338987a3b8bbd",
+      "source": "NAPSPAN",
+      "jurisdiction": "FRA",
+      "type": "restriction",
+      "severity": "minor",
+      "status": "active",
+      "title": "Réduction du nombre de voies sur A11 du KM 65 au KM 65 sur bande d'arrêt d'urgence",
+      "description": "Réduction du nombre de voies sur A11 du KM 65 au KM 65 sur bande d'arrêt d'urgence",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          1.481642,
+          48.378
+        ]
+      },
+      "affected_roads": [
+        "A11"
+      ],
+      "start_time": "2026-06-03T11:36:00Z",
+      "last_updated": "2026-11-01T16:37:16.179704Z",
+      "created_at": "2026-06-03T13:43:27.816034Z",
+      "latitude": 48.378,
+      "longitude": 1.481642,
+      "road_class": "local",
+      "metadata": {
+        "descriptions": {
+          "FR": "Réduction du nombre de voies sur A11 du KM 65 au KM 65 sur bande d'arrêt d'urgence"
+        },
+        "heading_vector": [
+          0.4539904997395468,
+          -0.8910065241883678
+        ]
+      },
+      "verification_status": "aggregator_unverified"
+    },
+    {
       "id": "FRA-945596453c60107b",
       "source_id": "945596453c60107b",
       "source": "NAPSPAN",
@@ -35337,6 +35355,36 @@
           6.123233995736766e-17,
           -1
         ]
+      },
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "FRA-40de30b68ddaa74a",
+      "source_id": "40de30b68ddaa74a",
+      "source": "NAPSPAN",
+      "jurisdiction": "FRA",
+      "type": "restriction",
+      "severity": "minor",
+      "status": "active",
+      "title": "Réduction du nombre de voies sur N844 au KM 2.3",
+      "description": "Réduction du nombre de voies sur N844 au KM 2.3",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          -1.5398792,
+          47.256283
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T04:19:56Z",
+      "last_updated": "2026-11-01T16:22:33.199369Z",
+      "created_at": "2026-11-01T16:22:33.199369Z",
+      "latitude": 47.256283,
+      "longitude": -1.5398792,
+      "metadata": {
+        "descriptions": {
+          "FR": "Réduction du nombre de voies sur N844 au KM 2.3"
+        }
       },
       "verification_status": "aggregator_unverified"
     },
@@ -42121,34 +42169,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "ESP-evt-29608220",
-      "source_id": "29608220",
-      "source": "NAPSPAN",
-      "jurisdiction": "ESP",
-      "type": "restriction",
-      "severity": "moderate",
-      "status": "active",
-      "title": "Restriction — N-349",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          -2.3415492,
-          36.86347
-        ]
-      },
-      "affected_roads": [
-        "N-349"
-      ],
-      "start_time": "2026-11-01T14:40:01Z",
-      "last_updated": "2026-11-01T14:45:58.68991Z",
-      "created_at": "2026-11-01T14:45:58.68991Z",
-      "latitude": 36.86347,
-      "longitude": -2.3415492,
-      "road_class": "local",
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "ESP-evt-29607714",
       "source_id": "29607714",
       "source": "NAPSPAN",
@@ -43859,6 +43879,34 @@
       "created_at": "2026-06-02T09:43:09.413714Z",
       "latitude": 41.705166,
       "longitude": -0.025548847,
+      "road_class": "local",
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "ESP-evt-29610087",
+      "source_id": "29610087",
+      "source": "NAPSPAN",
+      "jurisdiction": "ESP",
+      "type": "closure",
+      "severity": "moderate",
+      "status": "active",
+      "title": "Closure — A-7",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          -2.5846324,
+          36.827377
+        ]
+      },
+      "affected_roads": [
+        "A-7"
+      ],
+      "start_time": "2026-11-01T16:20:02Z",
+      "last_updated": "2026-11-01T16:25:12.515895Z",
+      "created_at": "2026-11-01T16:25:12.515895Z",
+      "latitude": 36.827377,
+      "longitude": -2.5846324,
       "road_class": "local",
       "verification_status": "aggregator_unverified"
     },
@@ -66902,6 +66950,94 @@
       "verification_status": "aggregator_unverified"
     },
     {
+      "id": "SWE-SE_STA_TRISSID_2_8112102",
+      "source_id": "SE_STA_TRISSID_2_8112102",
+      "source": "NAPSPAN",
+      "jurisdiction": "SWE",
+      "type": "closure",
+      "severity": "critical",
+      "status": "active",
+      "title": "Vägen avstängd — Väg 1029",
+      "description": "Husbil som brinner, vägen stängs av under släckningsarbetet.",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          14.1695828271219,
+          61.4712870815855
+        ]
+      },
+      "affected_roads": [
+        "Väg 1029"
+      ],
+      "direction": "both",
+      "start_time": "2026-11-01T15:38:00Z",
+      "end_time": "2026-11-01T17:00:00Z",
+      "effective_end_time": "2026-11-01T17:00:00Z",
+      "last_updated": "2026-11-01T16:24:55.505172Z",
+      "created_at": "2026-11-01T16:24:55.505172Z",
+      "source_created_at": "2026-11-01T15:40:39.457Z",
+      "source_updated_at": "2026-11-01T16:17:34.75Z",
+      "latitude": 61.4712870815855,
+      "longitude": 14.1695828271219,
+      "road_class": "local",
+      "metadata": {
+        "county_codes": [
+          20
+        ],
+        "location": "Väg 1029 från Nässjöån till Kräckelbäcken båda riktningarna i Dalarnas Län (W)",
+        "message_code": "roadClosed",
+        "message_code_text": "Vägen avstängd",
+        "message_type": "RoadOrCarriagewayOrLaneManagement",
+        "severity_text": "Mycket stor påverkan",
+        "situation_id": "GUID1c6501b2-1125-448f-b3a2-ea6431854a14"
+      },
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "SWE-SE_STA_TRISSID_2_19786594",
+      "source_id": "SE_STA_TRISSID_2_19786594",
+      "source": "NAPSPAN",
+      "jurisdiction": "SWE",
+      "type": "closure",
+      "severity": "critical",
+      "status": "active",
+      "title": "Vägen avstängd — Väg 166",
+      "description": "Viltolycka mellan personbil och älg ihöjd med Stora Bräckan. Räddningstjänst är på plats. Vägen är avstängd. Jägare är utkallad",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          12.4194012703499,
+          58.7120617136261
+        ]
+      },
+      "affected_roads": [
+        "Väg 166"
+      ],
+      "direction": "both",
+      "start_time": "2026-11-01T16:12:48Z",
+      "end_time": "2026-11-01T17:45:00Z",
+      "effective_end_time": "2026-11-01T17:45:00Z",
+      "last_updated": "2026-11-01T16:24:55.505172Z",
+      "created_at": "2026-11-01T16:24:55.505172Z",
+      "source_created_at": "2026-11-01T16:13:48.347Z",
+      "source_updated_at": "2026-11-01T16:22:45.03Z",
+      "latitude": 58.7120617136261,
+      "longitude": 12.4194012703499,
+      "road_class": "local",
+      "metadata": {
+        "county_codes": [
+          14
+        ],
+        "location": "Väg 166 från Gunnarsnäs till Cirkulationsplats Mellerud båda riktningarna i Västra Götalands län (O)",
+        "message_code": "roadClosed",
+        "message_code_text": "Vägen avstängd",
+        "message_type": "RoadOrCarriagewayOrLaneManagement",
+        "severity_text": "Mycket stor påverkan",
+        "situation_id": "GUIDb4be1ce6-b19c-43c2-baee-8009a9482c4a"
+      },
+      "verification_status": "aggregator_unverified"
+    },
+    {
       "id": "SWE-SE_STA_TRISSID_2_24423239",
       "source_id": "SE_STA_TRISSID_2_24423239",
       "source": "NAPSPAN",
@@ -89527,98 +89663,6 @@
         "traffic_restriction_type": "Körfält blockerade"
       },
       "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "SWE-SE_STA_TRISSID_2_13061412",
-      "source_id": "SE_STA_TRISSID_2_13061412",
-      "source": "NAPSPAN",
-      "jurisdiction": "SWE",
-      "type": "closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Körfältsavstängningar — Väg 647",
-      "description": "Vägarbete mellan Fridafors och Björkebråten.",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          14.7000875263041,
-          56.4045343548257
-        ]
-      },
-      "affected_roads": [
-        "Väg 647"
-      ],
-      "direction": "both",
-      "lanes_affected": "1",
-      "start_time": "2026-10-14T15:12:00Z",
-      "end_time": "2026-11-08T15:00:00Z",
-      "effective_end_time": "2026-11-08T15:00:00Z",
-      "last_updated": "2026-10-14T15:26:51.341681Z",
-      "created_at": "2026-10-14T15:26:51.341681Z",
-      "source_created_at": "2026-10-14T08:30:09.64Z",
-      "source_updated_at": "2026-10-14T15:18:42.76Z",
-      "latitude": 56.4045343548257,
-      "longitude": 14.7000875263041,
-      "road_class": "local",
-      "metadata": {
-        "county_codes": [
-          7
-        ],
-        "location": "Väg 647 från Länsgr. Kronobergs/Blekinge län vid Fridafors till Björkebråten båda riktningarna i Kronobergs län (G)",
-        "message_code": "laneClosures",
-        "message_code_text": "Körfältsavstängningar",
-        "message_type": "RoadOrCarriagewayOrLaneManagement",
-        "severity_text": "Stor påverkan",
-        "situation_id": "GUID95e2a406-7e43-4d09-b0b1-918dc844be55",
-        "traffic_restriction_type": "Körfält blockerade"
-      },
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "SWE-SE_STA_TRISSID_2_8064802",
-      "source_id": "SE_STA_TRISSID_2_8064802",
-      "source": "NAPSPAN",
-      "jurisdiction": "SWE",
-      "type": "closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Körfältsavstängningar — Väg 847",
-      "description": "Broarbete. Trafiken regleras med trafikljus\n.",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          15.486534464373,
-          59.5246033592204
-        ]
-      },
-      "affected_roads": [
-        "Väg 847"
-      ],
-      "direction": "both",
-      "lanes_affected": "1",
-      "start_time": "2026-10-14T13:39:00Z",
-      "end_time": "2026-11-30T15:00:00Z",
-      "effective_end_time": "2026-11-30T15:00:00Z",
-      "last_updated": "2026-10-14T13:53:07.040049Z",
-      "created_at": "2026-10-14T13:53:07.040049Z",
-      "source_created_at": "2026-10-09T12:46:57.877Z",
-      "source_updated_at": "2026-10-14T13:44:30.703Z",
-      "latitude": 59.5246033592204,
-      "longitude": 15.486534464373,
-      "road_class": "local",
-      "metadata": {
-        "county_codes": [
-          18
-        ],
-        "location": "Väg 847 från Sällinge till Rockhammar båda riktningarna i Örebro län (T)",
-        "message_code": "laneClosures",
-        "message_code_text": "Körfältsavstängningar",
-        "message_type": "RoadOrCarriagewayOrLaneManagement",
-        "severity_text": "Stor påverkan",
-        "situation_id": "GUID5814e6ab-bf8d-4b7b-b145-67d031eba0cb",
-        "traffic_restriction_type": "Körfält blockerade"
-      },
-      "verification_status": "aggregator_unverified"
     }
   ],
   "audit": [
@@ -89627,35 +89671,35 @@
       "type": "restriction",
       "page": 0,
       "received": 100,
-      "total": 2683
+      "total": 2685
     },
     {
       "country": "DEU",
       "type": "restriction",
       "page": 1,
       "received": 100,
-      "total": 2683
+      "total": 2685
     },
     {
       "country": "DEU",
       "type": "restriction",
       "page": 2,
       "received": 100,
-      "total": 2683
+      "total": 2685
     },
     {
       "country": "DEU",
       "type": "restriction",
       "page": 3,
       "received": 100,
-      "total": 2683
+      "total": 2685
     },
     {
       "country": "DEU",
       "type": "restriction",
       "page": 4,
       "received": 100,
-      "total": 2683
+      "total": 2685
     },
     {
       "country": "DEU",
@@ -89697,14 +89741,14 @@
       "type": "restriction",
       "page": 0,
       "received": 100,
-      "total": 132
+      "total": 134
     },
     {
       "country": "FRA",
       "type": "restriction",
       "page": 1,
-      "received": 32,
-      "total": 132
+      "received": 34,
+      "total": 134
     },
     {
       "country": "FRA",
@@ -89752,15 +89796,15 @@
       "country": "ESP",
       "type": "restriction",
       "page": 0,
-      "received": 43,
-      "total": 43
+      "received": 42,
+      "total": 42
     },
     {
       "country": "ESP",
       "type": "closure",
       "page": 0,
-      "received": 51,
-      "total": 51
+      "received": 52,
+      "total": 52
     },
     {
       "country": "SWE",
@@ -89802,35 +89846,35 @@
       "type": "closure",
       "page": 0,
       "received": 100,
-      "total": 1694
+      "total": 1697
     },
     {
       "country": "SWE",
       "type": "closure",
       "page": 1,
       "received": 100,
-      "total": 1694
+      "total": 1697
     },
     {
       "country": "SWE",
       "type": "closure",
       "page": 2,
       "received": 100,
-      "total": 1694
+      "total": 1697
     },
     {
       "country": "SWE",
       "type": "closure",
       "page": 3,
       "received": 100,
-      "total": 1694
+      "total": 1697
     },
     {
       "country": "SWE",
       "type": "closure",
       "page": 4,
       "received": 100,
-      "total": 1694
+      "total": 1697
     }
   ],
   "warnings": [
