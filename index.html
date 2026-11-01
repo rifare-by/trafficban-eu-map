@@ -79,7 +79,7 @@ try{
   const labelHtml='<div class="country-bubble"><span class="country-flag">'+flagEmoji(iso2[code])+'</span><span class="country-label-text"><span class="country-name">'+esc(names[code])+'</span><span class="ban '+statusClass+'">'+esc(statusText)+'</span></span></div>';
   const labelMarker=L.marker(center,{interactive:false,riseOnHover:false,icon:L.divIcon({className:"country-label",html:labelHtml,iconSize:[94,30],iconAnchor:[47,15]})}).addTo(map);countryLabelMarkers.push(labelMarker);
  }
- euBounds=L.latLngBounds(layers.map(x=>x.getBounds()));map.fitBounds(euBounds,{padding:[18,18]});
+ euBounds=L.latLngBounds(layers.map(x=>x.getBounds()));map.fitBounds(euBounds,{padding:[18,18]});refreshCountryLabels();
  status.textContent=bans?"Карта загружена: все 27 стран ЕС. Статус запретов на '+today+'. Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по 18 из 27 стран ЕС. Надписями отмечены запреты на текущую дату.":"Границы загружены. Календарь запретов временно недоступен.";
  setTimeout(()=>map.invalidateSize(),150);
 }catch(e){status.textContent="Ошибка загрузки карты: "+e.message;document.getElementById("map").innerHTML="<p style='padding:24px;color:#a22'>Не удалось загрузить интерактивную карту: "+esc(e.message)+"</p>";console.error(e);}
