@@ -14,6 +14,7 @@ const batches = [];
 for (let i=0;i<countries.length;i+=3) batches.push(countries.slice(i,i+3));
 
 const payloads = [];
+const audit = [];
 for (let index = 0; index < batches.length; index++) {
   const batch = batches[index];
   // Nakordoni plan limit: 2 requests per second. Keep a safe 750 ms gap.
@@ -37,6 +38,12 @@ for (let index = 0; index < batches.length; index++) {
   console.log("Nakordoni batch "+(index+1)+"/"+batches.length+": "+batch.join(",")+" HTTP "+response.status+"; current="+data.current_bans.length+" upcoming="+data.upcoming_bans.length+"; returned="+String(stats)+" available="+String(available)+" truncated="+String(truncated)+"; covered="+data.covered_countries.join(","));
   if(truncated===true||(stats!=null&&available!=null&&Number.isFinite(Number(stats))&&Number.isFinite(Number(available))&&Number(stats)<Number(available)))throw new Error("Nakordoni response truncated for "+batch.join(",")+"; refuse partial data");
   console.log("Nakordoni response shape "+batch.join(",")+": data keys="+Object.keys(data).join(",")+"; bans_by_country keys="+Object.keys(data.bans_by_country||{}).join(","));
+  const grouped=data.bans_by_country||{};
+  const groupedCounts=Object.fromEntries(Object.entries(grouped).map(([k,v])=>[k,Array.isArray(v)?v.length:Array.isArray(v?.bans)?v.bans.length:0]));
+  const recordCount=data.current_bans.length+data.upcoming_bans.length+Object.values(groupedCounts).reduce((a,b)=>a+b,0);
+  audit.push({countries:batch,returned:stats??null,total_available:available??null,truncated:truncated??null,current:data.current_bans.length,upcoming:data.upcoming_bans.length,grouped_counts:groupedCounts,keys:Object.keys(data)});
+  console.log("Nakordoni audit "+JSON.stringify(audit.at(-1)));
+  if(Number.isFinite(Number(stats)) && Number(stats)>0 && recordCount===0)throw new Error("Nakordoni reports "+stats+" records but known ban arrays are empty for "+batch.join(",")+"; inspect response schema before publishing");
   payloads.push(data);
 }
 const bans = [];
@@ -67,6 +74,7 @@ const output = {
   generated_at:new Date().toISOString(),
   window:{from,to,days:7},
   provider_response_count:payloads.length,
+  provider_audit:audit,
   status_note:"Only Nakordoni API records; missing rows do not prove unrestricted travel.",
   covered_countries:[...covered].sort(),
   countries_not_covered:[...notCovered].sort(),
