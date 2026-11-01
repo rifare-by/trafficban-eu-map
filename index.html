@@ -31,6 +31,75 @@ main{max-width:1240px;margin:auto;padding:26px 20px 42px}.hero{display:flex;just
 #countryInfo section{margin:12px 0!important;padding:13px;background:#101e30;border:1px solid #344b64;border-radius:12px}#countryInfo section>b{display:inline-block;color:#ffad55;margin-bottom:7px}#countryInfo section p{font-size:12px;line-height:1.55;color:#d0dbe6;margin:8px 0 0!important;padding-top:8px;border-top:1px solid #2a3e54}#countryInfo section span{font-size:12px}#countryInfo a{color:#71bfff;text-decoration:none}#countryInfo a:hover{text-decoration:underline}
 @media(max-width:680px){#countryInfo{padding:14px!important}.empty-country{align-items:flex-start}.empty-country strong{font-size:15px}}
  .country-label-compact{width:28px!important;height:28px!important}.country-bubble-compact{width:28px!important;min-width:28px!important;max-width:28px!important;height:28px!important;padding:2px!important;justify-content:center;box-sizing:border-box;border:2px solid #fff;border-radius:50%;background:#fff;box-shadow:0 2px 7px #17203366}.country-bubble-compact .country-flag{width:22px;height:22px;flex:0 0 22px;font-size:16px;border:0}
+
+/* Адаптивная типографика: телефон, планшет, компьютер */
+html{font-size:clamp(14px,calc(13px + .22vw),17px);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-size:1rem;line-height:1.5}
+header{gap:clamp(10px,2vw,22px)}
+.brand-name{font-size:clamp(16px,1.5vw,21px)}
+.brand-sub{font-size:clamp(8px,.72vw,10px)}
+.header-links a{font-size:clamp(11px,.95vw,14px);padding:clamp(8px,.8vw,11px) clamp(9px,1.1vw,15px)}
+.hero h1{font-size:clamp(25px,3.1vw,40px);line-height:1.12}
+.hero p{font-size:clamp(13px,1.05vw,16px);line-height:1.55}
+.eyebrow{font-size:clamp(10px,.82vw,12px)}
+.hero-tag{font-size:clamp(11px,.9vw,13px)}
+.legend{font-size:clamp(11px,.92vw,13px);line-height:1.45}
+.map-tools button.reset{font-size:clamp(12px,.95vw,14px)}
+.download{font-size:clamp(12px,1vw,14px)}
+.note{font-size:clamp(12px,.95vw,14px);line-height:1.6}
+.info{font-size:clamp(13px,1vw,15px);line-height:1.6}
+.widget h2{font-size:clamp(16px,1.35vw,20px)}
+#countrySearchWrap label{font-size:clamp(12px,.95vw,14px)}
+#countrySearch{font-size:clamp(14px,1.05vw,16px);min-height:44px}
+#countryInfo{font-size:clamp(13px,1vw,15px)}
+#countryInfo> b,.country-info-heading>b,.country-info-heading div>b{font-size:clamp(18px,1.65vw,23px)}
+#countryInfo section{font-size:clamp(12px,.95vw,14px);line-height:1.6}
+#countryInfo section p{font-size:clamp(12px,.9vw,13px);line-height:1.6}
+#countryInfo small{font-size:clamp(11px,.85vw,13px);line-height:1.5}
+.empty-country strong{font-size:clamp(15px,1.25vw,18px)}
+.empty-country span{font-size:clamp(12px,.95vw,14px);line-height:1.55}
+.country-name{font-size:clamp(9px,.72vw,11px)}
+.country-bubble .ban{font-size:clamp(7.5px,.62vw,9px)}
+.country-popup{font-size:clamp(12px,.95vw,14px);line-height:1.5}
+.leaflet-control-attribution{font-size:10px!important}
+@media(min-width:681px) and (max-width:1024px){
+ main{padding-left:clamp(16px,2.5vw,24px);padding-right:clamp(16px,2.5vw,24px)}
+ .hero{align-items:flex-start}
+ #map{height:64vh;min-height:430px}
+}
+@media(max-width:680px){
+ html{font-size:15px}
+ header{gap:8px}
+ .hero h1{font-size:clamp(23px,6vw,30px);letter-spacing:-.6px}
+ .hero p{font-size:14px;line-height:1.55}
+ .legend{font-size:12px;gap:9px 12px}
+ .map-tools button{font-size:18px;min-width:42px;min-height:40px}
+ .map-tools button.reset{font-size:13px}
+ .download{font-size:13px;min-height:44px}
+ .note{font-size:12px}
+ #countryInfo{font-size:14px}
+ #countryInfo section{font-size:13px;line-height:1.6;padding:11px}
+ #countryInfo section p{font-size:12px;line-height:1.6}
+ #countryInfo small{font-size:11px}
+ #countrySearch{font-size:16px;min-height:46px}
+ .widget h2{font-size:17px}
+ iframe{height: min(620px, 78vh)}
+}
+@media(max-width:380px){
+ header{padding-left:10px;padding-right:10px}
+ .brand-name{font-size:15px;letter-spacing:1.2px}
+ .brand-sub{font-size:7px;letter-spacing:1px}
+ .header-links a{font-size:10px;padding:7px 8px;gap:5px}
+ main{padding-left:10px;padding-right:10px}
+ .hero h1{font-size:23px}
+ .legend{font-size:11px}
+ .downloads{gap:7px}
+ .download{font-size:12px;padding:11px 7px}
+}
+@media(prefers-reduced-motion:reduce){
+ .header-links a,.download,.country-label .country-bubble{transition:none}
+}
+
 </style>
 </head>
 <body>
