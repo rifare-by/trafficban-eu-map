@@ -252,10 +252,6 @@ function ruDetails(v){
  return x;
 }
 function ruDate(d){return new Date(d+"T12:00:00").toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});}
-function swissClock(){const p=new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Zurich",hour:"2-digit",minute:"2-digit",weekday:"short",hourCycle:"h23"}).formatToParts(new Date());const v=Object.fromEntries(p.map(x=>[x.type,x.value]));return {hour:Number(v.hour),minute:Number(v.minute),weekday:v.weekday,time:v.hour+":"+v.minute};}
-function swissBanAt(date,hour){return new Date(date+"T12:00:00Z").getUTCDay()===0||(hour>=22||hour<5);}
-function swissTimeline(date){const sunday=new Date(date+"T12:00:00Z").getUTCDay()===0;let cells="";for(let h=0;h<24;h++){const banned=sunday||h>=22||h<5;cells+="<div title='"+String(h).padStart(2,"0")+":00 — "+(banned?"запрет":"разрешено")+"' style='min-width:0;text-align:center;padding:5px 0 4px;background:"+(banned?"#b93e45":"#246b4a")+";border-right:1px solid #ffffff33;color:white;font-size:9px;font-weight:800'>"+h+"</div>";}return "<div style='display:grid;grid-template-columns:repeat(24,minmax(0,1fr));gap:1px;border-radius:6px;overflow:hidden;margin-top:8px'>"+cells+"</div><div style='display:flex;justify-content:space-between;color:#aebed0;font-size:10px;margin-top:3px'><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>";}
-function swissDayHtml(date){const sunday=new Date(date+"T12:00:00Z").getUTCDay()===0;return "<section><b>"+esc(ruDate(date))+"</b><br><span style='color:#ff8585'><b>"+(sunday?"ВОСКРЕСНЫЙ ЗАПРЕТ — 00:00–24:00":"НОЧНОЙ ЗАПРЕТ — 22:00–05:00")+"</b></span>"+swissTimeline(date)+"</section>";}
 function allPoints(x,out=[]){if(Array.isArray(x)&&typeof x[0]==="number")out.push(x);else if(Array.isArray(x))x.forEach(v=>allPoints(v,out));return out;}
 function flagEmoji(iso){return iso.toUpperCase().replace(/[A-Z]/g,ch=>String.fromCodePoint(127397+ch.charCodeAt(0)));}
 const EUROPE={west:-12,east:35,south:34,north:72};
@@ -263,7 +259,6 @@ function europeanGeometry(g){const polys=g.type==="Polygon"?[g.coordinates]:g.co
 function showCountry(code,bans){
  const country=names[code]||code,c=iso2[code],flag=c?flagEmoji(c):"🏳️";
  if(!bans){info.innerHTML="<b>"+flag+" "+esc(country)+"</b><br>Календарь запретов временно недоступен.";return;}
- if(code==="CHE"){const from=bans.window?.from||new Date().toLocaleDateString("en-CA"),days=[];for(let i=0;i<7;i++){const d=new Date(from+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+i);const key=d.toISOString().slice(0,10);if(key>String(bans.window?.to||from))break;days.push(swissDayHtml(key));}info.innerHTML="<div class='country-info-heading'><span class='country-info-flag'>🇨🇭</span><div><b>Швейцария</b><small>Почасовой график ограничений · время Швейцарии</small></div></div><section><b>Ежедневный ночной запрет</b><br>22:00–05:00 · тяжёлые транспортные средства свыше 3,5 т, с учётом установленных законом исключений.</section>"+days.join("")+"<small>По воскресеньям действует отдельный запрет на движение в течение всего дня. Источник: Федеральное ведомство дорог Швейцарии (ASTRA).</small>";return;}
  if(!covered.has(c)){info.innerHTML="<b>"+flag+" "+esc(country)+"</b><br>Нет данных по этой стране. Это не означает, что запретов нет.";return;}
  const from=bans.window?.from||new Date().toLocaleDateString("en-CA");
  const to=String(bans.window?.to||from);
