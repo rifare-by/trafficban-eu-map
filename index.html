@@ -37,7 +37,12 @@ const covered=new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","L
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function isMainTruckBan(b){
  const type=String(b?.restriction_type||"").trim().toLowerCase();
- return type==="sunday"||type==="holiday"||type==="regional holiday";
+ const details=String(b?.restriction_details||"").toLowerCase();
+ if(type==="local")return false;
+ if(/dangerous goods|hazardous goods|hazmat|dangerous cargo|adr|gefahrgut|mati[eè]res dangereuses|mercanc[ií]as peligrosas|merci pericolose|gevaarlijke stoffen|опасн\w* груз|опасн\w* веществ/i.test(details))return false;
+ if(/\broads?\b|\broad network\b|\bautoroutes?\b|\bmotorways?\b|\bhighways?\b|\bfreeways?\b|\bcarriageways?\b|дорог\w*|автотрасс\w*/i.test(details))return false;
+ if(/\b(?:A|AP|N|D|E|M|R|B|L|SR|Z)\s?-?\d{1,4}\b/i.test(details))return false;
+ return true;
 }
 function mainTruckBans(list){return (list||[]).filter(isMainTruckBan);}
 function ruType(v){return ({Sunday:"Воскресный запрет",Holiday:"Праздничный запрет","Regional Holiday":"Региональный запрет",General:"Общее ограничение",Seasonal:"Сезонное ограничение",Local:"Местное ограничение"})[v]||({Restriction:"Ограничение"})[v]||v||"Ограничение";}
