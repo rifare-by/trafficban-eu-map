@@ -39,7 +39,7 @@ const merc=p=>{const lat=Math.max(-85.0511,Math.min(85.0511,p[1]))*Math.PI/180;r
 const inEurope=p=>p[0]>=-32&&p[0]<=45&&p[1]>=25&&p[1]<=72;
 function clipEuropeanGeometry(g){
  const polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;
- const kept=polys.filter(poly=>{const pts=allPoints(poly);if(!pts.length)return false;const cx=pts.reduce((a,p)=>a+p[0],0)/pts.length,cy=pts.reduce((a,p)=>a+p[1],0)/pts.length;return inEurope([cx,cy])&&pts.some(inEurope);});
+ const kept=polys.filter(poly=>{const pts=allPoints(poly);if(!pts.length)return false;const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),cx=(Math.min(...xs)+Math.max(...xs))/2,cy=(Math.min(...ys)+Math.max(...ys))/2;return inEurope([cx,cy]);});
  return kept.length?{type:"MultiPolygon",coordinates:kept}:null;
 }
 function pathRing(ring,proj){return ring.map((p,i)=>{const q=proj(p);return (i?"L":"M")+q[0].toFixed(2)+","+q[1].toFixed(2)}).join("")+"Z";}
@@ -74,7 +74,7 @@ try{
  if(features.length!==27)throw new Error("Загружено стран: "+features.length+" из 27");
  const display=features.map(f=>({feature:f,geometry:clipEuropeanGeometry(f.geometry)})).filter(x=>x.geometry);
  const pts=display.flatMap(x=>allPoints(x.geometry.coordinates));
- const world=pts.map(merc),minX=Math.min(...world.map(p=>p[0])),maxX=Math.max(...world.map(p=>p[0]),minY=Math.min(...world.map(p=>p[1])),maxY=Math.max(...world.map(p=>p[1]));
+ const world=pts.map(merc),minX=Math.min(...world.map(p=>p[0])),maxX=Math.max(...world.map(p=>p[0])),minY=Math.min(...world.map(p=>p[1])),maxY=Math.max(...world.map(p=>p[1]));
  const pad=30,scale=Math.min((1000-2*pad)/(maxX-minX),(650-2*pad)/(maxY-minY));
  const w=(maxX-minX)*scale,h=(maxY-minY)*scale,ox=(1000-w)/2,oy=(650-h)/2;
  const project=p=>{const q=merc(p);return [ox+(q[0]-minX)*scale,oy+(q[1]-minY)*scale];};
