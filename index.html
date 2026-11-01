@@ -120,7 +120,7 @@ try{
  document.getElementById("zoomIn").addEventListener("click",()=>map.zoomIn());
  document.getElementById("zoomOut").addEventListener("click",()=>map.zoomOut());
  function refreshCountryLabels(){
-  const compact=map.getZoom()<5,width=compact?25:142,height=compact?25:48,anchor=compact?[12.5,25]:[71,48],placed=[];
+  const compact=map.getZoom()<5,width=compact?25:142,height=compact?25:48,anchor=compact?[12.5,12.5]:[71,48],placed=[];
   countryLabelMarkers.forEach(marker=>{
    if(!marker._labelHtml||!marker._capital)return;
    marker.setIcon(L.divIcon({className:"country-label",html:marker._labelHtml,iconSize:[width,height],iconAnchor:anchor}));
