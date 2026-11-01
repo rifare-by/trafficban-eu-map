@@ -8,6 +8,7 @@ on:
     paths:
       - ".github/workflows/refresh-truck-bans.yml"
       - "scripts/fetch-truck-bans.mjs"
+      - "scripts/build-kml.mjs"
   schedule:
     - cron: "17 */6 * * *"
 
@@ -26,14 +27,18 @@ jobs:
         run: node scripts/fetch-truck-bans.mjs
         env:
           NKD_API_KEY: ${{ secrets.NKD_API_KEY }}
-      - name: Commit refreshed data
+      - name: Build KML and KMZ
         run: |
-          git add -f data/truck-bans.json
-          if git diff --cached --quiet -- data/truck-bans.json; then
+          npm install --no-save jszip
+          node scripts/build-kml.mjs
+      - name: Commit refreshed data and map files
+        run: |
+          git add -f data/truck-bans.json downloads/trafficban-eu-map.kml downloads/trafficban-eu-map.kmz
+          if git diff --cached --quiet; then
             echo "No data changes"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Refresh truck bans data"
+          git commit -m "Refresh truck bans and export KML KMZ"
           git push
