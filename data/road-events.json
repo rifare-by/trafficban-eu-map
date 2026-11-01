@@ -1,7 +1,7 @@
 {
   "source": "NAPSPAN",
   "source_url": "https://napspan.com/docs.html",
-  "generated_at": "2026-11-01T15:16:12.019Z",
+  "generated_at": "2026-11-01T15:19:37.350Z",
   "status": "partial_unverified",
   "events": [
     {
@@ -2521,16 +2521,16 @@
       "location": {
         "type": "Point",
         "coordinates": [
-          8.9384,
-          50.03162
+          8.93608,
+          50.03679
         ]
       },
       "affected_roads": [],
       "start_time": "2026-11-01T13:41:53.784878Z",
-      "last_updated": "2026-11-01T15:11:59.356455Z",
+      "last_updated": "2026-11-01T15:17:09.521368Z",
       "created_at": "2026-11-01T13:41:53.784878Z",
-      "latitude": 50.03162,
-      "longitude": 8.9384,
+      "latitude": 50.03679,
+      "longitude": 8.93608,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -22004,6 +22004,136 @@
       "verification_status": "aggregator_unverified"
     },
     {
+      "id": "by-evt-858463505803738307",
+      "source_id": "DE.858463505803738307",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          12.38494,
+          50.52297
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-31T17:50:01.335077Z",
+      "last_updated": "2026-11-01T15:17:09.521368Z",
+      "created_at": "2026-10-31T17:50:01.335077Z",
+      "latitude": 50.52297,
+      "longitude": 12.38494,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-3053949338759919988",
+      "source_id": "DE.3053949338759919988",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.40097,
+          49.47651
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-09-29T05:03:41.49902Z",
+      "last_updated": "2026-11-01T15:17:09.521368Z",
+      "created_at": "2026-09-29T05:03:41.49902Z",
+      "latitude": 49.47651,
+      "longitude": 9.40097,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-2299595940363432001",
+      "source_id": "DE.2299595940363432001",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.26705,
+          48.5743
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-31T19:20:41.391835Z",
+      "last_updated": "2026-11-01T15:17:09.521368Z",
+      "created_at": "2026-10-31T19:20:41.391835Z",
+      "latitude": 48.5743,
+      "longitude": 9.26705,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-2108931186993015209",
+      "source_id": "DE.2108931186993015209",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.21504,
+          48.84346
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-08-03T11:11:13.444896Z",
+      "last_updated": "2026-11-01T15:17:09.521368Z",
+      "created_at": "2026-08-03T11:11:13.444896Z",
+      "latitude": 48.84346,
+      "longitude": 9.21504,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-1520246086128080254",
+      "source_id": "DE.1520246086128080254",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.15369,
+          47.73989
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-31T04:02:26.365024Z",
+      "last_updated": "2026-11-01T15:17:09.521368Z",
+      "created_at": "2026-10-31T04:02:26.365024Z",
+      "latitude": 47.73989,
+      "longitude": 9.15369,
+      "verification_status": "aggregator_unverified"
+    },
+    {
       "id": "by-evt-4073615352997634020",
       "source_id": "DE.4073615352997634020",
       "source": "NAPSPAN",
@@ -26705,32 +26835,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-1362276333049607490",
-      "source_id": "DE.1362276333049607490",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.36615,
-          48.65405
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T13:47:05.996873Z",
-      "last_updated": "2026-11-01T13:47:05.996873Z",
-      "created_at": "2026-11-01T13:47:05.996873Z",
-      "latitude": 48.65405,
-      "longitude": 9.36615,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-878969540801743424",
       "source_id": "DE.878969540801743424",
       "source": "NAPSPAN",
@@ -27014,32 +27118,6 @@
       "created_at": "2026-10-31T04:02:26.365024Z",
       "latitude": 48.69679,
       "longitude": 8.94063,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-858463505803738307",
-      "source_id": "DE.858463505803738307",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          12.38649,
-          50.52235
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-31T17:50:01.335077Z",
-      "last_updated": "2026-11-01T13:36:40.941222Z",
-      "created_at": "2026-10-31T17:50:01.335077Z",
-      "latitude": 50.52235,
-      "longitude": 12.38649,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -27953,32 +28031,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-814077055561096532",
-      "source_id": "DE.814077055561096532",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.32464,
-          48.48438
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T13:10:43.292004Z",
-      "last_updated": "2026-11-01T13:10:43.292004Z",
-      "created_at": "2026-11-01T13:10:43.292004Z",
-      "latitude": 48.48438,
-      "longitude": 9.32464,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-4547965793281163016",
       "source_id": "DE.4547965793281163016",
       "source": "NAPSPAN",
@@ -28288,32 +28340,6 @@
       "created_at": "2026-11-01T13:05:27.304999Z",
       "latitude": 50.55257,
       "longitude": 12.21382,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-1336298816776845401",
-      "source_id": "DE.1336298816776845401",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          12.91265,
-          50.53927
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-31T05:00:12.480734Z",
-      "last_updated": "2026-11-01T13:05:27.304999Z",
-      "created_at": "2026-10-31T05:00:12.480734Z",
-      "latitude": 50.53927,
-      "longitude": 12.91265,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -29279,32 +29305,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-3053949338759919988",
-      "source_id": "DE.3053949338759919988",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.36899,
-          49.48039
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-09-29T05:03:41.49902Z",
-      "last_updated": "2026-11-01T12:28:42.502268Z",
-      "created_at": "2026-09-29T05:03:41.49902Z",
-      "latitude": 49.48039,
-      "longitude": 9.36899,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-1196103121546975491",
       "source_id": "DE.1196103121546975491",
       "source": "NAPSPAN",
@@ -29406,32 +29406,6 @@
       "created_at": "2026-11-01T12:18:15.488303Z",
       "latitude": 48.94764,
       "longitude": 9.41286,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-1146949520876691198",
-      "source_id": "DE.1146949520876691198",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.2534,
-          47.80682
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T12:18:15.488303Z",
-      "last_updated": "2026-11-01T12:18:15.488303Z",
-      "created_at": "2026-11-01T12:18:15.488303Z",
-      "latitude": 47.80682,
-      "longitude": 9.2534,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -32429,32 +32403,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-2299595940363432001",
-      "source_id": "DE.2299595940363432001",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.26439,
-          48.57361
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-31T19:20:41.391835Z",
-      "last_updated": "2026-11-01T07:43:27.533366Z",
-      "created_at": "2026-10-31T19:20:41.391835Z",
-      "latitude": 48.57361,
-      "longitude": 9.26439,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-3798539515626884120",
       "source_id": "DE.3798539515626884120",
       "source": "NAPSPAN",
@@ -32907,32 +32855,6 @@
       "created_at": "2026-10-31T08:40:18.358211Z",
       "latitude": 49.16942,
       "longitude": 9.21677,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-3872006111034842905",
-      "source_id": "DE.3872006111034842905",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.25333,
-          47.82306
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T06:44:15.777045Z",
-      "last_updated": "2026-11-01T06:44:15.777045Z",
-      "created_at": "2026-11-01T06:44:15.777045Z",
-      "latitude": 47.82306,
-      "longitude": 9.25333,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -34466,32 +34388,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-1520246086128080254",
-      "source_id": "DE.1520246086128080254",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.15195,
-          47.74056
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-31T04:02:26.365024Z",
-      "last_updated": "2026-10-31T20:44:04.359447Z",
-      "created_at": "2026-10-31T04:02:26.365024Z",
-      "latitude": 47.74056,
-      "longitude": 9.15195,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "by-evt-1023209750434089626",
       "source_id": "DE.1023209750434089626",
       "source": "NAPSPAN",
@@ -35203,6 +35099,110 @@
       "created_at": "2026-10-31T18:43:35.138685Z",
       "latitude": 48.17335,
       "longitude": 9.51319,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-1300191270611988000",
+      "source_id": "DE.1300191270611988000",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          10.03028,
+          49.25212
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-31T18:33:00.706982Z",
+      "last_updated": "2026-10-31T18:33:00.706982Z",
+      "created_at": "2026-10-31T18:33:00.706982Z",
+      "latitude": 49.25212,
+      "longitude": 10.03028,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-4138675704561880503",
+      "source_id": "DE.4138675704561880503",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.158108,
+          48.837506
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-28T10:07:30.410101Z",
+      "last_updated": "2026-10-31T18:27:30.674236Z",
+      "created_at": "2026-10-28T10:07:30.410101Z",
+      "latitude": 48.837506,
+      "longitude": 9.158108,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-1209841135233338620",
+      "source_id": "DE.1209841135233338620",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.02643,
+          48.70491
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-31T18:22:01.407323Z",
+      "last_updated": "2026-10-31T18:22:01.407323Z",
+      "created_at": "2026-10-31T18:22:01.407323Z",
+      "latitude": 48.70491,
+      "longitude": 9.02643,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-1793437305267188931",
+      "source_id": "DE.1793437305267188931",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.90558,
+          49.0384
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-10-31T18:16:42.240336Z",
+      "last_updated": "2026-10-31T18:16:42.240336Z",
+      "created_at": "2026-10-31T18:16:42.240336Z",
+      "latitude": 49.0384,
+      "longitude": 9.90558,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -36969,39 +36969,6 @@
           -0.9396926207859083,
           -0.3420201433256689
         ]
-      },
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "FRA-5f7a6fe39706d2cb",
-      "source_id": "5f7a6fe39706d2cb",
-      "source": "NAPSPAN",
-      "jurisdiction": "FRA",
-      "type": "restriction",
-      "severity": "minor",
-      "status": "active",
-      "title": "Réduction du nombre de voies sur A20 au KM 152",
-      "description": "Réduction du nombre de voies sur A20 au KM 152",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          1.3570772,
-          46.079834
-        ]
-      },
-      "affected_roads": [
-        "A20"
-      ],
-      "start_time": "2026-08-08T10:50:01Z",
-      "last_updated": "2026-11-01T14:39:48.415171Z",
-      "created_at": "2026-08-08T22:51:40.694546Z",
-      "latitude": 46.079834,
-      "longitude": 1.3570772,
-      "road_class": "local",
-      "metadata": {
-        "descriptions": {
-          "FR": "Réduction du nombre de voies sur A20 au KM 152"
-        }
       },
       "verification_status": "aggregator_unverified"
     },
@@ -91268,14 +91235,14 @@
       "type": "restriction",
       "page": 0,
       "received": 100,
-      "total": 134
+      "total": 133
     },
     {
       "country": "FRA",
       "type": "restriction",
       "page": 1,
-      "received": 34,
-      "total": 134
+      "received": 33,
+      "total": 133
     },
     {
       "country": "FRA",
