@@ -281,14 +281,8 @@ function drawDateStrip(bans){
  updateSummary(bans,dates[0]||from);
 }
 function updateSummary(bans,date){
- const el=document.getElementById('summaryStats');if(!el)return;
- const rows=mainTruckBans(bans?.bans).filter(x=>x.date===date);
- const countries=new Set(rows.map(x=>x.country_code)).size;
- const coveredCount=(bans?.covered_countries||[]).length;
- el.innerHTML='<div class="stat-row banned"><span>Страны с записями о запретах</span><b>'+countries+'</b></div>'+
- '<div class="stat-row"><span>Записей об ограничениях</span><b>'+rows.length+'</b></div>'+
- '<div class="stat-row uncertain"><span>Страны без подтверждённого статуса</span><b>'+Math.max(0,28-countries)+'</b></div>'+
- '<small style="color:#607d83;line-height:1.5">Дата: '+esc(date)+'. Наличие записи не означает запрет на всех дорогах и для всех грузовиков. Отсутствие записи не означает разрешение движения. Покрытие API: '+coveredCount+' стран.</small>';
+ const el=document.getElementById("summaryStats");if(!el)return;
+ el.innerHTML='<div class="stat-row"><span>Источник дорожных событий</span><b>NAPSPAN</b></div><small style="color:#607d83;line-height:1.5">Календарь Nakordoni отключён. Статус стран по календарным запретам не рассчитывается. Отсутствие события не означает разрешение движения.</small>';
 }
 
 const covered=new Set(); // Coverage is taken from the live dataset, not a hardcoded list.
