@@ -30,6 +30,18 @@ main{max-width:1240px;margin:auto;padding:26px 20px 42px}.hero{display:flex;just
 #countryInfo> b{display:block;font-size:21px;color:#fff;margin-bottom:5px}#countryInfo small{color:#aebed0!important}#countryInfo hr{border:0;border-top:1px solid #354b63;margin:14px 0}
 #countryInfo section{margin:12px 0!important;padding:13px;background:#101e30;border:1px solid #344b64;border-radius:12px}#countryInfo section>b{display:inline-block;color:#ffad55;margin-bottom:7px}#countryInfo section p{font-size:12px;line-height:1.55;color:#d0dbe6;margin:8px 0 0!important;padding-top:8px;border-top:1px solid #2a3e54}#countryInfo section span{font-size:12px}#countryInfo a{color:#71bfff;text-decoration:none}#countryInfo a:hover{text-decoration:underline}
 @media(max-width:680px){#countryInfo{padding:14px!important}.empty-country{align-items:flex-start}.empty-country strong{font-size:15px}}
+
+/* Mobile scroll gutters: keep a touch-safe strip on both sides of interactive content. */
+@media(max-width:680px){
+ main{padding-left:12px;padding-right:12px}
+ #map{width:calc(100% - 28px);margin-left:auto;margin-right:auto}
+ .widget{width:calc(100% - 28px);margin-left:auto;margin-right:auto;padding:10px}
+ .widget iframe{display:block;width:100%;max-width:100%;margin:0 auto}
+ .map-tools{padding-left:14px;padding-right:14px}
+}
+@media(max-width:380px){
+ #map,.widget{width:calc(100% - 24px)}
+}
 </style>
 </head>
 <body>
