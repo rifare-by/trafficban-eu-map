@@ -11,6 +11,8 @@ const EU = {
 };
 const ISO2 = {AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
 const covered = new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK"]);
+const isMainTruckBan = b => ["sunday","holiday","regional holiday"].includes(String(b?.restriction_type||"").trim().toLowerCase());
+const mainBans = list => (list||[]).filter(isMainTruckBan);
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
 const coordsXml = ring => ring.map(p => p[0]+","+p[1]+",0").join(" ");
 const ringXml = ring => "<LinearRing><coordinates>"+coordsXml(ring)+"</coordinates></LinearRing>";
@@ -38,7 +40,7 @@ const generated=bans.generated_at||"";
 const placemarks = features.map(f => {
   const code=f.properties["ISO3166-1-Alpha-3"], iso=ISO2[code], name=EU[code];
   const hasData=covered.has(iso);
-  const rows=hasData?(bans.bans||[]).filter(b=>b.country_code===iso):[];
+  const rows=hasData?mainBans(bans.bans).filter(b=>b.country_code===iso):[];
   const style=!hasData?"noData":rows.length?"hasBans":"noBans";
   let desc="<h2>"+esc(name)+"</h2><p><b>Период:</b> "+esc(from)+" — "+esc(to)+"</p>";
   desc+="<p><b>Источник календаря:</b> Nakordoni. Обновлено: "+esc(generated)+"</p>";
@@ -47,7 +49,7 @@ const placemarks = features.map(f => {
   else {
     desc+="<p><b>Записей о запретах: "+rows.length+"</b></p><ol>";
     for(const b of rows) {
-      desc+="<li><b>"+esc(b.date)+"</b><br>"+esc(b.time_from||"Весь день")+(b.time_until?"–"+esc(b.time_until):"")+"<br><b>"+esc(b.restriction_type||"Ограничение")+"</b>";
+      desc+="<li><b>"+esc(b.date)+"</b><br>"+esc(b.time_from||"Весь день")+(b.time_until?"–"+esc(b.time_until):"")+"<br><b>"+esc(({Sunday:"Воскресный запрет",Holiday:"Праздничный запрет","Regional Holiday":"Региональный запрет"})[b.restriction_type]||"Запрет")+"</b>";
       if(b.restriction_details) desc+="<br>"+esc(b.restriction_details);
       if(b.min_weight_tons) desc+="<br>Минимальный вес: "+esc(b.min_weight_tons)+" т";
       if(/^https:\/\//i.test(b.details_url||"")) desc+='<br><a href="'+esc(b.details_url)+'">Подробнее на Nakordoni</a>';
