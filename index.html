@@ -52,7 +52,7 @@ function showCountry(code,bans){
 try{
  if(!window.L)throw new Error("Не загрузилась библиотека интерактивной карты. Проверьте доступ к unpkg.com.");
  const map=L.map("map",{zoomControl:true,scrollWheelZoom:true,touchZoom:true,dragging:true,doubleClickZoom:true,minZoom:3,maxZoom:13}).setView([51.2,13.5],4);
- L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{maxZoom:19,subdomains:"abcd",attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
+ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
  document.getElementById("zoomIn").addEventListener("click",()=>map.zoomIn());
  document.getElementById("zoomOut").addEventListener("click",()=>map.zoomOut());
  function refreshCountryLabels(){const compact=map.getZoom()<5;countryLabelMarkers.forEach(marker=>{const el=marker.getElement();const bubble=el&&el.querySelector(".country-bubble");if(bubble)bubble.classList.toggle("flag-only",compact);});}
