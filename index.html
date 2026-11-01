@@ -109,17 +109,98 @@ header,main{min-width:0}
 @media(prefers-reduced-motion:reduce){
  .header-links a,.country-label .country-bubble{transition:none}
 }
+
+/* RIFARE seafoam dashboard — responsive redesign */
+:root{--ink:#132d35;--muted:#58737b;--panel:#fff;--panel2:#e8f5f5;--line:#c8dfe0;--accent:#087b78;--blue:#188f8b}
+html{scroll-behavior:smooth;background:#d5edef}
+body{color:#163039;background:linear-gradient(145deg,#d6f0f1,#edf8f9 46%,#cde8e9);font-family:Inter,system-ui,-apple-system,Arial,sans-serif}
+header{background:linear-gradient(120deg,#207e7c,#8ec4c4);border:0;box-shadow:0 4px 18px #1c777728;color:white;padding-top:12px;padding-bottom:12px}
+.brand-mark{width:64px;height:64px;flex:0 0 64px;border-radius:50%;background:transparent;border:0;box-shadow:none;display:block}
+.brand-mark img{width:100%;height:100%;border-radius:50%;display:block}
+.brand-name{font-size:clamp(22px,3vw,34px);letter-spacing:2px;color:#fff}
+.brand-name span{color:#fff}
+.brand-sub{font-size:11px;letter-spacing:2.3px;color:#e5ffff;font-weight:750}
+.header-links a{background:#086b6b88;border:1px solid #ffffff55;color:#fff;border-radius:999px}
+.header-links a:hover{background:#075f60;color:#fff;border-color:#fff}
+main{max-width:1440px;padding-top:26px}
+.hero{text-align:center;justify-content:center;margin-bottom:22px}
+.hero h1{color:#102d35;font-size:clamp(23px,3vw,39px);letter-spacing:-.6px}
+.hero p{color:#486b71;font-size:clamp(13px,1.4vw,17px)}
+.eyebrow{color:#137b79}
+.date-strip{display:flex;gap:8px;background:#ffffffd9;padding:10px;border-radius:20px;margin:0 0 18px;box-shadow:0 5px 20px #246f7220;overflow-x:auto;scrollbar-width:thin}
+.date-chip{flex:1 0 105px;border:1px solid #d5e7e8;background:#eef8f9;color:#274850;padding:12px 10px;border-radius:14px;font:inherit;font-size:13px;cursor:pointer;min-height:60px;text-align:center}
+.date-chip strong{display:block;font-size:17px;margin-top:3px}
+.date-chip.active{background:linear-gradient(135deg,#148c87,#076763);color:white;border-color:#0a7772}
+.date-chip:focus-visible{outline:3px solid #ec9a44;outline-offset:2px}
+.dashboard{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(310px,1fr);gap:16px;background:#ffffffed;border:1px solid #e5f2f2;border-radius:22px;padding:14px;box-shadow:0 10px 28px #1b66671e;align-items:stretch}
+.map-column{min-width:0;position:relative}
+#map{width:100%;height:590px;min-height:420px;border:0;border-radius:16px;box-shadow:none;background:#e1f0f2}
+.map-tools{position:absolute;top:14px;left:14px;right:14px;z-index:500;justify-content:flex-end;pointer-events:none}
+.map-tools button{pointer-events:auto;background:#fff;color:#145e61;border:1px solid #d6e7e8;box-shadow:0 3px 12px #0002;border-radius:12px;min-width:42px;min-height:42px}
+.map-tools button:hover{color:#087b78}
+.summary-column{min-width:0;padding:12px 8px;overflow-wrap:anywhere}
+.summary-heading{display:flex;align-items:center;gap:12px;margin:4px 0 18px}
+.summary-heading h2{margin:0;font-size:26px;color:#132d35}
+.summary-heading p{margin:3px 0 0;color:#67828a;font-size:13px}
+.summary-icon{font-size:31px}
+.summary-column h3{font-size:16px;color:#145f61;border-top:1px solid #d3e5e6;padding-top:17px;margin-top:18px}
+.summary-stats{display:grid;gap:9px}
+.stat-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;border-radius:13px;background:#e7f5f5;color:#15565b;font-weight:750;font-size:14px}
+.stat-row b{font-size:21px}
+.stat-row.banned{background:#ffebee;color:#b62742}
+.stat-row.uncertain{background:#eef1f3;color:#52646d}
+#countryInfo{background:#f4fafb!important;border:1px solid #d8e9ea!important;color:#233f48!important;box-shadow:none!important;min-height:110px!important;padding:14px!important}
+#countryInfo section{background:#fff;border-color:#d3e4e6;color:#233f48}
+#countryInfo section>b{color:#087b78}
+#countryInfo .country-info-heading b,#countryInfo .empty-country strong,#countryInfo> b{color:#16343b!important}
+#countryInfo small,#countryInfo .empty-country span{color:#55747d!important}
+.country-info-flag,.empty-country-icon{background:#e2f4f3;color:#087b78;border-color:#c4dddd}
+.legend{margin:14px 0 10px;background:#ffffffd9;border-color:#d8e8e9;color:#2d4851;border-radius:16px;justify-content:space-around}
+.note{color:#5d7c83}
+.quick-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
+.quick-links a{display:flex;align-items:center;justify-content:center;gap:12px;min-height:90px;background:#ffffffd9;border:1px solid #e2eeee;border-radius:19px;padding:14px;text-decoration:none;color:#135d61;font-weight:800;box-shadow:0 6px 18px #176c6d19}
+.quick-links a:hover{background:#e7f6f6}
+.widget{background:#ffffffed;border:1px solid #dbe9ea;box-shadow:0 8px 20px #155f6016;color:#14373b}
+.widget h2{color:#14595c}
+.widget h2:before{background:#12827e}
+.widget iframe{border-color:#d3e5e6}
+@media(max-width:950px){.dashboard{grid-template-columns:1fr}.summary-column{padding:12px}.quick-links{grid-template-columns:repeat(2,1fr)}#map{height:55dvh;min-height:390px}}
+@media(max-width:680px){
+ header{justify-content:space-between}.brand-mark{width:49px;height:49px;flex-basis:49px}.brand-name{font-size:20px}.brand-sub{font-size:8px}
+ main{padding:18px 10px 35px}
+ .hero h1{font-size:clamp(22px,6vw,30px)}.hero p{font-size:13px}
+ .date-strip{margin:0 2px 14px;padding:7px;border-radius:15px}
+ .date-chip{flex-basis:94px;min-height:56px;padding:8px 7px;font-size:12px}
+ .date-chip strong{font-size:15px}
+ .dashboard{margin:0 2px;padding:8px 24px;border-radius:18px}
+ #map{width:100%;height:52dvh;min-height:360px;border-radius:12px}
+ .map-tools{top:8px;left:8px;right:8px}
+ .summary-column{padding:8px 0}
+ .summary-heading h2{font-size:22px}
+ .legend{margin:12px 2px;gap:8px}
+ .quick-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .quick-links a{min-height:76px;font-size:12px;padding:9px;gap:7px}
+ .widget{width:calc(100% - 60px);margin-inline:auto}
+}
+@media(max-width:390px){.dashboard{padding-left:20px;padding-right:20px}.widget{width:calc(100% - 52px)}.quick-links a{font-size:11px}}
 </style>
 </head>
 <body>
-<header><a class="brand" href="/" aria-label="RIFARE — на главную"><div class="brand-mark"><svg viewBox="0 0 40 40" role="img" aria-label="RIFARE"><path d="M8 32V8h13.2c6.2 0 10 3.2 10 8.2 0 3.7-2.1 6.3-5.7 7.4L33 32h-8.1l-6.3-7.6h-3.5V32H8zm7.1-13.4h5.7c2.3 0 3.5-.8 3.5-2.4s-1.2-2.4-3.5-2.4h-5.7v4.8z" fill="#142235"/><path d="M27.5 8.5h5v5h-5z" fill="#fff" opacity=".9"/></svg></div><div><div class="brand-name">RIFARE<span>.</span></div><div class="brand-sub">TRUCKER COMMUNITY</div></div></a><nav class="header-links"><a class="telegram-link" href="https://t.me/rifare_by" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 4.3 18.5 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6 13.5l-4.9-1.6c-1.1-.3-1.1-1.1.2-1.6L20.4 2.8c.9-.3 1.7.2 1.3 1.5z"/></svg><span>Telegram</span></a><a class="chat-link" href="https://t.me/rifare_chat" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3zm-4 8.1a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg><span>Чат водителей</span></a></nav></header>
+<header><a class="brand" href="/" aria-label="RIFARE — на главную"><div class="brand-mark"><img src="assets/rifare-mark.svg" alt="" width="58" height="58"></div><div><div class="brand-name">RIFARE<span>.</span></div><div class="brand-sub">DRIVER COMMUNITY</div></div></a><nav class="header-links"><a class="telegram-link" href="https://t.me/rifare_by" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 4.3 18.5 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6 13.5l-4.9-1.6c-1.1-.3-1.1-1.1.2-1.6L20.4 2.8c.9-.3 1.7.2 1.3 1.5z"/></svg><span>Telegram</span></a><a class="chat-link" href="https://t.me/rifare_chat" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3zm-4 8.1a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg><span>Чат водителей</span></a></nav></header>
 <main>
-<section class="hero"><div><div class="eyebrow">RIFARE MAPS · EUROPE</div><h1>Запреты движения грузовиков</h1><p>Проверь ограничения по странам Европы перед выездом.<br>Выбери страну на карте, чтобы посмотреть календарь запретов на ближайшие 7 дней.</p></div><div class="hero-tag">🚛 Инструмент для водителей</div></section>
-<div class="legend"><span><i class="dot" style="background:#dc5555"></i> Запрет сегодня</span><span><i class="dot" style="background:#3185d5"></i> Нет подтверждения отсутствия запрета</span><span><i class="dot" style="background:#aab4c0"></i> Нет данных</span></div>
-<div class="map-tools"><button type="button" id="zoomIn" aria-label="Приблизить">+</button><button type="button" id="zoomOut" aria-label="Отдалить">−</button><button type="button" class="reset" id="zoomReset">Сброс</button></div><div id="map" role="application" aria-label="Интерактивная карта стран ЕС и Швейцарии"><p style="padding:24px;color:#526174">Загружается интерактивная карта…</p></div>
-<div class="info" id="countryInfo"><div class="empty-country"><div class="empty-country-icon">⌖</div><div><strong>Выберите страну на карте</strong><span>Нажмите на флажок или контур страны — здесь появится календарь ограничений на ближайшие 7 дней.</span></div></div></div>
+<section class="hero"><div><div class="eyebrow">RIFARE · DRIVER COMMUNITY</div><h1>🚚 Запреты движения грузовиков в Европе</h1><p>Актуальные ограничения по странам · праздничные, воскресные, ночные и сезонные запреты</p></div></section>
+<nav class="date-strip" id="dateStrip" aria-label="Даты календаря запретов"></nav>
+<section class="dashboard" aria-label="Карта и сведения о запретах">
+<div class="map-column">
+<div class="map-tools"><button type="button" id="zoomIn" aria-label="Приблизить">+</button><button type="button" id="zoomOut" aria-label="Отдалить">−</button><button type="button" class="reset" id="zoomReset">⤢ Сброс</button></div>
+<div id="map" role="application" aria-label="Интерактивная карта стран ЕС и Швейцарии"><p style="padding:24px;color:#526174">Загружается интерактивная карта…</p></div>
+</div>
+<aside class="summary-column"><div class="summary-heading"><span class="summary-icon">🇪🇺</span><div><h2>Европа</h2><p>Ограничения на выбранную дату</p></div></div><div class="summary-stats" id="summaryStats"><div class="stat-row uncertain">Загрузка информации…</div></div><h3>Информация по стране</h3><div class="info" id="countryInfo"><div class="empty-country"><div class="empty-country-icon">⌖</div><div><strong>Выберите страну на карте</strong><span>Нажмите на флажок или контур страны, чтобы посмотреть ограничения.</span></div></div></div></aside>
+</section>
+<div class="legend"><span><i class="dot" style="background:#e74c62"></i> Запрет указан</span><span><i class="dot" style="background:#9ba9af"></i> Нет подтверждённых данных</span><span><i class="dot" style="background:#168e89"></i> Статус зависит от условий</span></div>
 <p class="note" id="dataStatus">Загрузка данных…</p>
-<section class="widget"><h2>Запреты TrafficBan</h2><iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&language=ru" title="TrafficBan — запреты движения" loading="lazy"></iframe></section>
+<section class="quick-links"><a href="#countryInfo">⌖ <span>Подробно по странам</span></a><a href="#trafficban">▦ <span>Календарь запретов</span></a><a href="https://t.me/rifare_by" target="_blank" rel="noopener">✈ <span>Сообщество водителей</span></a><a href="#exports">⇩ <span>Экспорт KML / KMZ</span></a></section>
+<section class="widget" id="trafficban"><h2>Дополнительный календарь TrafficBan</h2><iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&language=ru" title="TrafficBan — запреты движения" loading="lazy"></iframe></section>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
@@ -129,6 +210,27 @@ const info=document.getElementById("countryInfo"),status=document.getElementById
 const names={AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция",CHE:"Швейцария"};
 const capitals={AUT:[48.2082,16.3738],BEL:[50.8503,4.3517],BGR:[42.6977,23.3219],HRV:[45.815,15.9819],CYP:[35.1856,33.3823],CZE:[50.0755,14.4378],DNK:[55.6761,12.5683],EST:[59.437,24.7536],FIN:[60.1699,24.9384],FRA:[48.8566,2.3522],DEU:[52.52,13.405],GRC:[37.9838,23.7275],HUN:[47.4979,19.0402],IRL:[53.3498,-6.2603],ITA:[41.9028,12.4964],LVA:[56.9496,24.1052],LTU:[54.6872,25.2797],LUX:[49.6116,6.1319],MLT:[35.8992,14.5141],NLD:[52.3676,4.9041],POL:[52.2297,21.0122],PRT:[38.7223,-9.1393],ROU:[44.4268,26.1025],SVK:[48.1486,17.1077],SVN:[46.0569,14.5058],ESP:[40.4168,-3.7038],SWE:[59.3293,18.0686],CHE:[46.948,7.4474]};
 const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE",CHE:"CH"};
+
+function drawDateStrip(bans){
+ const el=document.getElementById("dateStrip");if(!el)return;
+ const from=bans?.window?.from||new Date().toISOString().slice(0,10);
+ const to=bans?.window?.to||from;const dates=[];
+ for(let i=0;i<7;i++){const d=new Date(from+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+i);const key=d.toISOString().slice(0,10);if(key>to)break;dates.push(key);}
+ el.innerHTML=dates.map((d,i)=>'<button type="button" class="date-chip '+(i===0?'active':'')+'" data-date="'+d+'" aria-pressed="'+(i===0)+'">'+(i===0?'Начало периода':new Date(d+'T12:00:00Z').toLocaleDateString('ru-RU',{weekday:'short'}))+'<strong>'+new Date(d+'T12:00:00Z').toLocaleDateString('ru-RU',{day:'numeric',month:'short'})+'</strong></button>').join('');
+ el.addEventListener('click',e=>{const b=e.target.closest('[data-date]');if(!b)return;el.querySelectorAll('button').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});updateSummary(bans,b.dataset.date);});
+ updateSummary(bans,dates[0]||from);
+}
+function updateSummary(bans,date){
+ const el=document.getElementById('summaryStats');if(!el)return;
+ const rows=mainTruckBans(bans?.bans).filter(x=>x.date===date);
+ const countries=new Set(rows.map(x=>x.country_code)).size;
+ const coveredCount=(bans?.covered_countries||[]).length;
+ el.innerHTML='<div class="stat-row banned"><span>Страны с записями о запретах</span><b>'+countries+'</b></div>'+
+ '<div class="stat-row"><span>Записей об ограничениях</span><b>'+rows.length+'</b></div>'+
+ '<div class="stat-row uncertain"><span>Страны без подтверждённого статуса</span><b>'+Math.max(0,28-countries)+'</b></div>'+
+ '<small style="color:#607d83;line-height:1.5">Дата: '+esc(date)+'. Наличие записи не означает запрет на всех дорогах и для всех грузовиков. Отсутствие записи не означает разрешение движения. Покрытие API: '+coveredCount+' стран.</small>';
+}
+
 const covered=new Set(); // Coverage is taken from the live dataset, not a hardcoded list.
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 // Keep every restriction returned by the API; filtering can be added as user-selectable controls later.
@@ -212,7 +314,7 @@ try{
  const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson"),fetch("./data/truck-bans.json")]);
  if(!geoResp.ok)throw new Error("GeoJSON: HTTP "+geoResp.status);
  const geo=await geoResp.json();let bans=null;if(banResp.ok)bans=await banResp.json();
- if(bans){for(const c of (bans.covered_countries||[]))if(/^[A-Z]{2}$/.test(c))covered.add(c);}
+ if(bans){for(const c of (bans.covered_countries||[]))if(/^[A-Z]{2}$/.test(c))covered.add(c);}drawDateStrip(bans);
  const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  const countryLabelMarkers=[];
  if(features.length!==28)throw new Error("В исходных границах найдено "+features.length+" стран Европы вместо 28");
