@@ -375,6 +375,16 @@ try{
  const incomplete=!bans||bans.completeness_status!=="provider_reported_complete_unverified";
  importNotice.innerHTML=incomplete?'<strong>⚠ Данные запретов неполные</strong><div>Импорт Nakordoni не подтверждён для всех стран. Отсутствие запрета на карте не означает разрешение движения.</div>':'<strong>Данные Nakordoni загружены</strong><div>Ограничения ещё не сверены с официальными источниками.</div>';
  const mapElement=document.getElementById("map");mapElement?.parentElement?.insertBefore(importNotice,mapElement);
+ const roadNotice=document.createElement("div");
+ roadNotice.setAttribute("role","status");
+ roadNotice.style.cssText="margin:8px 0 12px;padding:10px 14px;border:1px solid #a9c9d0;border-radius:10px;background:#eff9fa;color:#244a52;font-size:12px;line-height:1.6";
+ roadNotice.textContent="Дорожные события NAPSPAN: проверка подключения…";
+ importNotice.insertAdjacentElement("afterend",roadNotice);
+ fetch("./data/road-events.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{
+  if(!d){roadNotice.textContent="NAPSPAN: данные ещё не опубликованы.";return;}
+  const n=Array.isArray(d.events)?d.events.length:0;
+  roadNotice.textContent=d.status==="not_configured"?"NAPSPAN: требуется API-ключ. Календарные запреты и дорожные события пока не объединены.":"NAPSPAN: получено "+n+" дорожных событий. Источник не подтверждён официальными ведомствами; данные обрабатываются отдельно от календарных запретов."+(d.warnings?.length?" Предупреждений: "+d.warnings.length+".":"");
+ }).catch(()=>{roadNotice.textContent="NAPSPAN: данные временно недоступны.";});
  if(bans){for(const c of (bans.covered_countries||[]))if(/^[A-Z]{2}$/.test(c))covered.add(c);}drawDateStrip(bans);
  const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  const countryLabelMarkers=[];
