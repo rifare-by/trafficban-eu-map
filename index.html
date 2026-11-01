@@ -406,6 +406,12 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
    return true;
   }
   const records=rawRecords.filter(isNationalTruckBan);
+  // Official French nationwide rules: Saturday 22:00 through Sunday 22:00,
+  // and holiday-eve 22:00 through holiday 22:00. Nov 2–6, 2026 are ordinary weekdays.
+  // The following Saturday, Nov 7, starts the next nationwide weekend ban at 22:00.
+  if(!records.some(r=>r.country_code==="FR"&&r.date==="2026-11-07"&&r.time_from==="22:00")){
+   records.push({country_code:"FR",date:"2026-11-07",time_from:"22:00",time_until:"23:59",restriction_type:"Sunday",restriction_details:"Nationwide weekend ban begins Saturday at 22:00 (>7.5 t)",source:"official_rule_baseline",verification_status:"rule_based_check_exceptions",details_url:"https://entreprendre.service-public.gouv.fr/vosdroits/F33698"});
+  }
   // Published 2026 industry overview of countries without GENERAL nationwide truck bans.
   // Regional, ADR, special-event and route restrictions can still apply.
   const noGeneralBanCountries=new Set(["AL","BE","BA","CY","DK","EE","FI","GB","IE","LV","LT","MT","MD","ME","NL","MK","NO","PT","RS","ES","SE","BG","RO","GR"]);
@@ -435,7 +441,7 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
      }).filter(Boolean))];
      const details=times.slice(0,3).map(t=>esc(t)).join(", ");
      const more=times.length>3?" и ещё "+(times.length-3):"";
-     return '<span class="day-line '+(dayRows.length?'has-bans':'no-data')+'"><b>'+esc(fmt(d))+'</b>: '+(dayRows.length?dayRows.length+' записей'+(details?'<br>🕒 '+details+more:' · время не указано'):'нет записей')+'</span>';
+     return '<span class="day-line '+(countryStatusForDate(code,d)==='ban'?'has-bans':countryStatusForDate(code,d)==='no-ban'?'no-ban':'no-data')+'"><b>'+esc(fmt(d))+'</b>: '+(dayRows.length?dayRows.length+' записей'+(details?'<br>🕒 '+details+more:' · время не указано') :countryStatusForDate(code,d)==='no-ban'?'запрета нет':'нет данных')+'</span>';
     }).join("");
     return '<button type="button" class="two-day-card" data-country="'+esc(code)+'"><span class="flag" aria-hidden="true">'+flag(code)+'</span><span class="country-title">'+esc(EU[code])+'</span>'+lines+'<small>Открыть сведения и источники</small></button>';
    }).join("");
@@ -463,7 +469,7 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
    selectedCountry=code;const rows=rowsFor(code),all=records.filter(r=>r.country_code===iso2[code]);
    const currentStatus=countryStatus(code);
    const statusText=currentStatus==="ban"?"🔴 Запрет указан":currentStatus==="no-ban"?"🟢 Запрета нет":"⚪ Нет данных";
-   let html='<h3>'+flag(code)+' '+esc(EU[code])+'</h3><p><b>Статус на выбранную дату: '+statusText+'</b></p>';<p><b>Дата:</ '+esc(selectedDate)+'</p><p><b>NAPSPAN:</b> '+napCount(code)+' дорожных событий в загруженном наборе (без подтверждения официальными ведомствами).</p><p><a href="https://transport.ec.europa.eu/transport-themes/smart-mobility/road/its-directive-and-action-plan/national-access-points_en" target="_blank" rel="noopener noreferrer">Официальный каталог национальных дорожных источников ЕС</a></p>';
+   let html='<h3>'+flag(code)+' '+esc(EU[code])+'</h3><p><b>Статус на выбранную дату: '+statusText+'</b></p><p><b>Дата: '+esc(selectedDate)+'</b></p>'<p><b>NAPSPAN:</b> '+napCount(code)+' дорожных событий в загруженном наборе (без подтверждения официальными ведомствами).</p><p><a href="https://transport.ec.europa.eu/transport-themes/smart-mobility/road/its-directive-and-action-plan/national-access-points_en" target="_blank" rel="noopener noreferrer">Официальный каталог национальных дорожных источников ЕС</a></p>';
    if(code==="DEU"){
     const dow=new Date(selectedDate+"T12:00:00Z").getUTCDay();
     html+='<section style="background:#e8f6f0;padding:12px;border-radius:10px;margin:10px 0"><b>Официальные правила Германии (§30 StVO)</b><p>Грузовики свыше 7,5 т и грузовики с прицепом: воскресенья и установленные праздники, 00:00–22:00. Исключения и региональные праздники необходимо проверять отдельно.</p>'+(dow===0?'<p><b>На выбранную дату приходится воскресенье: действует общий воскресный запрет 00:00–22:00 (с учётом исключений).</b></p>':'<p>Выбранная дата не является воскресеньем. Возможны праздничные, региональные и сезонные запреты.</p>')+'<p>Июль–август: дополнительные субботние запреты 07:00–20:00 на определённых дорогах.</p><a href="https://verwaltung.bund.de/leistungsverzeichnis/EN/leistung/99108058006000/herausgeber/MV-105760631/region/130000000000" target="_blank" rel="noopener noreferrer">Государственный источник Германии</a></section>';
@@ -522,6 +528,7 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
     const timeRanges=[...new Set(dayRows.map(r=>{const a=String(r.time_from||"").trim(),b=String(r.time_until||"").trim();return a||b?(a||"—")+"–"+(b||"—"):"";}).filter(Boolean))];
     return '<div class="week-day"><strong>'+esc(dateLabel(d))+'</strong><span>'+(dayRows.length?dayRows.length+' записей':'Нет данных')+'</span>'+(timeRanges.length?'<small>🕒 '+timeRanges.slice(0,3).map(esc).join(", ")+(timeRanges.length>3?' и ещё '+(timeRanges.length-3):'')+'</small>':'')+'</div>';
    }).join("")+'</div></section>';
+   if(code==="FRA"&&currentStatus==="no-ban")html+='<section class="national-status-note"><b>🟢 Общенационального запрета нет</b><p>2–6 ноября 2026 года — обычные рабочие дни во Франции. Общий запрет для грузовиков свыше 7,5 т действует с субботы 22:00 до воскресенья 22:00 и на государственные праздники. Местные ограничения, в частности на подъездах к Парижу, сохраняются.</p><a href="https://entreprendre.service-public.gouv.fr/vosdroits/F33698" target="_blank" rel="noopener noreferrer">Официальный источник: Service Public</a></section>';
    if(["SWE","PRT"].includes(code))html+='<section class="national-status-note"><b>🟢 Нет общего запрета для обычных грузовых перевозок</b><p>'+(code==="SWE"?"Швеция: общего запрета по воскресеньям и праздникам нет. Учитывайте допустимую массу и состояние отдельных дорог, сезонные и специальные ограничения.":"Португалия: общего запрета для обычных грузовиков нет. Ограничения касаются ADR, включая цистерны, а также отдельных городских дорог и участков сети.")+'</p><a href="'+(code==="SWE"?"https://truckbans.com/sweden":"https://www.imt-ip.pt/rodoviario/transporte-de-mercadorias-perigosas/autorizacoes-especiais-de-circulacao/")+'" target="_blank" rel="noopener noreferrer">Источник по стране</a></section>';
    if(noGeneralBan(code)&&!rows.length&&!["SWE","PRT"].includes(code))html+='<section class="national-status-note"><b>🟢 Общенациональный запрет не установлен в справочнике 2026 года</b><p>По опубликованному обзору DHL Freight для обычных грузовиков нет общего запрета по всей стране. Это не подтверждение свободного проезда по любому маршруту: местные, региональные, ADR и временные ограничения необходимо проверять отдельно.</p><a href="'+noGeneralBanSource+'" target="_blank" rel="noopener noreferrer">Источник: DHL Freight (2026)</a></section>';
    if(rows.length){html+='<p><b>Записи об ограничениях: '+rows.length+'</b></p>'+rows.slice(0,30).map(r=>'<section style="padding:8px;margin:7px 0;background:#fff;border-radius:8px"><b>'+esc(r.restriction_type||"Ограничение")+'</b><div>'+esc(r.time_from||"")+(r.time_until?' — '+esc(r.time_until):"")+'</div><small>'+esc(r.restriction_details||"")+'</small>'+(r.details_url&&/^https:\/\//.test(r.details_url)?'<div><a target="_blank" rel="noopener noreferrer" href="'+esc(r.details_url)+'">Источник записи</a></div>':"")+'</section>').join("");}
@@ -533,7 +540,15 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
   // AND no nationwide restriction for the selected day; missing records alone stay grey.
   const hasExplicitNoBan=code=>rawRecords.some(r=>r.country_code===iso2[code]&&r.date===selectedDate&&["no ban","no-ban","none"].includes(String(r.restriction_type||"").trim().toLowerCase())&&["official_confirmed_no_ban","verified_no_ban","confirmed"].includes(String(r.verification_status||"").toLowerCase()));
   // No record is not proof of no ban. A green status needs affirmative evidence.
-  const countryStatus=code=>rowsFor(code).length?"ban":(hasExplicitNoBan(code)||noGeneralBan(code))?"no-ban":"unknown";
+  const countryStatusForDate=(code,date)=>{
+   const rows=records.filter(r=>r.country_code===iso2[code]&&r.date===date);
+   if(rows.length)return "ban";
+   if(code==="FRA"&&date>="2026-11-02"&&date<="2026-11-06")return "no-ban";
+   if(noGeneralBan(code))return "no-ban";
+   if(date===selectedDate&&hasExplicitNoBan(code))return "no-ban";
+   return "unknown";
+  };
+  const countryStatus=code=>countryStatusForDate(code,selectedDate);
   const hasVerifiedNoBan=code=>countryStatus(code)==="no-ban";
   const style=f=>{const code=f.properties["ISO3166-1-Alpha-3"];return {color:"#287e80",weight:1.5,fillColor:countryStatus(code)==="ban"?"#e74c62":hasVerifiedNoBan(code)?"#168e89":"#9ba9af",fillOpacity:.48};};
   const layer=L.geoJSON({type:"FeatureCollection",features},{style,onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.on("click",()=>{show(code);showSelectedOnMap(code);});}}).addTo(map);
