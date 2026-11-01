@@ -426,9 +426,10 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
    info.innerHTML=html;
   }
   const style=f=>{const code=f.properties["ISO3166-1-Alpha-3"];return {color:"#287e80",weight:1.5,fillColor:rowsFor(code).length?"#e9996c":"#a7cfc9",fillOpacity:.48};};
-  const layer=L.geoJSON({type:"FeatureCollection",features},{style,onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.bindTooltip(EU[code],{sticky:true});l.on("click",()=>{show(code);showSelectedOnMap(code);});}}).addTo(map);
+  const layer=L.geoJSON({type:"FeatureCollection",features},{style,onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.on("click",()=>{show(code);showSelectedOnMap(code);});}}).addTo(map);
   const mapLabels=L.layerGroup().addTo(map);
   const selectedLabel=L.layerGroup().addTo(map);
+  let pinnedCountry=null;
   let labelsVisible=true;
   const toggleFlags=document.getElementById("toggleFlags");
   toggleFlags.addEventListener("click",()=>{
@@ -439,7 +440,9 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
    if(labelsVisible)map.addLayer(mapLabels);else map.removeLayer(mapLabels);
   });
   function showSelectedOnMap(code){
+   pinnedCountry=code;
    selectedLabel.clearLayers();
+   refreshMapLabels();
    const center=countryCenters[code];
    if(!center)return;
    const dates=[today,dayPlus(today,1)];
@@ -458,7 +461,7 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
    const showDetails=map.getZoom()>=5;
    features.forEach(f=>{
     const code=f.properties["ISO3166-1-Alpha-3"],center=countryCenters[code];
-    if(!center)return;
+    if(!center||code===pinnedCountry)return;
     const lines=dates.map((d,i)=>{
      const rows=records.filter(x=>x.country_code===iso2[code]&&x.date===d);
      const times=[...new Set(rows.map(x=>[x.time_from,x.time_until].filter(Boolean).join("–")).filter(Boolean))];
