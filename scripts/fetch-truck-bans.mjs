@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 
 const key=process.env.NKD_API_KEY;
 if(!key)throw new Error("Missing NKD_API_KEY repository secret");
-const countries=["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","CH"];
+const countries=["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","CH","LI","NO","IS","GB","AL","AD","BA","ME","MK","RS","MD","UA","BY","TR","SM","MC","VA"];
 const iso=d=>d.toISOString().slice(0,10);
 const start=new Date();const from=iso(start);const end=new Date(start);end.setUTCDate(end.getUTCDate()+6);const to=iso(end);
 const dates=Array.from({length:7},(_,i)=>{const d=new Date(start);d.setUTCDate(d.getUTCDate()+i);return iso(d)});
@@ -40,7 +40,7 @@ async function request(country,a,b){
  for(const c of data.countries_not_covered||[])notCovered.add(c);
  for(const ban of rows){
   if(!ban.country_code||!ban.date||ban.date<from||ban.date>to)continue;
-  const k=[ban.country_code,ban.date,ban.time_from,ban.time_until].join("|");
+  const k=[ban.country_code,ban.date,ban.time_from,ban.time_until,ban.restriction_type,ban.restriction_details].join("|");
   const previous=unique.get(k);if(!previous||Object.keys(ban).length>Object.keys(previous).length)unique.set(k,ban);
  }
  if(data.window?.from&&data.window.from!==a||data.window?.to&&data.window.to!==b)warnings.push("Window mismatch "+country+" "+a+".."+b);
@@ -79,7 +79,7 @@ for(const day of dates){
   if(rule.day!==-1&&rule.day!==weekday)continue;
   const {day:ignored,...details}=rule;
   const row={...details,date:day,restriction_type:rule.day===-1?"Night":"Sunday",source:"official_rule_baseline",verification_status:"rule_based_check_exceptions",details_url:rule.source_url};
-  const key=[row.country_code,row.date,row.time_from,row.time_until].join("|");
+  const key=[row.country_code,row.date,row.time_from,row.time_until,row.restriction_type,row.restriction_details].join("|");
   if(!unique.has(key))unique.set(key,row);
  }
 }
