@@ -67,7 +67,7 @@ try{
  for(let tx=left;tx<=right;tx++)for(let ty=top;ty<=bottom;ty++){
   const img=document.createElementNS(NS,"image");
   img.setAttribute("x",ox+(tx/n-minX)*scale);img.setAttribute("y",oy+(ty/n-minY)*scale);
-  img.setAttribute("width",tileSize*n*scale/256);img.setAttribute("height",tileSize*n*scale/256);
+  img.setAttribute("width",scale/n);img.setAttribute("height",tileSize*n*scale/256);
   img.setAttribute("href","https://tile.openstreetmap.org/"+z+"/"+tx+"/"+ty+".png");
   img.setAttribute("preserveAspectRatio","none");svg.appendChild(img);
  }
