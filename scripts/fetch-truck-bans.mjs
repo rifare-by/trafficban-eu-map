@@ -57,11 +57,37 @@ for(const country of countries){
   }
  }catch(e){warnings.push("Failed "+country+": "+e.message)}
 }
+
+// Conservative recurring baseline: published rules, not a claim of live road clearance.
+// Holiday, regional, seasonal and route-specific restrictions still require independent verification.
+const recurring=[
+ {country_code:"DE",day:0,time_from:"00:00",time_until:"22:00",min_weight_tons:7.5,restriction_details:"Sunday restriction; exemptions and regional rules apply",source_url:"https://www.gesetze-im-internet.de/stvo_2013/__30.html"},
+ {country_code:"FR",day:0,time_from:"00:00",time_until:"22:00",min_weight_tons:7.5,restriction_details:"Sunday restriction; generally begins Saturday 22:00; exemptions apply",source_url:"https://www.bison-fute.gouv.fr/"},
+ {country_code:"FR",day:6,time_from:"22:00",time_until:"24:00",min_weight_tons:7.5,restriction_details:"Saturday evening restriction; exemptions apply",source_url:"https://www.bison-fute.gouv.fr/"},
+ {country_code:"AT",day:0,time_from:"00:00",time_until:"22:00",min_weight_tons:7.5,restriction_details:"Sunday restriction; vehicle combinations and exceptions differ",source_url:"https://www.usp.gv.at/en/themen/betrieb-und-umwelt/transport-und-verkehr/lkw-fahrverbote.html"},
+ {country_code:"AT",day:6,time_from:"15:00",time_until:"24:00",min_weight_tons:7.5,restriction_details:"Saturday restriction; vehicle combinations and exceptions differ",source_url:"https://www.usp.gv.at/en/themen/betrieb-und-umwelt/transport-und-verkehr/lkw-fahrverbote.html"},
+ {country_code:"CZ",day:0,time_from:"13:00",time_until:"22:00",min_weight_tons:7.5,restriction_details:"Sunday restriction on motorways and first-class roads",source_url:"https://www.zakonyprolidi.cz/cs/2000-361#p43"},
+ {country_code:"CH",day:0,time_from:"00:00",time_until:"24:00",min_weight_tons:3.5,restriction_details:"Sunday restriction; exemptions apply",source_url:"https://www.fedlex.admin.ch/eli/cc/1962/1364_1409_1420/en"},
+ {country_code:"AT",day:-1,time_from:"22:00",time_until:"24:00",min_weight_tons:7.5,restriction_details:"Night restriction; exemptions apply",source_url:"https://www.usp.gv.at/en/themen/betrieb-und-umwelt/transport-und-verkehr/lkw-fahrverbote.html"},
+ {country_code:"AT",day:-1,time_from:"00:00",time_until:"05:00",min_weight_tons:7.5,restriction_details:"Night restriction; exemptions apply",source_url:"https://www.usp.gv.at/en/themen/betrieb-und-umwelt/transport-und-verkehr/lkw-fahrverbote.html"},
+ {country_code:"CH",day:-1,time_from:"22:00",time_until:"24:00",min_weight_tons:3.5,restriction_details:"Night restriction; exemptions apply",source_url:"https://www.fedlex.admin.ch/eli/cc/1962/1364_1409_1420/en"},
+ {country_code:"CH",day:-1,time_from:"00:00",time_until:"05:00",min_weight_tons:3.5,restriction_details:"Night restriction; exemptions apply",source_url:"https://www.fedlex.admin.ch/eli/cc/1962/1364_1409_1420/en"}
+];
+for(const day of dates){
+ const weekday=new Date(day+"T12:00:00Z").getUTCDay();
+ for(const rule of recurring){
+  if(rule.day!==-1&&rule.day!==weekday)continue;
+  const {day:ignored,...details}=rule;
+  const row={...details,date:day,restriction_type:rule.day===-1?"Night":"Sunday",source:"official_rule_baseline",verification_status:"rule_based_check_exceptions",details_url:rule.source_url};
+  const key=[row.country_code,row.date,row.time_from,row.time_until].join("|");
+  if(!unique.has(key))unique.set(key,row);
+ }
+}
 const bans=[...unique.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.country_code.localeCompare(b.country_code)||(a.time_from||"").localeCompare(b.time_from||""));
 const output={
- source:"Nakordoni",attribution:"Data by nakordoni.eu",source_url:"https://nakordoni.eu/en/developers/docs/truck-bans",
+ source:"Nakordoni + published recurring rules",attribution:"Nakordoni data and cited national rules",source_url:"https://nakordoni.eu/en/developers/docs/truck-bans",
  generated_at:new Date().toISOString(),window:{from,to,days:7},provider_response_count:audit.length,provider_audit:audit,
- completeness_status:warnings.length?"partial_unverified":"provider_reported_complete_unverified",
+ completeness_status:"partial_unverified",
  completeness_warnings:warnings,status_note:"Not independently verified against official country authorities or TrafficBan. Missing bans do not prove unrestricted travel.",
  covered_countries:[...covered].sort(),countries_not_covered:[...notCovered].sort(),bans
 };
