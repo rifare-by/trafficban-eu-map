@@ -28,12 +28,12 @@ jobs:
           NKD_API_KEY: ${{ secrets.NKD_API_KEY }}
       - name: Commit refreshed data
         run: |
-          if git diff --quiet -- data/truck-bans.json; then
+          git add -f data/truck-bans.json
+          if git diff --cached --quiet -- data/truck-bans.json; then
             echo "No data changes"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/truck-bans.json
           git commit -m "Refresh truck bans data"
           git push
