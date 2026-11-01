@@ -73,15 +73,51 @@ Promise.all([
  map.fitBounds(layer.getBounds(),{padding:[12,12]});
  document.getElementById("kmlBtn").disabled=false;
  document.getElementById("kmzBtn").disabled=false;
- const esc=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
+ const esc=v=>String(v==null?"":v).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
  const ringXml=ring=>"<LinearRing><coordinates>"+ring.map(p=>p[0]+","+p[1]+",0").join(" ")+"</coordinates></LinearRing>";
  const polygonXml=poly=>"<Polygon><outerBoundaryIs>"+ringXml(poly[0])+"</outerBoundaryIs>"+poly.slice(1).map(r=>"<innerBoundaryIs>"+ringXml(r)+"</innerBoundaryIs>").join("")+"</Polygon>";
  const geometryXml=g=>g.type==="Polygon"?polygonXml(g.coordinates):g.type==="MultiPolygon"?"<MultiGeometry>"+g.coordinates.map(polygonXml).join("")+"</MultiGeometry>":"";
- const kml=()=>`<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Страны ЕС — TrafficBan</name>
-<Style id="eu"><LineStyle><color>ff914f17</color><width>1.5</width></LineStyle><PolyStyle><color>4dd58531</color><fill>1</fill><outline>1</outline></PolyStyle></Style>
-${euFeatures.map(f=>{const code=f.properties["ISO3166-1-Alpha-3"],name=ru[code]||code;return "<Placemark><name>"+esc(name)+"</name><description><![CDATA[Данные о запретах движения: официальный виджет TrafficBan — https://trafficban.com/plugins/box.html?language=ru]]></description><styleUrl>#eu</styleUrl>"+geometryXml(f.geometry)+"</Placemark>"}).join("")}
-</Document></kml>`;
+ const kml=()=>{
+  const from=banData&&banData.window?banData.window.from:"";
+  const to=banData&&banData.window?banData.window.to:"";
+  const generated=banData&&banData.generated_at?new Date(banData.generated_at).toLocaleString("ru-RU"):"";
+  const placemarks=euFeatures.map(f=>{
+   const code=f.properties["ISO3166-1-Alpha-3"], c=iso2[code], name=ru[code]||code;
+   const covered=coveredEu.has(c);
+   const rows=covered?(banData.bans||[]).filter(b=>b.country_code===c).sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.time_from||"").localeCompare(b.time_from||"")):[];
+   const hasBans=rows.length>0;
+   let description="<h2>"+esc(name)+"</h2>";
+   description+="<p><b>Период:</b> "+esc(from)+" — "+esc(to)+"</p>";
+   description+="<p><b>Источник данных:</b> Nakordoni. Обновлено: "+esc(generated)+"</p>";
+   if(!covered){description+="<p><b>Нет данных Nakordoni по этой стране.</b> Это не означает, что запретов нет.</p>";}
+   else if(!hasBans){description+="<p>На выбранный период в календаре Nakordoni запреты не указаны.</p>";}
+   else {
+    description+="<p><b>Запретов в периоде: "+rows.length+"</b></p><ol>";
+    rows.forEach(b=>{
+     const url=String(b.details_url||"");
+     const safeUrl=/^https:\/\//i.test(url)?url:"";
+     let item="<li><b>"+esc(b.date)+"</b><br>"+esc(b.time_from||"Весь день")+(b.time_until?"–"+esc(b.time_until):"");
+     item+="<br><b>"+esc(b.restriction_type||"Ограничение")+"</b>";
+     if(b.restriction_details)item+="<br>"+esc(b.restriction_details);
+     if(b.min_weight_tons)item+="<br>Минимальный вес: "+esc(b.min_weight_tons)+" т";
+     if(safeUrl)item+="<br><a href=\""+esc(safeUrl)+"\">Подробнее на Nakordoni</a>";
+     description+=item+"</li>";
+    });
+    description+="</ol>";
+   }
+   description+="<p>Официальный виджет TrafficBan: https://trafficban.com/plugins/box.html?language=ru</p>";
+   const style=!covered?"#noData":hasBans?"#hasBans":"#noBans";
+   const cdata=description.replace(/]]>/g,"]]]]><![CDATA[>");
+   return "<Placemark><name>"+esc(name)+"</name><description><![CDATA["+cdata+"]]></description><styleUrl>"+style+"</styleUrl>"+geometryXml(f.geometry)+"</Placemark>";
+  }).join("");
+  return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+   "<kml xmlns=\"http://www.opengis.net/kml/2.2\"><Document><name>Запреты движения грузовиков — ЕС</name>"+
+   "<description>Расписание на "+esc(from)+" — "+esc(to)+". Источник актуальных записей: Nakordoni. TrafficBan показан отдельно.</description>"+
+   "<Style id=\"hasBans\"><LineStyle><color>ff174f70</color><width>1.5</width></LineStyle><PolyStyle><color>66dc5555</color></PolyStyle></Style>"+
+   "<Style id=\"noBans\"><LineStyle><color>ff174f70</color><width>1.5</width></LineStyle><PolyStyle><color>4d3185d5</color></PolyStyle></Style>"+
+   "<Style id=\"noData\"><LineStyle><color>ff687789</color><width>1.5</width></LineStyle><PolyStyle><color>66aab4c0</color></PolyStyle></Style>"+
+   placemarks+"</Document></kml>";
+ };
  const download=(blob,name)=>{const a=document.createElement("a");const u=URL.createObjectURL(blob);a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)};
  document.getElementById("kmlBtn").onclick=()=>download(new Blob([kml()],{type:"application/vnd.google-earth.kml+xml"}),"trafficban-eu-map.kml");
  document.getElementById("kmzBtn").onclick=async()=>{const zip=new JSZip();zip.file("doc.kml",kml());download(await zip.generateAsync({type:"blob"}),"trafficban-eu-map.kmz")};
