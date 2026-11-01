@@ -50,7 +50,7 @@ const info=document.getElementById("countryInfo"),status=document.getElementById
 const names={AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция",CHE:"Швейцария"};
 const capitals={AUT:[48.2082,16.3738],BEL:[50.8503,4.3517],BGR:[42.6977,23.3219],HRV:[45.815,15.9819],CYP:[35.1856,33.3823],CZE:[50.0755,14.4378],DNK:[55.6761,12.5683],EST:[59.437,24.7536],FIN:[60.1699,24.9384],FRA:[48.8566,2.3522],DEU:[52.52,13.405],GRC:[37.9838,23.7275],HUN:[47.4979,19.0402],IRL:[53.3498,-6.2603],ITA:[41.9028,12.4964],LVA:[56.9496,24.1052],LTU:[54.6872,25.2797],LUX:[49.6116,6.1319],MLT:[35.8992,14.5141],NLD:[52.3676,4.9041],POL:[52.2297,21.0122],PRT:[38.7223,-9.1393],ROU:[44.4268,26.1025],SVK:[48.1486,17.1077],SVN:[46.0569,14.5058],ESP:[40.4168,-3.7038],SWE:[59.3293,18.0686],CHE:[46.948,7.4474]};
 const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE",CHE:"CH"};
-const covered=new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK","CH"]);
+const covered=new Set(); // Coverage is taken from the live dataset, not a hardcoded list.
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function isMainTruckBan(b){
  const type=String(b?.restriction_type||"").trim().toLowerCase();
@@ -106,11 +106,11 @@ function showCountry(code,bans){
   days.push(key);
  }
  function section(date,index){
-  const known=date>=String(bans.window?.from||"")&&date<=to;
+  const known=covered.has(c)&&date>=String(bans.window?.from||"")&&date<=to;
   const rows=mainTruckBans(bans.bans).filter(b=>b.country_code===c&&b.date===date).sort((a,b)=>(a.time_from||"").localeCompare(b.time_from||""));
   let out="<section><b>"+esc(ruDate(date))+"</b>";
   if(!known)return out+"<br><span>Нет данных на эту дату</span></section>";
-  if(!rows.length)return out+"<br><span style='color:#ffcc80'><b>Запрет не подтверждён: источник не содержит достаточных данных для вывода об отсутствии ограничений</b></span></section>";
+  if(!rows.length)return out+"<br><span style='color:#ffcc80'><b>Нет подтверждённых сведений. Проверьте ограничения по официальным источникам.</b></span></section>";
   out+="<br><b style='color:#ff8585'>Ограничений: "+rows.length+"</b>";
   rows.forEach(b=>{out+="<p><b>"+esc(b.time_from||"Весь день")+(b.time_until?"–"+esc(b.time_until):"")+"</b> · "+esc(ruType(b.restriction_type))+(b.min_weight_tons?"<br>Для транспорта от "+esc(b.min_weight_tons)+" т":"")+(b.restriction_details?"<br>"+esc(ruDetails(b.restriction_details)):"")+( /^https:\/\//i.test(b.details_url||"")?"<br><a target='_blank' rel='noopener' href='"+esc(b.details_url)+"'>Подробнее</a>":"")+"</p>";});
   return out+"</section>";
@@ -144,6 +144,7 @@ try{
  const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson"),fetch("./data/truck-bans.json")]);
  if(!geoResp.ok)throw new Error("GeoJSON: HTTP "+geoResp.status);
  const geo=await geoResp.json();let bans=null;if(banResp.ok)bans=await banResp.json();
+ if(bans){for(const c of (bans.covered_countries||[]))if(/^[A-Z]{2}$/.test(c))covered.add(c);}
  const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  const countryLabelMarkers=[];
  if(features.length!==28)throw new Error("В исходных границах найдено "+features.length+" стран Европы вместо 28");
@@ -159,7 +160,7 @@ try{
   // Точка гарантированно внутри контура страны: центр масс может оказаться за её границами.
   const center=capitals[code]?L.latLng(capitals[code][0],capitals[code][1]):layer.getBounds().getCenter();
   const tomorrow=new Date(today+"T12:00:00");tomorrow.setDate(tomorrow.getDate()+1);const tomorrowKey=tomorrow.getFullYear()+"-"+String(tomorrow.getMonth()+1).padStart(2,"0")+"-"+String(tomorrow.getDate()).padStart(2,"0");const tomorrowRows=mainTruckBans(bans?.bans).filter(b=>b.date===tomorrowKey&&b.country_code===c);
-  const todayKnown=!!bans&&has,tomorrowKnown=!!bans&&has&&tomorrowKey<=String(bans.window?.to||"");
+  const todayKnown=!!bans&&has&&today>=String(bans.window?.from||"")&&today<=String(bans.window?.to||"");const tomorrowKnown=!!bans&&has&&tomorrowKey>=String(bans.window?.from||"")&&tomorrowKey<=String(bans.window?.to||"");
   const todayState=code==="CHE"?{label:swissBanAt(swissDate,swiss.hour)?"ЗАПРЕТ СЕЙЧАС":"РАЗРЕШЕНО ДО 22:00",cls:swissBanAt(swissDate,swiss.hour)?"yes":"no"}:{label:!todayKnown?"НЕТ ДАННЫХ":dayBans.length?"ЕСТЬ ЗАПРЕТ":"НЕТ ПОДТВЕРЖДЕНИЯ",cls:!todayKnown?"unknown":dayBans.length?"yes":"unknown"};
   const tomorrowState=code==="CHE"?{label:"НОЧЬ: 22:00–05:00",cls:"yes"}:{label:!tomorrowKnown?"НЕТ ДАННЫХ":tomorrowRows.length?"ЕСТЬ ЗАПРЕТ":"НЕТ ПОДТВЕРЖДЕНИЯ",cls:!tomorrowKnown?"unknown":tomorrowRows.length?"yes":"unknown"};
   const labelHtml='<div class="country-bubble"><span class="country-flag">'+flagEmoji(iso2[code])+'</span><span class="country-label-text"><span class="country-name">'+esc(names[code])+'</span><span class="ban '+todayState.cls+'">СЕГОДНЯ: '+esc(todayState.label)+'</span><span class="ban '+tomorrowState.cls+'">ЗАВТРА: '+esc(tomorrowState.label)+'</span></span></div>';
