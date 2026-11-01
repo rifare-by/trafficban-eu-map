@@ -2,64 +2,41 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <title>Запреты движения грузовиков — ЕС</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:#172033;background:#f4f7fb}
 header{padding:16px;background:#123d70;color:white}h1{font-size:21px;margin:0 0 6px}header p{margin:0;font-size:14px}
 main{max-width:1100px;margin:auto;padding:14px}.legend{display:flex;gap:12px;flex-wrap:wrap;margin:10px 2px;font-size:13px;color:#34445a}.legend span{display:inline-flex;align-items:center;gap:6px}.dot{width:12px;height:12px;border-radius:3px;display:inline-block}
-#map{width:100%;height:65vh;min-height:430px;background:#dce8ef;border:1px solid #ccd5e1;border-radius:14px;display:block;touch-action:none;cursor:grab}#map.dragging{cursor:grabbing}.map-tools{display:flex;justify-content:flex-end;gap:8px;margin:8px 0}.map-tools button{border:1px solid #b8c7d6;background:white;border-radius:8px;padding:9px 15px;font-size:18px;font-weight:bold;color:#173d60;cursor:pointer}.map-tools button.reset{font-size:14px}
-.country{stroke:#174f70;stroke-width:.65;stroke-linejoin:round;fill-opacity:.42;cursor:pointer;vector-effect:non-scaling-stroke}.country:hover{stroke:#071e35;stroke-width:2;fill-opacity:.72}
-.country-label{font-size:11px;font-weight:bold;fill:#102a43;text-anchor:middle;paint-order:stroke;stroke:white;stroke-width:2.5px;stroke-linejoin:round;pointer-events:none}
+#map{width:100%;height:65vh;min-height:430px;background:#dce8ef;border:1px solid #ccd5e1;border-radius:14px;overflow:hidden;z-index:1}.map-tools{display:flex;justify-content:flex-end;gap:8px;margin:8px 0}.map-tools button{border:1px solid #b8c7d6;background:white;border-radius:8px;padding:9px 15px;font-size:18px;font-weight:bold;color:#173d60;cursor:pointer}.map-tools button.reset{font-size:14px}
+.leaflet-container{font:inherit}.leaflet-control-attribution{font-size:10px!important}.country-label{font-size:11px;font-weight:bold;color:#102a43;text-shadow:-1px -1px 2px white,1px 1px 2px white,-1px 1px 2px white,1px -1px 2px white;white-space:nowrap;pointer-events:none}
 .downloads{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.download{display:inline-block;padding:12px 16px;border-radius:9px;background:#174f91;color:white;text-decoration:none;font-weight:700}
 .note{font-size:13px;color:#526174;line-height:1.5;margin:12px 2px 18px}.info{background:white;padding:14px;border-radius:12px;margin:12px 0;min-height:48px;line-height:1.5;box-shadow:0 2px 10px #0000000c}.widget{background:white;padding:14px;border-radius:14px;margin-top:16px;box-shadow:0 2px 10px #00000012}.widget h2{font-size:18px;margin:0 0 10px}iframe{width:100%;height:620px;border:1px solid #bbb}
-@media(max-width:600px){#map{height:58vh;min-height:390px}.country-label{font-size:9px}iframe{height:620px}}
+@media(max-width:600px){#map{height:58vh;min-height:390px}.country-label{font-size:10px}iframe{height:620px}}
 </style>
 </head>
 <body>
 <header><h1>Запреты движения грузовиков — Европейский союз</h1><p>Карта стран ЕС и официальный виджет TrafficBan</p></header>
 <main>
 <div class="legend"><span><i class="dot" style="background:#dc5555"></i> Есть запреты в ближайшие 7 дней</span><span><i class="dot" style="background:#3185d5"></i> Данные есть, запретов нет</span><span><i class="dot" style="background:#aab4c0"></i> Нет данных</span></div>
-<div class="map-tools"><button type="button" id="zoomIn" aria-label="Приблизить">+</button><button type="button" id="zoomOut" aria-label="Отдалить">−</button><button type="button" class="reset" id="zoomReset">Сброс</button></div><svg id="map" viewBox="0 0 1000 650" role="img" aria-label="Интерактивная карта стран Европейского союза"><text x="500" y="325" text-anchor="middle" fill="#526174">Загружаются границы стран…</text></svg>
+<div class="map-tools"><button type="button" id="zoomIn" aria-label="Приблизить">+</button><button type="button" id="zoomOut" aria-label="Отдалить">−</button><button type="button" class="reset" id="zoomReset">Сброс</button></div><div id="map" role="application" aria-label="Интерактивная карта стран Европейского союза"><p style="padding:24px;color:#526174">Загружается интерактивная карта…</p></div>
 <div class="downloads"><a class="download" href="https://github.com/rifare-by/trafficban-eu-map/raw/refs/heads/main/downloads/trafficban-eu-map.kml">Скачать KML</a><a class="download" href="https://github.com/rifare-by/trafficban-eu-map/raw/refs/heads/main/downloads/trafficban-eu-map.kmz">Скачать KMZ</a></div>
 <div class="info" id="countryInfo">Выберите страну на карте.</div>
 <p class="note" id="dataStatus">Загрузка данных…</p>
 <section class="widget"><h2>Запреты TrafficBan</h2><iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&language=ru" title="TrafficBan — запреты движения" loading="lazy"></iframe></section>
 </main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
 (async function(){
-const svg=document.getElementById("map"), info=document.getElementById("countryInfo"), status=document.getElementById("dataStatus");
-const NS="http://www.w3.org/2000/svg";
+const info=document.getElementById("countryInfo"),status=document.getElementById("dataStatus");
 const names={AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция"};
 const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
 const covered=new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK"]);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function allPoints(x,out=[]){if(Array.isArray(x)&&typeof x[0]==="number")out.push(x);else if(Array.isArray(x))x.forEach(v=>allPoints(v,out));return out;}
-const merc=p=>{const lat=Math.max(-85.0511,Math.min(85.0511,p[1]))*Math.PI/180;return [(p[0]+180)/360,(1-Math.log(Math.tan(lat)+1/Math.cos(lat))/Math.PI)/2];};
-// Show the contiguous European geography of each EU member, excluding remote overseas territories.
 const EUROPE={west:-12,east:35,south:34,north:72};
-function clipEuropeanGeometry(g){
- const polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;
- const kept=polys.filter(poly=>{
-  const pts=allPoints(poly);if(!pts.length)return false;
-  const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
-  return Math.max(...xs)>=EUROPE.west&&Math.min(...xs)<=EUROPE.east&&Math.max(...ys)>=EUROPE.south&&Math.min(...ys)<=EUROPE.north;
- });
- return kept.length?{type:"MultiPolygon",coordinates:kept}:null;
-}
-function pathRing(ring,proj){return ring.map((p,i)=>{const q=proj(p);return (i?"L":"M")+q[0].toFixed(2)+","+q[1].toFixed(2)}).join("")+"Z";}
-function geometryPath(g,proj){return g.coordinates.map(poly=>poly.map(r=>pathRing(r,proj)).join(" ")).join(" ");}
-function setView(v){svg.setAttribute("viewBox",v.x+" "+v.y+" "+v.w+" "+v.h);}
-let initialView={x:0,y:0,w:1000,h:650},view={...initialView},drag=null,pointers=new Map();
-function zoomAt(factor,x=500,y=325){const nw=Math.max(160,Math.min(1000,view.w*factor)),nh=nw*650/1000,rx=(x-view.x)/view.w,ry=(y-view.y)/view.h;view={x:x-rx*nw,y:y-ry*nh,w:nw,h:nh};setView(view);}
-document.getElementById("zoomIn").addEventListener("click",()=>zoomAt(.75));
-document.getElementById("zoomOut").addEventListener("click",()=>zoomAt(1.33));
-document.getElementById("zoomReset").addEventListener("click",()=>{view={...initialView};setView(view);});
-svg.addEventListener("wheel",e=>{e.preventDefault();const r=svg.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*view.w+view.x,y=(e.clientY-r.top)/r.height*view.h+view.y;zoomAt(e.deltaY<0?.85:1.18,x,y);},{passive:false});
-svg.addEventListener("pointerdown",e=>{svg.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1){drag={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};svg.classList.add("dragging");}});
-svg.addEventListener("pointermove",e=>{if(!pointers.has(e.pointerId))return;const prev=pointers.get(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1&&drag){const r=svg.getBoundingClientRect();view.x=drag.vx-(e.clientX-drag.x)*view.w/r.width;view.y=drag.vy-(e.clientY-drag.y)*view.h/r.height;setView(view);}});
-function stopPointer(e){pointers.delete(e.pointerId);if(!pointers.size){drag=null;svg.classList.remove("dragging");}}
-svg.addEventListener("pointerup",stopPointer);svg.addEventListener("pointercancel",stopPointer);
+function europeanGeometry(g){const polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;const kept=polys.filter(poly=>{const pts=allPoints(poly);if(!pts.length)return false;const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);return Math.max(...xs)>=EUROPE.west&&Math.min(...xs)<=EUROPE.east&&Math.max(...ys)>=EUROPE.south&&Math.min(...ys)<=EUROPE.north;});if(!kept.length)return null;return g.type==="Polygon"&&kept.length===1?{type:"Polygon",coordinates:kept[0]}:{type:"MultiPolygon",coordinates:kept};}
 function showCountry(code,bans){
  const country=names[code]||code,c=iso2[code];
  if(!bans){info.innerHTML="<b>"+esc(country)+"</b><br>Календарь запретов временно недоступен.";return;}
@@ -71,44 +48,33 @@ function showCountry(code,bans){
  info.innerHTML=html;
 }
 try{
+ if(!window.L)throw new Error("Не загрузилась библиотека интерактивной карты. Проверьте доступ к unpkg.com.");
+ const map=L.map("map",{zoomControl:true,scrollWheelZoom:true,touchZoom:true,dragging:true,doubleClickZoom:true,minZoom:3,maxZoom:13}).setView([51.2,13.5],4);
+ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+ document.getElementById("zoomIn").addEventListener("click",()=>map.zoomIn());
+ document.getElementById("zoomOut").addEventListener("click",()=>map.zoomOut());
+ let euBounds=null;
+ document.getElementById("zoomReset").addEventListener("click",()=>{if(euBounds)map.fitBounds(euBounds,{padding:[18,18]});});
  const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson"),fetch("./data/truck-bans.json")]);
  if(!geoResp.ok)throw new Error("GeoJSON: HTTP "+geoResp.status);
- const geo=await geoResp.json();let bans=null;
- if(banResp.ok)bans=await banResp.json();
+ const geo=await geoResp.json();let bans=null;if(banResp.ok)bans=await banResp.json();
  const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  if(features.length!==27)throw new Error("В исходных границах найдено "+features.length+" стран ЕС вместо 27");
- const display=features.map(f=>({feature:f,geometry:clipEuropeanGeometry(f.geometry)})).filter(x=>x.geometry);
+ const display=features.map(f=>({feature:f,geometry:europeanGeometry(f.geometry)})).filter(x=>x.geometry);
  const missing=features.filter(f=>!display.some(x=>x.feature===f)).map(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  if(missing.length)throw new Error("Не найдены на европейской карте: "+missing.join(", "));
- const pts=display.flatMap(x=>allPoints(x.geometry.coordinates));
- const world=pts.map(merc),minX=Math.min(...world.map(p=>p[0])),maxX=Math.max(...world.map(p=>p[0])),minY=Math.min(...world.map(p=>p[1])),maxY=Math.max(...world.map(p=>p[1]));
- const pad=58,scale=Math.min((1000-2*pad)/(maxX-minX),(650-2*pad)/(maxY-minY));
- const w=(maxX-minX)*scale,h=(maxY-minY)*scale,ox=(1000-w)/2,oy=(650-h)/2;
- const project=p=>{const q=merc(p);return [ox+(q[0]-minX)*scale,oy+(q[1]-minY)*scale];};
- svg.replaceChildren();
- // Build a background group and country overlay group so map controls can zoom and pan both together.
- const mapLayer=document.createElementNS(NS,"g");svg.appendChild(mapLayer);
- const z=5,n=Math.pow(2,z);
- const left=Math.floor(minX*n),right=Math.floor(maxX*n),top=Math.floor(minY*n),bottom=Math.floor(maxY*n);
- for(let tx=left;tx<=right;tx++)for(let ty=top;ty<=bottom;ty++){
-  const img=document.createElementNS(NS,"image");
-  img.setAttribute("x",ox+(tx/n-minX)*scale);img.setAttribute("y",oy+(ty/n-minY)*scale);
-  img.setAttribute("width",scale/n);img.setAttribute("height",scale/n);
-  img.setAttribute("href","https://tile.openstreetmap.org/"+z+"/"+tx+"/"+ty+".png");
-  img.setAttribute("preserveAspectRatio","none");mapLayer.appendChild(img);
- }
- const active=new Set((bans?.bans||[]).map(b=>b.country_code));
+ const active=new Set((bans?.bans||[]).map(b=>b.country_code)),layers=[];
  for(const item of display){
-  const f=item.feature,geometry=item.geometry,code=f.properties["ISO3166-1-Alpha-3"],c=iso2[code],has=covered.has(c),hasBan=active.has(c);
-  const fill=!has?"#aab4c0":hasBan?"#dc5555":"#3185d5";
-  const path=document.createElementNS(NS,"path");path.setAttribute("d",geometryPath(geometry,project));path.setAttribute("class","country");path.setAttribute("fill",fill);path.setAttribute("fill-rule","evenodd");path.addEventListener("click",()=>showCountry(code,bans));
-  const title=document.createElementNS(NS,"title");title.textContent=names[code];path.appendChild(title);mapLayer.appendChild(path);
-  const countryPts=allPoints(geometry.coordinates),cx=(Math.min(...countryPts.map(p=>p[0]))+Math.max(...countryPts.map(p=>p[0])))/2,cy=(Math.min(...countryPts.map(p=>p[1]))+Math.max(...countryPts.map(p=>p[1])))/2;
-  const pos=project([cx,cy]),label=document.createElementNS(NS,"text");label.setAttribute("x",pos[0]);label.setAttribute("y",pos[1]);label.setAttribute("class","country-label");label.textContent=names[code];label.addEventListener("click",()=>showCountry(code,bans));mapLayer.appendChild(label);
+  const f=item.feature,geometry=item.geometry,code=f.properties["ISO3166-1-Alpha-3"],c=iso2[code],has=covered.has(c),hasBan=active.has(c),fill=!has?"#aab4c0":hasBan?"#dc5555":"#3185d5";
+  const layer=L.geoJSON(geometry,{style:{color:"#174f70",weight:1,fillColor:fill,fillOpacity:.42},onEachFeature:(feature,lyr)=>{lyr.bindTooltip(names[code],{sticky:true});lyr.on("click",()=>showCountry(code,bans));}});
+  layer.addTo(map);layers.push(layer);
+  const pts=allPoints(geometry.coordinates),center=L.latLng((Math.min(...pts.map(p=>p[1]))+Math.max(...pts.map(p=>p[1])))/2,(Math.min(...pts.map(p=>p[0]))+Math.max(...pts.map(p=>p[0])))/2);
+  L.marker(center,{interactive:false,icon:L.divIcon({className:"country-label",html:esc(names[code]),iconSize:[100,18],iconAnchor:[50,9]})}).addTo(map);
  }
- const attribution=document.createElementNS(NS,"text");attribution.setAttribute("x","990");attribution.setAttribute("y","640");attribution.setAttribute("text-anchor","end");attribution.setAttribute("font-size","10");attribution.setAttribute("fill","#263746");attribution.textContent="© OpenStreetMap contributors";svg.appendChild(attribution);
+ euBounds=L.latLngBounds(layers.map(x=>x.getBounds()));map.fitBounds(euBounds,{padding:[18,18]});
  status.textContent=bans?"Карта загружена: все 27 стран ЕС. Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по 18 из 27 стран.":"Границы загружены. Календарь запретов временно недоступен.";
-}catch(e){status.textContent="Ошибка загрузки карты: "+e.message;svg.replaceChildren();const t=document.createElementNS(NS,"text");t.setAttribute("x","500");t.setAttribute("y","325");t.setAttribute("text-anchor","middle");t.setAttribute("fill","#a22");t.textContent="Не удалось загрузить данные карты";svg.appendChild(t);console.error(e);}
+ setTimeout(()=>map.invalidateSize(),150);
+}catch(e){status.textContent="Ошибка загрузки карты: "+e.message;document.getElementById("map").innerHTML="<p style='padding:24px;color:#a22'>Не удалось загрузить интерактивную карту: "+esc(e.message)+"</p>";console.error(e);}
 })();
 </script>
 </body></html>
