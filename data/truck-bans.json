@@ -2,12 +2,75 @@
   "source": "Nakordoni",
   "attribution": "Data by nakordoni.eu",
   "source_url": "https://nakordoni.eu/en/developers/docs/truck-bans",
-  "generated_at": "2026-11-01T12:58:06.095Z",
+  "generated_at": "2026-11-01T14:56:29.901Z",
   "window": {
     "from": "2026-11-01",
     "to": "2026-11-07",
     "days": 7
   },
+  "provider_response_count": 2,
+  "provider_audit": [
+    {
+      "country": "LT",
+      "from": "2026-11-01",
+      "to": "2026-11-07",
+      "returned": null,
+      "total_available": null,
+      "truncated": false,
+      "extracted": 0,
+      "window": {
+        "from": "2026-11-01",
+        "to": "2026-11-07",
+        "days": 7,
+        "requested": true
+      }
+    },
+    {
+      "country": "PL",
+      "from": "2026-11-01",
+      "to": "2026-11-07",
+      "returned": 1,
+      "total_available": 1,
+      "truncated": false,
+      "extracted": 4,
+      "window": {
+        "from": "2026-11-01",
+        "to": "2026-11-07",
+        "days": 7,
+        "requested": true
+      }
+    }
+  ],
+  "completeness_status": "partial_unverified",
+  "completeness_warnings": [
+    "Failed AT: Nakordoni AT 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed BE: Nakordoni BE 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed BG: Nakordoni BG 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed HR: Nakordoni HR 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed CY: Nakordoni CY 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed CZ: Nakordoni CZ 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed DK: Nakordoni DK 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed EE: Nakordoni EE 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed FI: Nakordoni FI 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed FR: Nakordoni FR 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed DE: Nakordoni DE 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed GR: Nakordoni GR 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed HU: Nakordoni HU 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed IE: Nakordoni IE 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed IT: Nakordoni IT 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed LV: Nakordoni LV 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed LU: Nakordoni LU 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed MT: Nakordoni MT 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed NL: Nakordoni NL 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed PT: Nakordoni PT 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed RO: Nakordoni RO 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed SK: Nakordoni SK 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed SI: Nakordoni SI 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed ES: Nakordoni ES 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed SE: Nakordoni SE 2026-11-01..2026-11-07 HTTP 200 {}",
+    "Failed CH: Nakordoni CH 2026-11-01..2026-11-07 HTTP 200 {}"
+  ],
+  "status_note": "Not independently verified against official country authorities or TrafficBan. Missing bans do not prove unrestricted travel.",
   "covered_countries": [
     "AT",
     "BE",
@@ -34,15 +97,7 @@
     "SK"
   ],
   "countries_not_covered": [
-    "CY",
-    "Denmark",
-    "Estonia",
-    "Finland",
-    "IE",
-    "LT",
-    "LV",
-    "MT",
-    "NL"
+    "Lithuania"
   ],
   "bans": [
     {
@@ -55,6 +110,12 @@
       "restriction_type": "Holiday",
       "restriction_details": "All Saints' Day",
       "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-01",
+      "time_from": "08:00",
+      "time_until": "22:00",
+      "country_code": "PL"
     }
   ]
 }
