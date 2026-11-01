@@ -310,6 +310,8 @@ header .header-community{flex:0 0 100%;width:100%;display:flex;align-items:cente
 header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent)}
 @media(max-width:680px){header{row-gap:9px!important}header .header-community{font-size:10px;letter-spacing:3px;gap:10px;padding:9px 0 0}header .community-rule{max-width:45px}}
 @media(max-width:380px){header .header-community{font-size:9px;letter-spacing:2px}}
+
+.national-status-note{padding:12px;border-radius:10px;border:1px solid #a4d8c3;background:#eaf8f1;margin:12px 0;color:#174c3d}.national-status-note p{font-size:12px;line-height:1.5}.national-status-note a{font-size:12px}
 </style>
 </head>
 <body>
@@ -402,6 +404,12 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
    return true;
   }
   const records=rawRecords.filter(isNationalTruckBan);
+  // Published 2026 industry overview of countries without GENERAL nationwide truck bans.
+  // Regional, ADR, special-event and route restrictions can still apply.
+  const noGeneralBanCountries=new Set(["AL","BE","BA","CY","DK","EE","FI","GB","IE","LV","LT","MT","MD","ME","NL","MK","NO","PT","RS","ES","SE","BG","RO","GR"]);
+  const noGeneralBanSource="https://dhl-freight-connections.com/en/business/truck-driving-bans-in-europe-in-the-summer-holidays-2026/";
+  const noGeneralBan=code=>noGeneralBanCountries.has(iso2[code]);
+
   const roadData=nr.ok?await nr.json():null;
   const roadEvents=Array.isArray(roadData?.events)?roadData.events:[];
   const napCount=code=>roadEvents.filter(e=>[e.jurisdiction,e.country,e.country_code,e.countryCode,e.iso3,e.location?.country].some(v=>String(v||"").toUpperCase()===code||String(v||"").toUpperCase()===iso2[code])).length;
@@ -510,12 +518,13 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
     const timeRanges=[...new Set(dayRows.map(r=>{const a=String(r.time_from||"").trim(),b=String(r.time_until||"").trim();return a||b?(a||"—")+"–"+(b||"—"):"";}).filter(Boolean))];
     return '<div class="week-day"><strong>'+esc(dateLabel(d))+'</strong><span>'+(dayRows.length?dayRows.length+' записей':'Нет данных')+'</span>'+(timeRanges.length?'<small>🕒 '+timeRanges.slice(0,3).map(esc).join(", ")+(timeRanges.length>3?' и ещё '+(timeRanges.length-3):'')+'</small>':'')+'</div>';
    }).join("")+'</div></section>';
+   if(noGeneralBan(code)&&!rows.length)html+='<section class="national-status-note"><b>🟢 Общенациональный запрет не установлен в справочнике 2026 года</b><p>По опубликованному обзору DHL Freight для обычных грузовиков нет общего запрета по всей стране. Это не подтверждение свободного проезда по любому маршруту: местные, региональные, ADR и временные ограничения необходимо проверять отдельно.</p><a href="'+noGeneralBanSource+'" target="_blank" rel="noopener noreferrer">Источник: DHL Freight (2026)</a></section>';
    if(rows.length){html+='<p><b>Записи об ограничениях: '+rows.length+'</b></p>'+rows.slice(0,30).map(r=>'<section style="padding:8px;margin:7px 0;background:#fff;border-radius:8px"><b>'+esc(r.restriction_type||"Ограничение")+'</b><div>'+esc(r.time_from||"")+(r.time_until?' — '+esc(r.time_until):"")+'</div><small>'+esc(r.restriction_details||"")+'</small>'+(r.details_url&&/^https:\/\//.test(r.details_url)?'<div><a target="_blank" rel="noopener noreferrer" href="'+esc(r.details_url)+'">Источник записи</a></div>':"")+'</section>').join("");}
    else html+='<p>На эту дату подтверждённых записей в подключённом календаре нет. <b>Это не означает, что движение разрешено.</b></p>';
    html+='<small>Источник доступных записей: ранее загруженный Nakordoni; данные могут быть неполными или устаревшими. '+(all.length?'Всего записей по стране в файле: '+all.length+'.':'Нет записей по стране.')+' Проверяйте актуальные ограничения по официальным правилам и в виджете TrafficBan ниже.</small>';
    info.innerHTML=html;
   }
-  const hasVerifiedNoBan=code=>rawRecords.some(r=>r.country_code===iso2[code]&&r.date===selectedDate&&r.verification_status==="official_confirmed_no_ban"&&r.restriction_type==="No ban");
+  const hasVerifiedNoBan=code=>noGeneralBan(code)&&!rowsFor(code).length;
   const style=f=>{const code=f.properties["ISO3166-1-Alpha-3"];return {color:"#287e80",weight:1.5,fillColor:rowsFor(code).length?"#e9996c":hasVerifiedNoBan(code)?"#168e89":"#9ba9af",fillOpacity:.48};};
   const layer=L.geoJSON({type:"FeatureCollection",features},{style,onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.on("click",()=>{show(code);showSelectedOnMap(code);});}}).addTo(map);
   const mapLabels=L.layerGroup();
