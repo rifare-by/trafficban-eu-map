@@ -19,6 +19,7 @@ main{max-width:1100px;margin:auto;padding:14px}#map{height:65vh;min-height:430px
 <header><h1>Запреты движения грузовиков — Европейский союз</h1><p>Карта стран ЕС и официальный виджет TrafficBan</p></header>
 <main>
 <div id="map"></div>
+<div class="downloads" style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0"><button id="kmlBtn" disabled style="padding:12px 16px;border:0;border-radius:9px;background:#174f91;color:white;font-weight:700">Скачать KML</button><button id="kmzBtn" disabled style="padding:12px 16px;border:0;border-radius:9px;background:#174f91;color:white;font-weight:700">Скачать KMZ</button></div>
 <p class="note">Границы стран показаны для ориентира. Синяя заливка имеет прозрачность 70%. Сведения о запретах движения отображаются только в официальном виджете TrafficBan ниже; автоматическое извлечение данных в подписи стран пока не подключено.</p>
 <section class="widget"><h2>Запреты TrafficBan</h2>
 <iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&language=ru" title="TrafficBan — запреты движения" loading="lazy"></iframe>
@@ -26,21 +27,38 @@ main{max-width:1100px;margin:auto;padding:14px}#map{height:65vh;min-height:430px
 <p class="note">Географические границы: Natural Earth через набор datasets/geo-countries. Данные о запретах: только TrafficBan.</p>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 const eu = new Set(["AUT","BEL","BGR","HRV","CYP","CZE","DNK","EST","FIN","FRA","DEU","GRC","HUN","IRL","ITA","LVA","LTU","LUX","MLT","NLD","POL","PRT","ROU","SVK","SVN","ESP","SWE"]);
 const ru = {AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция"};
+let euFeatures=[];
 const map=L.map("map").setView([51,12],4);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
 fetch("https://raw.githubusercontent.com/datasets/geo-countries/main/data/countries.geojson")
 .then(r=>{if(!r.ok)throw new Error("Не удалось загрузить границы");return r.json()})
 .then(data=>{
  const features=data.features.filter(f=>eu.has(f.properties["ISO3166-1-Alpha-3"]));
+ euFeatures=features;
  const layer=L.geoJSON(features,{style:{color:"#174f91",weight:1.5,fillColor:"#3185d5",fillOpacity:.3}}).addTo(map);
  features.forEach(f=>{
   const code=f.properties["ISO3166-1-Alpha-3"], countryLayer=L.geoJSON(f), center=countryLayer.getBounds().getCenter();
   L.marker(center,{interactive:false,icon:L.divIcon({className:"country-label",html:ru[code]||code,iconSize:null})}).addTo(map);
  });
  map.fitBounds(layer.getBounds(),{padding:[12,12]});
+ document.getElementById("kmlBtn").disabled=false;
+ document.getElementById("kmzBtn").disabled=false;
+ const esc=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
+ const ringXml=ring=>"<LinearRing><coordinates>"+ring.map(p=>p[0]+","+p[1]+",0").join(" ")+"</coordinates></LinearRing>";
+ const polygonXml=poly=>"<Polygon><outerBoundaryIs>"+ringXml(poly[0])+"</outerBoundaryIs>"+poly.slice(1).map(r=>"<innerBoundaryIs>"+ringXml(r)+"</innerBoundaryIs>").join("")+"</Polygon>";
+ const geometryXml=g=>g.type==="Polygon"?polygonXml(g.coordinates):g.type==="MultiPolygon"?"<MultiGeometry>"+g.coordinates.map(polygonXml).join("")+"</MultiGeometry>":"";
+ const kml=()=>`<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Страны ЕС — TrafficBan</name>
+<Style id="eu"><LineStyle><color>ff914f17</color><width>1.5</width></LineStyle><PolyStyle><color>4dd58531</color><fill>1</fill><outline>1</outline></PolyStyle></Style>
+${euFeatures.map(f=>{const code=f.properties["ISO3166-1-Alpha-3"],name=ru[code]||code;return "<Placemark><name>"+esc(name)+"</name><description><![CDATA[Данные о запретах движения: официальный виджет TrafficBan — https://trafficban.com/plugins/box.html?language=ru]]></description><styleUrl>#eu</styleUrl>"+geometryXml(f.geometry)+"</Placemark>"}).join("")}
+</Document></kml>`;
+ const download=(blob,name)=>{const a=document.createElement("a");const u=URL.createObjectURL(blob);a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)};
+ document.getElementById("kmlBtn").onclick=()=>download(new Blob([kml()],{type:"application/vnd.google-earth.kml+xml"}),"trafficban-eu-map.kml");
+ document.getElementById("kmzBtn").onclick=async()=>{const zip=new JSZip();zip.file("doc.kml",kml());download(await zip.generateAsync({type:"blob"}),"trafficban-eu-map.kmz")};
 })
 .catch(e=>{document.querySelector(".note").textContent="Не удалось загрузить границы стран. Проверьте подключение к интернету и обновите страницу.";console.error(e)});
 </script>
