@@ -53,18 +53,9 @@ const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"
 let covered=new Set();
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function isMainTruckBan(b){
- const type=String(b?.restriction_type||"").trim().toLowerCase();
- const details=String(b?.restriction_details||b?.details||"").trim().toLowerCase();
- const text=type+" "+details;
- // Исключаем только местные ограничения.
- if(/^(local|municipal|city|urban)$/i.test(type))return false;
- // ADR и перевозка опасных грузов не относятся к общим запретам для грузовиков.
- if(/\badr\b|dangerous goods|hazardous goods|hazmat|dangerous cargo|gefahrgut|mati[eè]res dangereuses|mercanc[ií]as peligrosas|merci pericolose|gevaarlijke stoffen|опасн\w* груз|опасн\w* веществ/i.test(text))return false;
- // Исключаем ограничения, привязанные к конкретным дорогам/участкам.
- // Общие формулировки "all roads" / "nationwide" сами по себе не исключаются.
- if(/\b(?:A|AP|N|D|E|M|R|B|L|SR|Z)\s?-?\d{1,4}\b/i.test(details))return false;
- if(/selected road sections|specific road sections|on (?:the )?(?:motorway|highway|road|route)\s|between [^,;]{2,50} and [^,;]{2,50}|from exit\s|road section\s|section of (?:the )?(?:motorway|highway|road)/i.test(details))return false;
- return true;
+ // Не отбрасываем ограничения по типу, сезону, региону, дорогам или ADR.
+ // Все записи источника должны быть доступны в календаре.
+ return !!b;
 }
 function mainTruckBans(list){return (list||[]).filter(isMainTruckBan);}
 function ruType(v){return ({Sunday:"Воскресный запрет",Holiday:"Праздничный запрет","Regional Holiday":"Региональный запрет",General:"Общее ограничение",Seasonal:"Сезонное ограничение",Local:"Местное ограничение"})[v]||({Restriction:"Ограничение"})[v]||v||"Ограничение";}
