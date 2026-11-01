@@ -269,6 +269,18 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 .dashboard{display:block!important}
 .map-column{width:100%}
 @media(max-width:680px){.summary-column{padding:16px 12px}.date-strip{margin-top:12px}}
+
+/* Prioritize selected-country details; keep secondary statistics quiet */
+.summary-column .summary-stats{display:flex!important;flex-wrap:wrap;gap:7px;margin-top:16px;opacity:.8}
+.summary-column .stat-row{flex:1 1 180px;min-height:0;padding:8px 10px!important;border-radius:9px!important;font-size:11px!important;font-weight:500!important;background:#f1f6f6!important;color:#61787c!important;gap:8px}
+.summary-column .stat-row b{font-size:13px!important;font-weight:650!important;color:#526b70!important}
+.week-forecast{margin:16px 0;padding:12px;border:1px solid #d1e5e5;border-radius:12px;background:#fff!important}
+.week-forecast h4{margin:0 0 6px;font-size:16px;color:#126d6a}
+.week-note{font-size:12px;color:#617b80}
+.week-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px}
+.week-day{display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:9px;background:#edf7f7;border:1px solid #d4e7e7;overflow-wrap:anywhere}
+.week-day strong{font-size:13px}.week-day span{font-size:12px}.week-day small{font-size:11px;line-height:1.5}
+@media(max-width:680px){.week-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.summary-column .stat-row{flex-basis:130px}}
 </style>
 </head>
 <body>
@@ -281,7 +293,7 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 </div>
 </section>
 <nav class="date-strip" id="dateStrip" aria-label="Даты календаря запретов"></nav>
-<aside class="summary-column"><div class="summary-heading"><span class="summary-icon">🇪🇺</span><div><h2>Европа</h2><p>Ограничения на выбранную дату</p></div></div><div class="summary-stats" id="summaryStats"><div class="stat-row uncertain">Загрузка информации…</div></div><h3>Информация по стране</h3><div class="info" id="countryInfo"><div class="empty-country"><div class="empty-country-icon">⌖</div><div><strong>Выберите страну на карте</strong><span>Нажмите на флажок или контур страны, чтобы посмотреть ограничения.</span></div></div></div></aside>
+<aside class="summary-column"><div class="summary-heading"><span class="summary-icon">🇪🇺</span><div><h2>Европа</h2><p>Ограничения на выбранную дату</p></div></div><h3>Информация по стране</h3><div class="info" id="countryInfo"><div class="empty-country"><div class="empty-country-icon">⌖</div><div><strong>Выберите страну на карте</strong><span>Нажмите на флажок или контур страны, чтобы посмотреть ограничения.</span></div></div></div><div class="summary-stats" id="summaryStats"><div class="stat-row uncertain">Загрузка информации…</div></div></aside>
 <section aria-labelledby="twoDayHeading"><h2 class="two-day-heading" id="twoDayHeading">🇪🇺 Ограничения по странам — сегодня и завтра</h2><p class="note">Нажмите на страну, чтобы открыть подробности. Отсутствие записей Nakordoni не означает отсутствие запрета.</p><div id="twoDayGrid" class="two-day-grid" aria-live="polite"></div></section>
 <div class="legend"><span><i class="dot" style="background:#e74c62"></i> Запрет указан</span><span><i class="dot" style="background:#9ba9af"></i> Нет подтверждённых данных</span><span><i class="dot" style="background:#168e89"></i> Статус зависит от условий</span></div>
 <p class="note" id="dataStatus">Загрузка данных…</p>
@@ -354,7 +366,7 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 
   function rowsFor(code){return records.filter(r=>r.country_code===iso2[code]&&r.date===selectedDate);}
   function render(){
-   stats.innerHTML='<div class="stat-row"><span>Страны Европы на карте</span><b>'+features.length+' / 27</b></div><div class="stat-row uncertain"><span>Страны с записями на дату</span><b>'+new Set(records.filter(r=>r.date===selectedDate).map(r=>r.country_code)).size+'</b></div>';
+   stats.innerHTML='<div class="stat-row"><span>Страны Европы на карте</span><b>'+features.length+'</b></div><div class="stat-row uncertain"><span>Страны с записями на дату</span><b>'+new Set(records.filter(r=>r.date===selectedDate).map(r=>r.country_code)).size+'</b></div>';
    const dates=(days.length?days:[today]);
    const selectedIndex=dates.indexOf(selectedDate);
    const fmt=d=>{const dt=new Date(d+"T12:00:00Z");return {weekday:new Intl.DateTimeFormat("ru-RU",{weekday:"short",timeZone:"UTC"}).format(dt),day:new Intl.DateTimeFormat("ru-RU",{day:"numeric",month:"short",timeZone:"UTC"}).format(dt)};};
@@ -368,7 +380,7 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
   }
   function show(code){
    selectedCountry=code;const rows=rowsFor(code),all=records.filter(r=>r.country_code===iso2[code]);
-   let html='<h3>'+esc(EU[code])+'</h3><p><b>Дата:</b> '+esc(selectedDate)+'</p><p><b>NAPSPAN:</b> '+napCount(code)+' дорожных событий в загруженном наборе (без подтверждения официальными ведомствами).</p><p><a href="https://transport.ec.europa.eu/transport-themes/smart-mobility/road/its-directive-and-action-plan/national-access-points_en" target="_blank" rel="noopener noreferrer">Официальный каталог национальных дорожных источников ЕС</a></p>';
+   let html='<h3>'+flag(code)+' '+esc(EU[code])+'</h3><p><b>Дата:</ '+esc(selectedDate)+'</p><p><b>NAPSPAN:</b> '+napCount(code)+' дорожных событий в загруженном наборе (без подтверждения официальными ведомствами).</p><p><a href="https://transport.ec.europa.eu/transport-themes/smart-mobility/road/its-directive-and-action-plan/national-access-points_en" target="_blank" rel="noopener noreferrer">Официальный каталог национальных дорожных источников ЕС</a></p>';
    if(code==="DEU"){
     const dow=new Date(selectedDate+"T12:00:00Z").getUTCDay();
     html+='<section style="background:#e8f6f0;padding:12px;border-radius:10px;margin:10px 0"><b>Официальные правила Германии (§30 StVO)</b><p>Грузовики свыше 7,5 т и грузовики с прицепом: воскресенья и установленные праздники, 00:00–22:00. Исключения и региональные праздники необходимо проверять отдельно.</p>'+(dow===0?'<p><b>На выбранную дату приходится воскресенье: действует общий воскресный запрет 00:00–22:00 (с учётом исключений).</b></p>':'<p>Выбранная дата не является воскресеньем. Возможны праздничные, региональные и сезонные запреты.</p>')+'<p>Июль–август: дополнительные субботние запреты 07:00–20:00 на определённых дорогах.</p><a href="https://verwaltung.bund.de/leistungsverzeichnis/EN/leistung/99108058006000/herausgeber/MV-105760631/region/130000000000" target="_blank" rel="noopener noreferrer">Государственный источник Германии</a></section>';
@@ -420,6 +432,13 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
    if(["NOR","GBR","ISL","ALB","AND","BIH","MNE","MKD","SRB","MDA","UKR","BLR","TUR","SMR","MCO","VAT"].includes(code)){
     html+='<section style="background:#eef3f4;padding:12px;border-radius:10px;margin:10px 0"><b>Грузовые ограничения: '+esc(EU[code])+'</b><p>Страна добавлена на карту. Официальный календарь запретов ещё не подключён. Проверяйте местные ограничения по массе, времени, маршруту и типу груза перед поездкой.</p></section>';
    }
+   const weekDates=Array.from({length:7},(_,i)=>dayPlus(today,i));
+   const dateLabel=d=>new Intl.DateTimeFormat("ru-RU",{weekday:"short",day:"numeric",month:"short",timeZone:"UTC"}).format(new Date(d+"T12:00:00Z"));
+   html+='<section class="week-forecast"><h4>📅 Ограничения на ближайшие 7 дней</h4><p class="week-note">По загруженным записям Nakordoni. Отсутствие записей не означает разрешение движения.</p><div class="week-grid">'+weekDates.map(d=>{
+    const dayRows=all.filter(r=>r.date===d);
+    const timeRanges=[...new Set(dayRows.map(r=>{const a=String(r.time_from||"").trim(),b=String(r.time_until||"").trim();return a||b?(a||"—")+"–"+(b||"—"):"";}).filter(Boolean))];
+    return '<div class="week-day"><strong>'+esc(dateLabel(d))+'</strong><span>'+(dayRows.length?dayRows.length+' записей':'Нет данных')+'</span>'+(timeRanges.length?'<small>🕒 '+timeRanges.slice(0,3).map(esc).join(", ")+(timeRanges.length>3?' и ещё '+(timeRanges.length-3):'')+'</small>':'')+'</div>';
+   }).join("")+'</div></section>';
    if(rows.length){html+='<p><b>Записи об ограничениях: '+rows.length+'</b></p>'+rows.slice(0,30).map(r=>'<section style="padding:8px;margin:7px 0;background:#fff;border-radius:8px"><b>'+esc(r.restriction_type||"Ограничение")+'</b><div>'+esc(r.time_from||"")+(r.time_until?' — '+esc(r.time_until):"")+'</div><small>'+esc(r.restriction_details||"")+'</small>'+(r.details_url&&/^https:\/\//.test(r.details_url)?'<div><a target="_blank" rel="noopener noreferrer" href="'+esc(r.details_url)+'">Источник записи</a></div>':"")+'</section>').join("");}
    else html+='<p>На эту дату подтверждённых записей в подключённом календаре нет. <b>Это не означает, что движение разрешено.</b></p>';
    html+='<small>Источник доступных записей: ранее загруженный Nakordoni; данные могут быть неполными или устаревшими. '+(all.length?'Всего записей по стране в файле: '+all.length+'.':'Нет записей по стране.')+' Проверяйте актуальные ограничения по официальным правилам и в виджете TrafficBan ниже.</small>';
