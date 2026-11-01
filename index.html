@@ -253,7 +253,7 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 <section class="dashboard" aria-label="Карта и сведения о запретах">
 <div class="map-column"><div class="map-date-note">Карта: статус на начало периода данных API</div>
 <div class="map-tools"><button type="button" id="zoomIn" aria-label="Приблизить">+</button><button type="button" id="zoomOut" aria-label="Отдалить">−</button><button type="button" class="reset" id="zoomReset">⤢ Сброс</button></div>
-<div id="map" role="application" aria-label="Интерактивная карта стран ЕС и Швейцарии"><p style="padding:24px;color:#526174">Загружается интерактивная карта…</p></div>
+<div id="map" role="application" aria-label="Интерактивная карта стран Европы"><p style="padding:24px;color:#526174">Загружается интерактивная карта…</p></div>
 </div>
 <aside class="summary-column"><div class="summary-heading"><span class="summary-icon">🇪🇺</span><div><h2>Европа</h2><p>Ограничения на выбранную дату</p></div></div><div class="summary-stats" id="summaryStats"><div class="stat-row uncertain">Загрузка информации…</div></div><h3>Информация по стране</h3><div class="info" id="countryInfo"><div class="empty-country"><div class="empty-country-icon">⌖</div><div><strong>Выберите страну на карте</strong><span>Нажмите на флажок или контур страны, чтобы посмотреть ограничения.</span></div></div></div></aside>
 </section>
@@ -266,13 +266,13 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 <script src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
 <script>
 (async function(){
- const EU={AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция"};
- const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
+ const EU={AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция",CHE:"Швейцария",LIE:"Лихтенштейн",NOR:"Норвегия",ISL:"Исландия",GBR:"Великобритания",ALB:"Албания",AND:"Андорра",BIH:"Босния и Герцеговина",MNE:"Черногория",MKD:"Северная Македония",SRB:"Сербия",MDA:"Молдова",UKR:"Украина",BLR:"Беларусь",TUR:"Турция",SMR:"Сан-Марино",MCO:"Монако",VAT:"Ватикан"};
+ const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE",CHE:"CH",LIE:"LI",NOR:"NO",ISL:"IS",GBR:"GB",ALB:"AL",AND:"AD",BIH:"BA",MNE:"ME",MKD:"MK",SRB:"RS",MDA:"MD",UKR:"UA",BLR:"BY",TUR:"TR",SMR:"SM",MCO:"MC",VAT:"VA"};
  const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
  const info=document.getElementById("countryInfo"),stats=document.getElementById("summaryStats"),status=document.getElementById("dataStatus"),strip=document.getElementById("dateStrip");
  document.querySelectorAll(".exports").forEach(e=>e.style.display="none");
  document.querySelectorAll('a[href="#exports"]').forEach(e=>e.style.display="none");
- document.querySelector(".map-date-note").textContent="27 стран Евросоюза · выберите страну для просмотра доступных записей";
+ document.querySelector(".map-date-note").textContent="Европа: ЕС и соседние страны · нажмите на страну";
  const map=L.map("map",{zoomControl:true,minZoom:2,maxZoom:13}).setView([51.2,13.5],4);
  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
  document.getElementById("zoomIn")?.addEventListener("click",()=>map.zoomIn());
@@ -293,7 +293,7 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
   let selectedCountry=null;
   function rowsFor(code){return records.filter(r=>r.country_code===iso2[code]&&r.date===selectedDate);}
   function render(){
-   stats.innerHTML='<div class="stat-row"><span>Страны Евросоюза на карте</span><b>'+features.length+' / 27</b></div><div class="stat-row uncertain"><span>Страны с записями на дату</span><b>'+new Set(records.filter(r=>r.date===selectedDate).map(r=>r.country_code)).size+'</b></div>';
+   stats.innerHTML='<div class="stat-row"><span>Страны Европы на карте</span><b>'+features.length+' / 27</b></div><div class="stat-row uncertain"><span>Страны с записями на дату</span><b>'+new Set(records.filter(r=>r.date===selectedDate).map(r=>r.country_code)).size+'</b></div>';
    const dates=(days.length?days:[today]);
    const selectedIndex=dates.indexOf(selectedDate);
    const fmt=d=>{const dt=new Date(d+"T12:00:00Z");return {weekday:new Intl.DateTimeFormat("ru-RU",{weekday:"short",timeZone:"UTC"}).format(dt),day:new Intl.DateTimeFormat("ru-RU",{day:"numeric",month:"short",timeZone:"UTC"}).format(dt)};};
@@ -352,6 +352,12 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
     };
     const r=guides[code];
     html+='<section style="background:#e8f6f0;padding:12px;border-radius:10px;margin:10px 0"><b>Правила и ограничения: '+r.name+'</b><p>'+r.description+'</p><p><b>Статус:</b> справочная информация. Автоматический календарь официальных запретов для этой страны пока не подключён.</p><p><a href="'+r.url+'" target="_blank" rel="noopener noreferrer">'+r.source+'</a></p></section>';
+   }
+   if(code==="CHE"||code==="LIE"){
+    html+='<section style="background:#e8f6f0;padding:12px;border-radius:10px;margin:10px 0"><b>Грузовые ограничения: '+esc(EU[code])+'</b><p>Для тяжёлого грузового транспорта действуют общие воскресные и праздничные ограничения, а также ночной запрет (как правило, 22:00–05:00). Проверяйте категорию ТС, допустимую массу, исключения и конкретный кантон/маршрут.</p><p><b>Статус:</b> справочные правила, автоматическая проверка праздников ещё не подключена.</p><a href="'+(code==="CHE"?"https://www.astra.admin.ch/":"https://www.llv.li/")+'" target="_blank" rel="noopener noreferrer">Официальный государственный портал</a></section>';
+   }
+   if(["NOR","GBR","ISL","ALB","AND","BIH","MNE","MKD","SRB","MDA","UKR","BLR","TUR","SMR","MCO","VAT"].includes(code)){
+    html+='<section style="background:#eef3f4;padding:12px;border-radius:10px;margin:10px 0"><b>Грузовые ограничения: '+esc(EU[code])+'</b><p>Страна добавлена на карту. Официальный календарь запретов ещё не подключён. Проверяйте местные ограничения по массе, времени, маршруту и типу груза перед поездкой.</p></section>';
    }
    if(rows.length){html+='<p><b>Записи об ограничениях: '+rows.length+'</b></p>'+rows.slice(0,30).map(r=>'<section style="padding:8px;margin:7px 0;background:#fff;border-radius:8px"><b>'+esc(r.restriction_type||"Ограничение")+'</b><div>'+esc(r.time_from||"")+(r.time_until?' — '+esc(r.time_until):"")+'</div><small>'+esc(r.restriction_details||"")+'</small>'+(r.details_url&&/^https:\/\//.test(r.details_url)?'<div><a target="_blank" rel="noopener noreferrer" href="'+esc(r.details_url)+'">Источник записи</a></div>':"")+'</section>').join("");}
    else html+='<p>На эту дату подтверждённых записей в подключённом календаре нет. <b>Это не означает, что движение разрешено.</b></p>';
