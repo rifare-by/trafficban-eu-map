@@ -2,13 +2,13 @@
   "source": "Nakordoni + published recurring rules",
   "attribution": "Nakordoni data and cited national rules",
   "source_url": "https://nakordoni.eu/en/developers/docs/truck-bans",
-  "generated_at": "2026-11-01T15:48:04.591Z",
+  "generated_at": "2026-11-01T16:31:01.204Z",
   "window": {
     "from": "2026-11-01",
     "to": "2026-11-07",
     "days": 7
   },
-  "provider_response_count": 70,
+  "provider_response_count": 80,
   "provider_audit": [
     {
       "country": "AT",
@@ -231,6 +231,40 @@
     },
     {
       "country": "DK",
+      "from": "2026-11-01",
+      "to": "2026-11-07",
+      "returned": null,
+      "total_available": null,
+      "truncated": false,
+      "extracted": 0,
+      "window": {
+        "from": "2026-11-01",
+        "to": "2026-11-07",
+        "days": 7,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "EE",
       "from": "2026-11-01",
       "to": "2026-11-07",
       "returned": null,
@@ -642,6 +676,302 @@
         "from": "2026-11-01",
         "to": "2026-11-07",
         "days": 7,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "HU",
+      "from": "2026-11-01",
+      "to": "2026-11-07",
+      "returned": 9,
+      "total_available": 10,
+      "truncated": true,
+      "extracted": 22,
+      "window": {
+        "from": "2026-11-01",
+        "to": "2026-11-07",
+        "days": 7,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "HU",
+      "from": "2026-11-01",
+      "to": "2026-11-01",
+      "returned": 2,
+      "total_available": 3,
+      "truncated": true,
+      "extracted": 7,
+      "window": {
+        "from": "2026-11-01",
+        "to": "2026-11-01",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "HU",
+      "from": "2026-11-02",
+      "to": "2026-11-02",
+      "returned": 1,
+      "total_available": 1,
+      "truncated": false,
+      "extracted": 3,
+      "window": {
+        "from": "2026-11-02",
+        "to": "2026-11-02",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "HU",
+      "from": "2026-11-03",
+      "to": "2026-11-03",
+      "returned": 1,
+      "total_available": 1,
+      "truncated": false,
+      "extracted": 3,
+      "window": {
+        "from": "2026-11-03",
+        "to": "2026-11-03",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "HU",
+      "from": "2026-11-04",
+      "to": "2026-11-04",
+      "returned": 1,
+      "total_available": 1,
+      "truncated": false,
+      "extracted": 3,
+      "window": {
+        "from": "2026-11-04",
+        "to": "2026-11-04",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "HU",
+      "from": "2026-11-05",
+      "to": "2026-11-05",
+      "returned": 1,
+      "total_available": 1,
+      "truncated": false,
+      "extracted": 3,
+      "window": {
+        "from": "2026-11-05",
+        "to": "2026-11-05",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "HU",
+      "from": "2026-11-06",
+      "to": "2026-11-06",
+      "returned": 1,
+      "total_available": 1,
+      "truncated": false,
+      "extracted": 3,
+      "window": {
+        "from": "2026-11-06",
+        "to": "2026-11-06",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "HU",
+      "from": "2026-11-07",
+      "to": "2026-11-07",
+      "returned": 2,
+      "total_available": 2,
+      "truncated": false,
+      "extracted": 5,
+      "window": {
+        "from": "2026-11-07",
+        "to": "2026-11-07",
+        "days": 1,
         "requested": true
       },
       "keys": [
@@ -1880,7 +2210,7 @@
       "returned": 13,
       "total_available": 13,
       "truncated": false,
-      "extracted": 30,
+      "extracted": 31,
       "window": {
         "from": "2026-11-01",
         "to": "2026-11-07",
@@ -1918,6 +2248,43 @@
       "total_available": 7,
       "truncated": false,
       "extracted": 17,
+      "window": {
+        "from": "2026-11-01",
+        "to": "2026-11-07",
+        "days": 7,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "CH",
+      "from": "2026-11-01",
+      "to": "2026-11-07",
+      "returned": 13,
+      "total_available": 13,
+      "truncated": false,
+      "extracted": 29,
       "window": {
         "from": "2026-11-01",
         "to": "2026-11-07",
@@ -2541,17 +2908,16 @@
   ],
   "completeness_status": "partial_unverified",
   "completeness_warnings": [
-    "Failed EE: Nakordoni EE 2026-11-01..2026-11-07 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for EE, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Full-week response incomplete or inconsistent: FR; checking individual days",
     "Unverified day FR 2026-11-01",
-    "Failed HU: Nakordoni HU 2026-11-01..2026-11-07 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for HU, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
+    "Full-week response incomplete or inconsistent: HU; checking individual days",
+    "Unverified day HU 2026-11-01",
     "Full-week response incomplete or inconsistent: LU; checking individual days",
     "Unverified day LU 2026-11-01",
     "Full-week response incomplete or inconsistent: SK; checking individual days",
     "Unverified day SK 2026-11-01",
     "Full-week response incomplete or inconsistent: SI; checking individual days",
-    "Unverified day SI 2026-11-01",
-    "Failed CH: Nakordoni CH 2026-11-01..2026-11-07 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for CH, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null"
+    "Unverified day SI 2026-11-01"
   ],
   "status_note": "Not independently verified against official country authorities or TrafficBan. Missing bans do not prove unrestricted travel.",
   "covered_countries": [
@@ -2585,6 +2951,7 @@
     "Bosnia and Herzegovina",
     "Cyprus",
     "Denmark",
+    "Estonia",
     "Finland",
     "Iceland",
     "Ireland",
@@ -2696,6 +3063,23 @@
       "source": "official_rule_baseline",
       "verification_status": "rule_based_check_exceptions",
       "details_url": "https://www.usp.gv.at/en/themen/betrieb-und-umwelt/transport-und-verkehr/lkw-fahrverbote.html"
+    },
+    {
+      "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-01",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Sunday",
+      "restriction_details": "Sunday & public-holiday ban (year-round, full day; trucks >3.5t)",
+      "min_weight_tons": 3.5
+    },
+    {
+      "date": "2026-11-01",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "country_code": "CH"
     },
     {
       "country_code": "CH",
@@ -2830,12 +3214,6 @@
       "min_weight_tons": 7.5
     },
     {
-      "date": "2026-11-01",
-      "time_from": "16:00",
-      "time_until": "21:00",
-      "country_code": "ES"
-    },
-    {
       "country_code": "ES",
       "country_name": "Spain",
       "date": "2026-11-01",
@@ -2937,6 +3315,34 @@
       "time_from": "14:00",
       "time_until": "23:00",
       "country_code": "HR"
+    },
+    {
+      "country_code": "HU",
+      "country_name": "Hungary",
+      "date": "2026-11-01",
+      "time_from": "00:00",
+      "time_until": "22:00",
+      "details_url": "https://nakordoni.eu/s/hu",
+      "restriction_type": "Holiday",
+      "restriction_details": "Public holiday: All Saints Day. Sunday & public-holiday ban (year-round; trucks >7.5t)",
+      "min_weight_tons": 7.5
+    },
+    {
+      "country_code": "HU",
+      "country_name": "Hungary",
+      "date": "2026-11-01",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/hu",
+      "restriction_type": "Local",
+      "restriction_details": "Nat.route 42, Berettyóújfalu – Artánd, Nat.route 55 Szeged - M6",
+      "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-01",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "country_code": "HU"
     },
     {
       "country_code": "IT",
@@ -3169,6 +3575,23 @@
     },
     {
       "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-02",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
+    },
+    {
+      "date": "2026-11-02",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "country_code": "CH"
+    },
+    {
+      "country_code": "CH",
       "time_from": "00:00",
       "time_until": "05:00",
       "min_weight_tons": 3.5,
@@ -3179,6 +3602,17 @@
       "source": "official_rule_baseline",
       "verification_status": "rule_based_check_exceptions",
       "details_url": "https://www.fedlex.admin.ch/eli/cc/1962/1364_1409_1420/en"
+    },
+    {
+      "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-02",
+      "time_from": "22:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
     },
     {
       "country_code": "CH",
@@ -3203,6 +3637,12 @@
       "restriction_type": "Seasonal",
       "restriction_details": "trucks over 7.5 t; roads N-340, A-7, AP-7, N-124, N-232",
       "min_weight_tons": 7.5
+    },
+    {
+      "date": "2026-11-02",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "country_code": "ES"
     },
     {
       "country_code": "ES",
@@ -3242,6 +3682,23 @@
       "time_from": "06:00",
       "time_until": "10:00",
       "country_code": "FR"
+    },
+    {
+      "country_code": "HU",
+      "country_name": "Hungary",
+      "date": "2026-11-02",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/hu",
+      "restriction_type": "Local",
+      "restriction_details": "Nat.route 42, Berettyóújfalu – Artánd, Nat.route 55 Szeged - M6",
+      "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-02",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "country_code": "HU"
     },
     {
       "country_code": "LI",
@@ -3377,6 +3834,17 @@
     },
     {
       "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-03",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
+    },
+    {
+      "country_code": "CH",
       "time_from": "00:00",
       "time_until": "05:00",
       "min_weight_tons": 3.5,
@@ -3387,6 +3855,17 @@
       "source": "official_rule_baseline",
       "verification_status": "rule_based_check_exceptions",
       "details_url": "https://www.fedlex.admin.ch/eli/cc/1962/1364_1409_1420/en"
+    },
+    {
+      "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-03",
+      "time_from": "22:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
     },
     {
       "country_code": "CH",
@@ -3422,6 +3901,23 @@
       "restriction_type": "Seasonal",
       "restriction_details": "trucks over 7.5 t; roads A-8, N-634",
       "min_weight_tons": 7.5
+    },
+    {
+      "country_code": "HU",
+      "country_name": "Hungary",
+      "date": "2026-11-03",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/hu",
+      "restriction_type": "Local",
+      "restriction_details": "Nat.route 42, Berettyóújfalu – Artánd, Nat.route 55 Szeged - M6",
+      "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-03",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "country_code": "HU"
     },
     {
       "country_code": "LI",
@@ -3539,6 +4035,17 @@
     },
     {
       "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-04",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
+    },
+    {
+      "country_code": "CH",
       "time_from": "00:00",
       "time_until": "05:00",
       "min_weight_tons": 3.5,
@@ -3549,6 +4056,17 @@
       "source": "official_rule_baseline",
       "verification_status": "rule_based_check_exceptions",
       "details_url": "https://www.fedlex.admin.ch/eli/cc/1962/1364_1409_1420/en"
+    },
+    {
+      "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-04",
+      "time_from": "22:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
     },
     {
       "country_code": "CH",
@@ -3573,6 +4091,23 @@
       "restriction_type": "Seasonal",
       "restriction_details": "trucks over 7.5 t; roads N-340, A-7, AP-7, N-124, N-232",
       "min_weight_tons": 7.5
+    },
+    {
+      "country_code": "HU",
+      "country_name": "Hungary",
+      "date": "2026-11-04",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/hu",
+      "restriction_type": "Local",
+      "restriction_details": "Nat.route 42, Berettyóújfalu – Artánd, Nat.route 55 Szeged - M6",
+      "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-04",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "country_code": "HU"
     },
     {
       "country_code": "LI",
@@ -3679,6 +4214,17 @@
     },
     {
       "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-05",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
+    },
+    {
+      "country_code": "CH",
       "time_from": "00:00",
       "time_until": "05:00",
       "min_weight_tons": 3.5,
@@ -3689,6 +4235,17 @@
       "source": "official_rule_baseline",
       "verification_status": "rule_based_check_exceptions",
       "details_url": "https://www.fedlex.admin.ch/eli/cc/1962/1364_1409_1420/en"
+    },
+    {
+      "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-05",
+      "time_from": "22:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
     },
     {
       "country_code": "CH",
@@ -3713,6 +4270,23 @@
       "restriction_type": "Seasonal",
       "restriction_details": "trucks over 7.5 t; roads N-340, A-7, AP-7, N-124, N-232",
       "min_weight_tons": 7.5
+    },
+    {
+      "country_code": "HU",
+      "country_name": "Hungary",
+      "date": "2026-11-05",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/hu",
+      "restriction_type": "Local",
+      "restriction_details": "Nat.route 42, Berettyóújfalu – Artánd, Nat.route 55 Szeged - M6",
+      "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-05",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "country_code": "HU"
     },
     {
       "country_code": "LI",
@@ -3819,6 +4393,17 @@
     },
     {
       "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-06",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
+    },
+    {
+      "country_code": "CH",
       "time_from": "00:00",
       "time_until": "05:00",
       "min_weight_tons": 3.5,
@@ -3829,6 +4414,17 @@
       "source": "official_rule_baseline",
       "verification_status": "rule_based_check_exceptions",
       "details_url": "https://www.fedlex.admin.ch/eli/cc/1962/1364_1409_1420/en"
+    },
+    {
+      "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-06",
+      "time_from": "22:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
     },
     {
       "country_code": "CH",
@@ -3853,6 +4449,23 @@
       "restriction_type": "Seasonal",
       "restriction_details": "trucks over 7.5 t; roads N-340, A-7, AP-7, N-124, N-232",
       "min_weight_tons": 7.5
+    },
+    {
+      "country_code": "HU",
+      "country_name": "Hungary",
+      "date": "2026-11-06",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/hu",
+      "restriction_type": "Local",
+      "restriction_details": "Nat.route 42, Berettyóújfalu – Artánd, Nat.route 55 Szeged - M6",
+      "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-06",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "country_code": "HU"
     },
     {
       "country_code": "LI",
@@ -3994,6 +4607,17 @@
     },
     {
       "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-07",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
+    },
+    {
+      "country_code": "CH",
       "time_from": "00:00",
       "time_until": "05:00",
       "min_weight_tons": 3.5,
@@ -4004,6 +4628,17 @@
       "source": "official_rule_baseline",
       "verification_status": "rule_based_check_exceptions",
       "details_url": "https://www.fedlex.admin.ch/eli/cc/1962/1364_1409_1420/en"
+    },
+    {
+      "country_code": "CH",
+      "country_name": "Switzerland",
+      "date": "2026-11-07",
+      "time_from": "22:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/ch",
+      "restriction_type": "Seasonal",
+      "restriction_details": "Night ban (Art. 91 VRV)",
+      "min_weight_tons": 3.5
     },
     {
       "country_code": "CH",
@@ -4069,6 +4704,34 @@
       "source": "official_rule_baseline",
       "verification_status": "rule_based_check_exceptions",
       "details_url": "https://www.bison-fute.gouv.fr/"
+    },
+    {
+      "country_code": "HU",
+      "country_name": "Hungary",
+      "date": "2026-11-07",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/hu",
+      "restriction_type": "Local",
+      "restriction_details": "Nat.route 42, Berettyóújfalu – Artánd, Nat.route 55 Szeged - M6",
+      "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-07",
+      "time_from": "00:00",
+      "time_until": "23:59",
+      "country_code": "HU"
+    },
+    {
+      "country_code": "HU",
+      "country_name": "Hungary",
+      "date": "2026-11-07",
+      "time_from": "22:00",
+      "time_until": "23:59",
+      "details_url": "https://nakordoni.eu/s/hu",
+      "restriction_type": "Saturday",
+      "restriction_details": "Weekend ban begins (Sat & public-holiday eves from 22:00, running to 22:00 Sun/holiday) — trucks >7.5t. In July & August the Saturday ban starts earlier, at 15:00.",
+      "min_weight_tons": 7.5
     },
     {
       "country_code": "LI",
