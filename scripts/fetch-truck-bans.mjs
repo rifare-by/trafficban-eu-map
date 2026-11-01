@@ -34,14 +34,14 @@ async function request(country,a,b){
  const available=data.total_available??data.total_bans?.total_available;
  const truncated=data.truncated===true||data.total_bans?.truncated===true||(stats!=null&&available!=null&&Number(stats)<Number(available));
  const mismatch=stats!=null&&Number(stats)>0&&rows.length===0;
- const entry={country,from:a,to:b,returned:stats??null,total_available:available??null,truncated,extracted:rows.length,window:data.window??null};
+ const entry={country,from:a,to:b,returned:stats??null,total_available:available??null,truncated,extracted:rows.length,window:data.window??null,keys:Object.keys(data)};
  audit.push(entry);console.log("Nakordoni audit "+JSON.stringify(entry));
  for(const c of data.covered_countries||[])covered.add(c);
  for(const c of data.countries_not_covered||[])notCovered.add(c);
  for(const ban of rows){
   if(!ban.country_code||!ban.date||ban.date<from||ban.date>to)continue;
-  const k=[ban.country_code,ban.date,ban.time_from,ban.time_until,ban.restriction_type,ban.restriction_details,ban.details_url].join("|");
-  unique.set(k,ban);
+  const k=[ban.country_code,ban.date,ban.time_from,ban.time_until].join("|");
+  const previous=unique.get(k);if(!previous||Object.keys(ban).length>Object.keys(previous).length)unique.set(k,ban);
  }
  if(data.window?.from&&data.window.from!==a||data.window?.to&&data.window.to!==b)warnings.push("Window mismatch "+country+" "+a+".."+b);
  return {truncated,mismatch};
