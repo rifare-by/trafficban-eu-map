@@ -7,9 +7,9 @@ const EU = {
   FRA:"Франция", DEU:"Германия", GRC:"Греция", HUN:"Венгрия", IRL:"Ирландия",
   ITA:"Италия", LVA:"Латвия", LTU:"Литва", LUX:"Люксембург", MLT:"Мальта",
   NLD:"Нидерланды", POL:"Польша", PRT:"Португалия", ROU:"Румыния",
-  SVK:"Словакия", SVN:"Словения", ESP:"Испания", SWE:"Швеция"
+  SVK:"Словакия", SVN:"Словения", ESP:"Испания", SWE:"Швеция", CHE:"Швейцария", LIE:"Лихтенштейн", NOR:"Норвегия", ISL:"Исландия", GBR:"Великобритания", ALB:"Албания", AND:"Андорра", BIH:"Босния и Герцеговина", MNE:"Черногория", MKD:"Северная Македония", SRB:"Сербия", MDA:"Молдова", UKR:"Украина", BLR:"Беларусь", TUR:"Турция", SMR:"Сан-Марино", MCO:"Монако", VAT:"Ватикан"
 };
-const ISO2 = {AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
+const ISO2 = {AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE", CHE:"CH", LIE:"LI", NOR:"NO", ISL:"IS", GBR:"GB", ALB:"AL", AND:"AD", BIH:"BA", MNE:"ME", MKD:"MK", SRB:"RS", MDA:"MD", UKR:"UA", BLR:"BY", TUR:"TR", SMR:"SM", MCO:"MC", VAT:"VA"};
 const covered = new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK"]);
 // Preserve every API restriction type, including local, seasonal, road-specific and ADR.
 const mainBans = list => Array.isArray(list) ? list : [];
@@ -34,7 +34,7 @@ const geo = await geoResp.json();
 const features = geo.features.filter(f => EU[f.properties["ISO3166-1-Alpha-3"]]);
 await fs.mkdir("data", { recursive: true });
 await fs.writeFile("data/eu-countries.geojson", JSON.stringify({type:"FeatureCollection",features}));
-if (features.length !== 27) throw new Error("Expected 27 EU countries, got "+features.length);
+if (features.length < 27) throw new Error("Expected at least 27 EU countries, got "+features.length);
 const from=bans.window?.from||"", to=bans.window?.to||"";
 const generated=bans.generated_at||"";
 const placemarks = features.map(f => {
