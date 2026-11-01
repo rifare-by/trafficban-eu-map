@@ -140,7 +140,7 @@ try{
  covered=new Set((bans?.covered_countries||[]).filter(c=>Object.values(iso2).includes(c)));
  const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  const countryLabelMarkers=[];
- if(features.length!==28)throw new Error("В исходных границах найдено "+features.length+" стран Европы вместо 28");
+ if(features.length!==27)throw new Error("В исходных границах найдено "+features.length+" стран ЕС вместо 27");
  const display=features.map(f=>({feature:f,geometry:europeanGeometry(f.geometry)})).filter(x=>x.geometry);
  const missing=features.filter(f=>!display.some(x=>x.feature===f)).map(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  if(missing.length)throw new Error("Не найдены на европейской карте: "+missing.join(", "));
