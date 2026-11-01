@@ -342,7 +342,7 @@ try{
   countryLabelMarkers.push(labelMarker);
  }
  euBounds=L.latLngBounds(layers.map(x=>x.getBounds()));map.fitBounds(euBounds,{padding:[18,18]});refreshCountryLabels();
- status.textContent=bans?"Карта загружена: "+display.length+" из 28 стран (27 стран ЕС + Швейцария). Статус запретов на "+today+". Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по 18 из 27 стран ЕС. Швейцария показана отдельно по официальному правилу ASTRA: ночной запрет 22:00–05:00 и воскресный запрет на весь день. Праздничные запреты Швейцарии пока не рассчитываются автоматически.":"Границы загружены. Календарь запретов временно недоступен.";
+ status.textContent=bans?"Источник карты: Nakordoni API. Обновлено "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Период "+bans.window.from+" — "+bans.window.to+". Отсутствие записи не означает отсутствие запрета. Виджет TrafficBan ниже работает отдельно.":"Календарь Nakordoni недоступен. Виджет TrafficBan ниже работает отдельно.";
  setTimeout(()=>map.invalidateSize(),150);
 }catch(e){status.textContent="Ошибка загрузки карты: "+e.message;document.getElementById("map").innerHTML="<p style='padding:24px;color:#a22'>Не удалось загрузить интерактивную карту: "+esc(e.message)+"</p>";console.error(e);}
 })();
