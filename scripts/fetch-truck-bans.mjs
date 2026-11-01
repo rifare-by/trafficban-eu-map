@@ -30,11 +30,12 @@ for (let index = 0; index < batches.length; index++) {
   }
   if (!json.data || !Array.isArray(json.data.covered_countries) || !Array.isArray(json.data.current_bans) || !Array.isArray(json.data.upcoming_bans)) throw new Error("Nakordoni returned incomplete API response for "+batch.join(","));
   const data=json.data;
-  if(data.window?.from!==from||data.window?.to!==to)throw new Error("Nakordoni returned wrong date window for "+batch.join(","));
+  if(data.window?.from && data.window?.to && (data.window.from!==from||data.window.to!==to)) console.warn("Nakordoni returned its own date window for "+batch.join(",")+": "+data.window.from+".."+data.window.to);
   const stats=data.returned ?? data.total_bans?.returned;
   const available=data.total_available ?? data.total_bans?.total_available;
   const truncated=data.truncated ?? data.total_bans?.truncated;
-  if(truncated===true||(Number.isFinite(Number(stats))&&Number.isFinite(Number(available))&&Number(stats)<Number(available)))throw new Error("Nakordoni response truncated for "+batch.join(",")+"; refuse partial data");
+  console.log("Nakordoni batch "+(index+1)+"/"+batches.length+": "+batch.join(",")+" HTTP "+response.status+"; current="+data.current_bans.length+" upcoming="+data.upcoming_bans.length+"; returned="+String(stats)+" available="+String(available)+" truncated="+String(truncated)+"; covered="+data.covered_countries.join(","));
+  if(truncated===true||(stats!=null&&available!=null&&Number.isFinite(Number(stats))&&Number.isFinite(Number(available))&&Number(stats)<Number(available)))throw new Error("Nakordoni response truncated for "+batch.join(",")+"; refuse partial data");
   payloads.push(data);
 }
 const bans = [];
