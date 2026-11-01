@@ -245,6 +245,8 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 @media(max-width:390px){header .brand-mark{width:36px;height:36px;flex-basis:36px}header .brand-name{font-size:18px}}
 \n.date-strip{display:flex;align-items:center;gap:8px;overflow:visible}\n.date-scroll{display:flex;gap:8px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:thin;scroll-behavior:smooth;padding:3px}\n.date-scroll .date-chip{flex:0 0 104px;white-space:nowrap}\n.date-arrow{flex:0 0 42px;height:54px;border:1px solid #bcdad9;border-radius:13px;background:#e6f4f3;color:#08736e;font-size:31px;cursor:pointer}\n.date-arrow:disabled{opacity:.35;cursor:not-allowed}\n.date-scroll .date-chip.active{box-shadow:0 3px 12px #08736e44}\n@media(max-width:680px){.date-scroll .date-chip{flex-basis:90px}.date-arrow{flex-basis:35px}}\n
 .two-day-heading{margin:18px 0 10px;font-size:18px}.two-day-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;max-height:480px;overflow:auto;padding:2px}.two-day-card{background:#172b40;color:#edf4fc;border:1px solid #39516b;border-radius:11px;padding:12px;text-align:left;cursor:pointer;width:100%}.two-day-card:hover,.two-day-card:focus-visible{border-color:#ff9b3d;background:#203851}.two-day-card .flag{font-size:25px;margin-right:8px}.two-day-card .country-title{font-weight:800}.two-day-card .day-line{display:block;margin-top:7px;font-size:12px;color:#c4d4e4}.two-day-card .has-bans{color:#ffb17d}.two-day-card .no-data{color:#a7bdcb}.two-day-card small{display:block;margin-top:5px;color:#a7bdcb}
+
+.map-country-label{background:transparent;border:0}.map-country-label .map-country-card{min-width:112px;max-width:160px;padding:6px 8px;background:#fffef5;border:1px solid #338c89;border-radius:10px;box-shadow:0 2px 9px #163c4055;color:#193b43;font:11px/1.35 Inter,Arial,sans-serif;cursor:pointer;text-align:left}.map-country-card strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.map-country-card .map-country-day{display:block;margin-top:3px;white-space:nowrap}.map-country-card .map-country-flag{font-size:17px;margin-right:3px}.map-country-label:hover .map-country-card{border-color:#ef8b2d;box-shadow:0 3px 12px #163c4077}@media(max-width:680px){.map-country-label .map-country-card{min-width:91px;max-width:120px;padding:4px 5px;font-size:10px}.map-country-card strong{font-size:10px}}
 </style>
 </head>
 <body>
@@ -395,6 +397,28 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
   }
   const style=f=>{const code=f.properties["ISO3166-1-Alpha-3"];return {color:"#287e80",weight:1.5,fillColor:rowsFor(code).length?"#e9996c":"#a7cfc9",fillOpacity:.48};};
   const layer=L.geoJSON({type:"FeatureCollection",features},{style,onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.bindTooltip(EU[code],{sticky:true});l.on("click",()=>show(code));}}).addTo(map);
+  const mapLabels=L.layerGroup().addTo(map);
+  const countryCenters={CHE:[46.8,8.3],LIE:[47.14,9.55],LUX:[49.75,6.1],BEL:[50.65,4.7],NLD:[52.2,5.3],SVN:[46.1,14.8],SVK:[48.75,19.6],MNE:[42.7,19.2],MKD:[41.65,21.7],BIH:[44.2,17.7],MDA:[47.1,28.6],AND:[42.55,1.55],MCO:[43.74,7.42],SMR:[43.94,12.45],VAT:[41.9,12.45],MLT:[35.9,14.4],CYP:[35.1,33.3],ISL:[64.9,-18.6],IRL:[53.3,-8.0],GBR:[54.4,-2.8],NOR:[62.0,9.0],SWE:[62.0,15.0],FIN:[64.2,26.0],ITA:[42.9,12.5],FRA:[46.7,2.3],ESP:[40.2,-3.7],PRT:[39.6,-8.0],DEU:[51.0,10.1],POL:[52.1,19.2],AUT:[47.6,14.0],CZE:[49.8,15.3],HUN:[47.2,19.3],ROU:[45.9,24.9],BGR:[42.7,25.3],GRC:[39.1,22.5],HRV:[45.1,16.0],DNK:[56.1,9.6],EST:[58.7,25.2],LVA:[56.9,24.7],LTU:[55.1,24.0],ALB:[41.2,20.0],SRB:[44.0,20.8],UKR:[49.0,31.2],BLR:[53.5,28.1],TUR:[39.1,35.0]};
+  function refreshMapLabels(){
+   mapLabels.clearLayers();
+   const dates=[today,dayPlus(today,1)];
+   const showDetails=map.getZoom()>=5;
+   features.forEach(f=>{
+    const code=f.properties["ISO3166-1-Alpha-3"],center=countryCenters[code];
+    if(!center)return;
+    const lines=dates.map((d,i)=>{
+     const rows=records.filter(x=>x.country_code===iso2[code]&&x.date===d);
+     const times=[...new Set(rows.map(x=>[x.time_from,x.time_until].filter(Boolean).join("–")).filter(Boolean))];
+     return '<span class="map-country-day">'+(i?'Завтра: ':'Сегодня: ')+(rows.length?(times.length?esc(times.slice(0,2).join(", ")+(times.length>2?"…":"")):rows.length+' записей'):'нет данных')+'</span>';
+    }).join("");
+    const label='<div class="map-country-card"><strong><span class="map-country-flag">'+flag(code)+'</span>'+esc(EU[code])+'</strong>'+(showDetails?lines:'<span class="map-country-day">Нажмите для сведений</span>')+'</div>';
+    const marker=L.marker(center,{icon:L.divIcon({className:"map-country-label",html:label,iconSize:[140,showDetails?66:43],iconAnchor:[70,20]}),keyboard:true,title:EU[code]});
+    marker.on("click",()=>{show(code);info.scrollIntoView({behavior:"smooth",block:"start"});});
+    marker.addTo(mapLabels);
+   });
+  }
+  map.on("zoomend",refreshMapLabels);
+  refreshMapLabels();
   if(layer.getLayers().length)map.fitBounds(layer.getBounds(),{padding:[15,15]});
   render();
   renderTwoDays();
