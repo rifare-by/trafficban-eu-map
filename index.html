@@ -301,7 +301,17 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
    const fmt=d=>new Intl.DateTimeFormat("ru-RU",{day:"numeric",month:"short",timeZone:"UTC"}).format(new Date(d+"T12:00:00Z"));
    const countries=Object.keys(EU).filter(code=>features.some(f=>f.properties?.["ISO3166-1-Alpha-3"]===code));
    grid.innerHTML=countries.map(code=>{
-    const lines=dates.map(d=>{const count=records.filter(x=>x.country_code===iso2[code]&&x.date===d).length;return '<span class="day-line '+(count?'has-bans':'no-data')+'">'+esc(fmt(d))+': '+(count?count+' записей об ограничениях':'нет записей')+'</span>';}).join("");
+    const lines=dates.map(d=>{
+     const dayRows=records.filter(x=>x.country_code===iso2[code]&&x.date===d);
+     const times=[...new Set(dayRows.map(x=>{
+      const from=String(x.time_from||"").trim(),until=String(x.time_until||"").trim();
+      if(!from&&!until)return "";
+      return (from||"—")+"–"+(until||"—");
+     }).filter(Boolean))];
+     const details=times.slice(0,3).map(t=>esc(t)).join(", ");
+     const more=times.length>3?" и ещё "+(times.length-3):"";
+     return '<span class="day-line '+(dayRows.length?'has-bans':'no-data')+'"><b>'+esc(fmt(d))+'</b>: '+(dayRows.length?dayRows.length+' записей'+(details?'<br>🕒 '+details+more:' · время не указано'):'нет записей')+'</span>';
+    }).join("");
     return '<button type="button" class="two-day-card" data-country="'+esc(code)+'"><span class="flag" aria-hidden="true">'+flag(code)+'</span><span class="country-title">'+esc(EU[code])+'</span>'+lines+'<small>Открыть сведения и источники</small></button>';
    }).join("");
    grid.querySelectorAll("[data-country]").forEach(btn=>btn.addEventListener("click",()=>{
