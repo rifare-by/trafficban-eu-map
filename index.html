@@ -113,9 +113,9 @@ Promise.all([
   return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
    "<kml xmlns=\"http://www.opengis.net/kml/2.2\"><Document><name>Запреты движения грузовиков — ЕС</name>"+
    "<description>Расписание на "+esc(from)+" — "+esc(to)+". Источник актуальных записей: Nakordoni. TrafficBan показан отдельно.</description>"+
-   "<Style id=\"hasBans\"><LineStyle><color>ff174f70</color><width>1.5</width></LineStyle><PolyStyle><color>665555dc</color></PolyStyle></Style>"+
+   "<Style id=\"hasBans\"><LineStyle><color>ff174f70</color><width>1.5</width></LineStyle><PolyStyle><color>4d5555dc</color></PolyStyle></Style>"+
    "<Style id=\"noBans\"><LineStyle><color>ff174f70</color><width>1.5</width></LineStyle><PolyStyle><color>4dd58531</color></PolyStyle></Style>"+
-   "<Style id=\"noData\"><LineStyle><color>ff687789</color><width>1.5</width></LineStyle><PolyStyle><color>66c0b4aa</color></PolyStyle></Style>"+
+   "<Style id=\"noData\"><LineStyle><color>ff687789</color><width>1.5</width></LineStyle><PolyStyle><color>4dc0b4aa</color></PolyStyle></Style>"+
    placemarks+"</Document></kml>";
  };
  const download=(blob,name)=>{const a=document.createElement("a");const u=URL.createObjectURL(blob);a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)};
