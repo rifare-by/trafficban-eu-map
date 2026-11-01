@@ -260,7 +260,7 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 <div class="legend"><span><i class="dot" style="background:#e74c62"></i> Запрет указан</span><span><i class="dot" style="background:#9ba9af"></i> Нет подтверждённых данных</span><span><i class="dot" style="background:#168e89"></i> Статус зависит от условий</span></div>
 <p class="note" id="dataStatus">Загрузка данных…</p>
 <section class="quick-links"><a href="#countryInfo">⌖ <span>Подробно по странам</span></a><a href="#trafficban">▦ <span>Календарь запретов</span></a><a href="https://t.me/rifare_by" target="_blank" rel="noopener">✈ <span>Сообщество водителей</span></a><a href="#exports">⇩ <span>Экспорт KML / KMZ</span></a></section>
-<section class="exports" id="exports"><h2>Экспорт карты</h2><p>Скачать карту стран с доступными записями ограничений для навигатора. Проверяйте актуальность перед рейсом.</p><div class="export-actions"><a href="downloads/trafficban-eu-map.kml" download>↓ Скачать KML</a><a href="downloads/trafficban-eu-map.kmz" download>↓ Скачать KMZ</a></div></section><section class="widget" id="trafficban"><h2>Дополнительный календарь TrafficBan</h2><iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&language=ru" title="TrafficBan — запреты движения" loading="lazy"></iframe></section>
+<section class="exports" id="exports"><h2>Экспорт карты</h2><p>Скачать карту стран с доступными записями ограничений для навигатора. Проверяйте актуальность перед рейсом.</p><div class="export-actions"><a href="downloads/trafficban-eu-map.kml" download>↓ Скачать KML</a><a href="downloads/trafficban-eu-map.kmz" download>↓ Скачать KMZ</a></div></section><section class="widget" id="trafficban"><h2>Календарь запретов TrafficBan</h2><p>Интерактивный виджет запретов движения грузовиков по Европе. Источник: TrafficBan.com.</p><iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&amp;language=ru" title="TrafficBan — запреты движения грузовиков" loading="lazy" style="display:block;width:100%;min-height:510px;border:0;border-radius:12px" referrerpolicy="strict-origin-when-cross-origin"></iframe><p style="font-size:12px;margin-top:10px">Если виджет не отображается, <a href="https://trafficban.com/plugin.preview.html" target="_blank" rel="noopener noreferrer">откройте TrafficBan отдельно</a>.</p></section>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
@@ -269,8 +269,6 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
  const ids=["summaryStats","countryInfo"];
  for(const id of ids){const el=document.getElementById(id);if(el)el.innerHTML='<p style="color:#607d83">Информация удалена</p>';}
  const status=document.getElementById("status");if(status)status.textContent="Карта без данных об ограничениях движения.";
- document.querySelectorAll(".widget iframe").forEach(el=>el.remove());
- document.querySelectorAll(".widget").forEach(el=>el.style.display="none");
  document.querySelectorAll(".exports").forEach(el=>el.style.display="none");
  document.querySelectorAll(".date-strip").forEach(el=>el.style.display="none");
  document.querySelectorAll(".legend").forEach(el=>el.style.display="none");
