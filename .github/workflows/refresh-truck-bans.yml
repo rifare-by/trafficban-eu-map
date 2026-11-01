@@ -1,4 +1,4 @@
-name: Refresh truck bans data
+name: Refresh NAPSPAN road events
 
 on:
   workflow_dispatch:
@@ -7,9 +7,7 @@ on:
       - main
     paths:
       - ".github/workflows/refresh-truck-bans.yml"
-      - "scripts/fetch-truck-bans.mjs"
       - "scripts/fetch-road-events.mjs"
-      - "scripts/build-kml.mjs"
   schedule:
     - cron: "17 */6 * * *"
 
@@ -24,28 +22,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Fetch Nakordoni truck bans
-        run: node scripts/fetch-truck-bans.mjs
-        env:
-          NKD_API_KEY: ${{ secrets.NAKORDONI_API_KEY_V2 }}
       - name: Fetch NAPSPAN road restrictions (optional)
         run: node scripts/fetch-road-events.mjs
         env:
           NAPSPAN_API_KEY: ${{ secrets.NAPSPAN_API_KEY }}
-      - name: Build KML and KMZ
-        run: |
-          npm install --no-save jszip
-          node scripts/build-kml.mjs
       - name: Commit refreshed data and map files
         run: |
-          git add -f data/truck-bans.json data/road-events.json data/eu-countries.geojson downloads/trafficban-eu-map.kml downloads/trafficban-eu-map.kmz
+          git add -f data/road-events.json
           if git diff --cached --quiet; then
             echo "No data changes"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Refresh truck bans and export KML KMZ"
+          git commit -m "Refresh NAPSPAN road events"
           for attempt in 1 2 3; do
             git fetch origin main
             if git rebase origin/main && git push origin HEAD:main; then
