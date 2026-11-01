@@ -2,26 +2,285 @@
   "source": "Nakordoni + published recurring rules",
   "attribution": "Nakordoni data and cited national rules",
   "source_url": "https://nakordoni.eu/en/developers/docs/truck-bans",
-  "generated_at": "2026-11-01T16:40:44.674Z",
+  "generated_at": "2026-11-01T18:54:24.873Z",
   "window": {
     "from": "2026-11-01",
     "to": "2026-11-07",
     "days": 7
   },
-  "provider_response_count": 80,
+  "provider_response_count": 87,
   "provider_audit": [
     {
       "country": "AT",
       "from": "2026-11-01",
       "to": "2026-11-07",
-      "returned": 17,
+      "returned": 16,
       "total_available": 17,
-      "truncated": false,
-      "extracted": 38,
+      "truncated": true,
+      "extracted": 36,
       "window": {
         "from": "2026-11-01",
         "to": "2026-11-07",
         "days": 7,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "AT",
+      "from": "2026-11-01",
+      "to": "2026-11-01",
+      "returned": 3,
+      "total_available": 4,
+      "truncated": true,
+      "extracted": 10,
+      "window": {
+        "from": "2026-11-01",
+        "to": "2026-11-01",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "AT",
+      "from": "2026-11-02",
+      "to": "2026-11-02",
+      "returned": 2,
+      "total_available": 2,
+      "truncated": false,
+      "extracted": 5,
+      "window": {
+        "from": "2026-11-02",
+        "to": "2026-11-02",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "AT",
+      "from": "2026-11-03",
+      "to": "2026-11-03",
+      "returned": 2,
+      "total_available": 2,
+      "truncated": false,
+      "extracted": 5,
+      "window": {
+        "from": "2026-11-03",
+        "to": "2026-11-03",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "AT",
+      "from": "2026-11-04",
+      "to": "2026-11-04",
+      "returned": 2,
+      "total_available": 2,
+      "truncated": false,
+      "extracted": 5,
+      "window": {
+        "from": "2026-11-04",
+        "to": "2026-11-04",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "AT",
+      "from": "2026-11-05",
+      "to": "2026-11-05",
+      "returned": 2,
+      "total_available": 2,
+      "truncated": false,
+      "extracted": 5,
+      "window": {
+        "from": "2026-11-05",
+        "to": "2026-11-05",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "AT",
+      "from": "2026-11-06",
+      "to": "2026-11-06",
+      "returned": 2,
+      "total_available": 2,
+      "truncated": false,
+      "extracted": 5,
+      "window": {
+        "from": "2026-11-06",
+        "to": "2026-11-06",
+        "days": 1,
+        "requested": true
+      },
+      "keys": [
+        "success",
+        "lang",
+        "ppid",
+        "country",
+        "relevant_countries",
+        "countries_not_covered",
+        "current_bans",
+        "is_ban_active",
+        "upcoming_bans",
+        "bans_by_country",
+        "total_bans",
+        "returned",
+        "total_available",
+        "truncated",
+        "covered_countries",
+        "window",
+        "as_of",
+        "source",
+        "page_url",
+        "summary"
+      ]
+    },
+    {
+      "country": "AT",
+      "from": "2026-11-07",
+      "to": "2026-11-07",
+      "returned": 3,
+      "total_available": 3,
+      "truncated": false,
+      "extracted": 7,
+      "window": {
+        "from": "2026-11-07",
+        "to": "2026-11-07",
+        "days": 1,
         "requested": true
       },
       "keys": [
@@ -1544,7 +1803,7 @@
       "returned": 10,
       "total_available": 10,
       "truncated": false,
-      "extracted": 24,
+      "extracted": 25,
       "window": {
         "from": "2026-11-01",
         "to": "2026-11-07",
@@ -2247,7 +2506,7 @@
       "returned": 7,
       "total_available": 7,
       "truncated": false,
-      "extracted": 17,
+      "extracted": 15,
       "window": {
         "from": "2026-11-01",
         "to": "2026-11-07",
@@ -2908,6 +3167,8 @@
   ],
   "completeness_status": "partial_unverified",
   "completeness_warnings": [
+    "Full-week response incomplete or inconsistent: AT; checking individual days",
+    "Unverified day AT 2026-11-01",
     "Full-week response incomplete or inconsistent: FR; checking individual days",
     "Unverified day FR 2026-11-01",
     "Full-week response incomplete or inconsistent: HU; checking individual days",
@@ -2989,17 +3250,6 @@
       "details_url": "https://nakordoni.eu/s/at",
       "restriction_type": "Holiday",
       "restriction_details": "All Saints' Day",
-      "min_weight_tons": null
-    },
-    {
-      "country_code": "AT",
-      "country_name": "Austria",
-      "date": "2026-11-01",
-      "time_from": "00:00",
-      "time_until": "05:00",
-      "details_url": "https://nakordoni.eu/s/at",
-      "restriction_type": "General",
-      "restriction_details": "vehicles without Lärmarmzertifikat",
       "min_weight_tons": null
     },
     {
@@ -3435,12 +3685,6 @@
       "min_weight_tons": null
     },
     {
-      "date": "2026-11-01",
-      "time_from": "05:00",
-      "time_until": "23:59",
-      "country_code": "PT"
-    },
-    {
       "country_code": "PT",
       "country_name": "Portugal",
       "date": "2026-11-01",
@@ -3486,12 +3730,6 @@
       "min_weight_tons": null
     },
     {
-      "date": "2026-11-01",
-      "time_from": "07:00",
-      "time_until": "19:00",
-      "country_code": "SE"
-    },
-    {
       "country_code": "SI",
       "country_name": "Slovenia",
       "date": "2026-11-01",
@@ -3535,6 +3773,12 @@
       "restriction_type": "Seasonal",
       "restriction_details": "vehicles without Lärmarmzertifikat",
       "min_weight_tons": 7.5
+    },
+    {
+      "date": "2026-11-02",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "country_code": "AT"
     },
     {
       "country_code": "AT",
@@ -3740,6 +3984,12 @@
       "min_weight_tons": null
     },
     {
+      "date": "2026-11-02",
+      "time_from": "07:00",
+      "time_until": "21:00",
+      "country_code": "PT"
+    },
+    {
       "country_code": "RO",
       "country_name": "Romania",
       "date": "2026-11-02",
@@ -3794,6 +4044,12 @@
       "restriction_type": "Seasonal",
       "restriction_details": "vehicles without Lärmarmzertifikat",
       "min_weight_tons": 7.5
+    },
+    {
+      "date": "2026-11-03",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "country_code": "AT"
     },
     {
       "country_code": "AT",
@@ -3997,6 +4253,12 @@
       "min_weight_tons": 7.5
     },
     {
+      "date": "2026-11-04",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "country_code": "AT"
+    },
+    {
       "country_code": "AT",
       "time_from": "00:00",
       "time_until": "05:00",
@@ -4174,6 +4436,12 @@
       "restriction_type": "Seasonal",
       "restriction_details": "vehicles without Lärmarmzertifikat",
       "min_weight_tons": 7.5
+    },
+    {
+      "date": "2026-11-05",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "country_code": "AT"
     },
     {
       "country_code": "AT",
@@ -4353,6 +4621,12 @@
       "restriction_type": "Seasonal",
       "restriction_details": "vehicles without Lärmarmzertifikat",
       "min_weight_tons": 7.5
+    },
+    {
+      "date": "2026-11-06",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "country_code": "AT"
     },
     {
       "country_code": "AT",
@@ -4543,6 +4817,12 @@
       "restriction_type": "Seasonal",
       "restriction_details": "vehicles without Lärmarmzertifikat",
       "min_weight_tons": 7.5
+    },
+    {
+      "date": "2026-11-07",
+      "time_from": "00:00",
+      "time_until": "05:00",
+      "country_code": "AT"
     },
     {
       "country_code": "AT",
