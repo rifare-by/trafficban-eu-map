@@ -223,6 +223,17 @@ main{max-width:1440px;padding-top:26px}
 /* Countries are the clickable targets; no permanent labels obscure the map. */
 #map .leaflet-interactive{cursor:pointer}
 .popup-country-heading{display:flex;align-items:center;gap:10px}.popup-country-heading b{display:block;font-size:17px;color:#17383d}.popup-country-heading small{display:block;color:#607780;font-size:11px;margin-top:3px}.popup-country-flag{font-size:31px;line-height:1;flex:0 0 38px;text-align:center}
+
+/* Wider, unobstructed page-scroll gutters on touch screens */
+@media(max-width:680px){
+ .map-column{width:calc(100% - 76px)!important;margin-left:38px!important;margin-right:38px!important}
+ #trafficban{width:calc(100% - 76px)!important;margin-left:38px!important;margin-right:38px!important}
+ .popup-country-flag{font-size:34px;flex-basis:42px}
+}
+@media(max-width:390px){
+ .map-column{width:calc(100% - 64px)!important;margin-left:32px!important;margin-right:32px!important}
+ #trafficban{width:calc(100% - 64px)!important;margin-left:32px!important;margin-right:32px!important}
+}
 </style>
 </head>
 <body>
