@@ -43,7 +43,6 @@ let banData=null;
 const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE"};
 const map=L.map("map").setView([51,12],4);
 const baseTiles=L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{subdomains:"abcd",maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(map);
-baseTiles.on("tileerror",()=>{if(!map._osmFallback){map._osmFallback=true;map.removeLayer(baseTiles);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);}});
 const banDataPromise=fetch("data/truck-bans.json").then(r=>{if(!r.ok)throw new Error("Не удалось загрузить календарь запретов");return r.json();});
 const escHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const coveredEu=new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK"]);
@@ -63,7 +62,7 @@ const banPopup=(code)=>{
  return out;
 };
 Promise.allSettled([
- fetch("https://cdn.jsdelivr.net/gh/datasets/geo-countries@main/data/countries.geojson").then(r=>{if(!r.ok)throw new Error("Не удалось загрузить границы стран (HTTP "+r.status+")");return r.json();}),
+ fetch("data/eu-countries.geojson").then(r=>{if(!r.ok)throw new Error("Не удалось загрузить границы стран (HTTP "+r.status+")");return r.json();}),
  banDataPromise
 ]).then(results=>{
  const geoResult=results[0], banResult=results[1];
