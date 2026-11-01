@@ -281,8 +281,14 @@ function drawDateStrip(bans){
  updateSummary(bans,dates[0]||from);
 }
 function updateSummary(bans,date){
- const el=document.getElementById("summaryStats");if(!el)return;
- el.innerHTML='<div class="stat-row"><span>Источник дорожных событий</span><b>NAPSPAN</b></div><small style="color:#607d83;line-height:1.5">Календарь Nakordoni отключён. Статус стран по календарным запретам не рассчитывается. Отсутствие события не означает разрешение движения.</small>';
+ const el=document.getElementById('summaryStats');if(!el)return;
+ const rows=mainTruckBans(bans?.bans).filter(x=>x.date===date);
+ const countries=new Set(rows.map(x=>x.country_code)).size;
+ const coveredCount=(bans?.covered_countries||[]).length;
+ el.innerHTML='<div class="stat-row banned"><span>Страны с записями о запретах</span><b>'+countries+'</b></div>'+
+ '<div class="stat-row"><span>Записей об ограничениях</span><b>'+rows.length+'</b></div>'+
+ '<div class="stat-row uncertain"><span>Страны без подтверждённого статуса</span><b>'+Math.max(0,28-countries)+'</b></div>'+
+ '<small style="color:#607d83;line-height:1.5">Дата: '+esc(date)+'. Наличие записи не означает запрет на всех дорогах и для всех грузовиков. Отсутствие записи не означает разрешение движения. Покрытие API: '+coveredCount+' стран.</small>';
 }
 
 const covered=new Set(); // Coverage is taken from the live dataset, not a hardcoded list.
@@ -335,7 +341,7 @@ function showCountry(code,bans){
   return out+"</section>";
  }
  const daysHtml=days.map((date,i)=>section(date,i)).join("");
- info.innerHTML="<div class='country-info-heading'><span class='country-info-flag' aria-label='Флаг "+esc(country)+"'>"+flag+"</span><div><b>"+esc(country)+"</b><small>Календарь запретов на 7 дней</small></div></div><small>Источник календаря: отключён · данные обновлены "+esc(new Date(bans.generated_at).toLocaleString("ru-RU"))+"</small><hr>"+daysHtml+"<small>«Нет данных» не означает отсутствие запрета.</small>";
+ info.innerHTML="<div class='country-info-heading'><span class='country-info-flag' aria-label='Флаг "+esc(country)+"'>"+flag+"</span><div><b>"+esc(country)+"</b><small>Календарь запретов на 7 дней</small></div></div><small>Источник календаря: Nakordoni · данные обновлены "+esc(new Date(bans.generated_at).toLocaleString("ru-RU"))+"</small><hr>"+daysHtml+"<small>«Нет данных» не означает отсутствие запрета.</small>";
 }
 try{
  if(!window.L)throw new Error("Не загрузилась библиотека интерактивной карты. Проверьте доступ к unpkg.com.");
@@ -399,14 +405,14 @@ try{
  map.on("zoomend moveend",()=>{refreshCountryLabels();});
  let euBounds=null;
  document.getElementById("zoomReset").addEventListener("click",()=>{if(euBounds)map.fitBounds(euBounds,{padding:[18,18]});});
- const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson"),Promise.resolve({ok:false})]);
+ const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson"),fetch("./data/truck-bans.json")]);
  if(!geoResp.ok)throw new Error("GeoJSON: HTTP "+geoResp.status);
  const geo=await geoResp.json();let bans=null;if(banResp.ok)bans=await banResp.json();
  const importNotice=document.createElement("div");
  importNotice.setAttribute("role","status");
  importNotice.style.cssText="margin:10px 0;padding:11px 14px;border:1px solid #e6c989;border-radius:10px;background:#fff8e7;color:#75521d;font-size:13px;line-height:1.5";
  const incomplete=!bans||bans.completeness_status!=="provider_reported_complete_unverified";
- importNotice.innerHTML='<strong>Дорожные события: NAPSPAN</strong><div>Календарь Nakordoni отключён. Данные NAPSPAN не являются полным календарём запретов. Отсутствие события не означает разрешение движения.</div>';
+ importNotice.innerHTML=incomplete?'<strong>⚠ Данные запретов неполные</strong><div>Импорт Nakordoni не подтверждён для всех стран. Отсутствие запрета на карте не означает разрешение движения.</div>':'<strong>Данные Nakordoni загружены</strong><div>Ограничения ещё не сверены с официальными источниками.</div>';
  const mapElement=document.getElementById("map");mapElement?.parentElement?.insertBefore(importNotice,mapElement);
  const roadNotice=document.createElement("div");
  roadNotice.setAttribute("role","status");
@@ -450,7 +456,7 @@ try{
 
  }
  euBounds=L.latLngBounds(layers.map(x=>x.getBounds()));map.fitBounds(euBounds,{padding:[18,18]});refreshCountryLabels();
- status.textContent="Источник дорожных событий: NAPSPAN. Календарь Nakordoni отключён. События NAPSPAN не подтверждены официальными ведомствами. Отсутствие записи не означает разрешение движения. Виджет TrafficBan ниже работает отдельно.";
+ status.textContent=bans?"Источник карты: Nakordoni API. Обновлено "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Период "+bans.window.from+" — "+bans.window.to+". Отсутствие записи не означает отсутствие запрета. Виджет TrafficBan ниже работает отдельно.":"Календарь Nakordoni недоступен. Виджет TrafficBan ниже работает отдельно.";
  setTimeout(()=>map.invalidateSize(),150);
 }catch(e){status.textContent="Ошибка загрузки карты: "+e.message;document.getElementById("map").innerHTML="<p style='padding:24px;color:#a22'>Не удалось загрузить интерактивную карту: "+esc(e.message)+"</p>";console.error(e);}
 })();
