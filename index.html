@@ -52,19 +52,8 @@ const capitals={AUT:[48.2082,16.3738],BEL:[50.8503,4.3517],BGR:[42.6977,23.3219]
 const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE",CHE:"CH"};
 const covered=new Set(); // Coverage is taken from the live dataset, not a hardcoded list.
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function isMainTruckBan(b){
- const type=String(b?.restriction_type||"").trim().toLowerCase();
- const details=String(b?.restriction_details||"").toLowerCase();
- // В общей карте показываем только общенациональные календарные запреты.
- // Сезонные, местные и ADR/опасные грузы исключаются из всех представлений.
- if(/^(local|seasonal)$/i.test(type))return false;
- if(/seasonal|saison|temporada|stagional|сезонн\w*/i.test(details))return false;
- if(/dangerous goods|hazardous goods|hazmat|dangerous cargo|adr|gefahrgut|mati[eè]res dangereuses|mercanc[ií]as peligrosas|merci pericolose|gevaarlijke stoffen|опасн\w* груз|опасн\w* веществ/i.test(type+" "+details))return false;
- if(/\broads?\b|\broad network\b|\bautoroutes?\b|\bmotorways?\b|\bhighways?\b|\bfreeways?\b|\bcarriageways?\b|дорог\w*|автотрасс\w*/i.test(details))return false;
- if(/\b(?:A|AP|N|D|E|M|R|B|L|SR|Z)\s?-?\d{1,4}\b/i.test(details))return false;
- return true;
-}
-function mainTruckBans(list){return (list||[]).filter(isMainTruckBan);}
+// Keep every restriction returned by the API; filtering can be added as user-selectable controls later.
+function mainTruckBans(list){return Array.isArray(list)?list:[];}
 function ruType(v){return ({Sunday:"Воскресный запрет",Holiday:"Праздничный запрет","Regional Holiday":"Региональный запрет",General:"Общее ограничение",Seasonal:"Сезонное ограничение",Local:"Местное ограничение"})[v]||({Restriction:"Ограничение"})[v]||v||"Ограничение";}
 function ruDetails(v){
  let x=String(v||"");
