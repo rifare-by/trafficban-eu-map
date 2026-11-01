@@ -10,7 +10,7 @@
 header{padding:16px;background:#123d70;color:white}h1{font-size:21px;margin:0 0 6px}header p{margin:0;font-size:14px}
 main{max-width:1100px;margin:auto;padding:14px}.legend{display:flex;gap:12px;flex-wrap:wrap;margin:10px 2px;font-size:13px;color:#34445a}.legend span{display:inline-flex;align-items:center;gap:6px}.dot{width:12px;height:12px;border-radius:3px;display:inline-block}
 #map{width:100%;height:65vh;min-height:430px;background:#dce8ef;border:1px solid #ccd5e1;border-radius:14px;overflow:hidden;z-index:1}.map-tools{display:flex;justify-content:flex-end;gap:8px;margin:8px 0}.map-tools button{border:1px solid #b8c7d6;background:white;border-radius:8px;padding:9px 15px;font-size:18px;font-weight:bold;color:#173d60;cursor:pointer}.map-tools button.reset{font-size:14px}
-.leaflet-container{font:inherit}.leaflet-control-attribution{font-size:10px!important}.country-label{font-size:11px;font-weight:bold;color:#102a43;text-shadow:-1px -1px 2px white,1px 1px 2px white,-1px 1px 2px white,1px -1px 2px white;white-space:nowrap;pointer-events:none}
+.leaflet-container{font:inherit}.leaflet-control-attribution{font-size:10px!important}.country-label{font-size:10px;font-weight:700;color:#102a43;text-align:center;line-height:1.2;text-shadow:-1px -1px 2px white,1px 1px 2px white,-1px 1px 2px white,1px -1px 2px white;white-space:nowrap;pointer-events:none}.country-label .ban{display:block;font-size:9px;font-weight:800}.country-label .yes{color:#c62828}.country-label .no{color:#16723a}.country-label .unknown{color:#5c6673}
 .downloads{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.download{display:inline-block;padding:12px 16px;border-radius:9px;background:#174f91;color:white;text-decoration:none;font-weight:700}
 .note{font-size:13px;color:#526174;line-height:1.5;margin:12px 2px 18px}.info{background:white;padding:14px;border-radius:12px;margin:12px 0;min-height:48px;line-height:1.5;box-shadow:0 2px 10px #0000000c}.widget{background:white;padding:14px;border-radius:14px;margin-top:16px;box-shadow:0 2px 10px #00000012}.widget h2{font-size:18px;margin:0 0 10px}iframe{width:100%;height:620px;border:1px solid #bbb}
 @media(max-width:600px){#map{height:58vh;min-height:390px}.country-label{font-size:10px}iframe{height:620px}}
@@ -19,7 +19,7 @@ main{max-width:1100px;margin:auto;padding:14px}.legend{display:flex;gap:12px;fle
 <body>
 <header><h1>Запреты движения грузовиков — Европейский союз</h1><p>Карта стран ЕС и официальный виджет TrafficBan</p></header>
 <main>
-<div class="legend"><span><i class="dot" style="background:#dc5555"></i> Есть запреты в ближайшие 7 дней</span><span><i class="dot" style="background:#3185d5"></i> Данные есть, запретов нет</span><span><i class="dot" style="background:#aab4c0"></i> Нет данных</span></div>
+<div class="legend"><span><i class="dot" style="background:#dc5555"></i> Запрет сегодня</span><span><i class="dot" style="background:#3185d5"></i> Сегодня запретов нет</span><span><i class="dot" style="background:#aab4c0"></i> Нет данных</span></div>
 <div class="map-tools"><button type="button" id="zoomIn" aria-label="Приблизить">+</button><button type="button" id="zoomOut" aria-label="Отдалить">−</button><button type="button" class="reset" id="zoomReset">Сброс</button></div><div id="map" role="application" aria-label="Интерактивная карта стран Европейского союза"><p style="padding:24px;color:#526174">Загружается интерактивная карта…</p></div>
 <div class="downloads"><a class="download" href="https://github.com/rifare-by/trafficban-eu-map/raw/refs/heads/main/downloads/trafficban-eu-map.kml">Скачать KML</a><a class="download" href="https://github.com/rifare-by/trafficban-eu-map/raw/refs/heads/main/downloads/trafficban-eu-map.kmz">Скачать KMZ</a></div>
 <div class="info" id="countryInfo">Выберите страну на карте.</div>
@@ -63,16 +63,18 @@ try{
  const display=features.map(f=>({feature:f,geometry:europeanGeometry(f.geometry)})).filter(x=>x.geometry);
  const missing=features.filter(f=>!display.some(x=>x.feature===f)).map(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  if(missing.length)throw new Error("Не найдены на европейской карте: "+missing.join(", "));
- const active=new Set((bans?.bans||[]).map(b=>b.country_code)),layers=[];
+ const today=bans?.window?.from||new Date().toLocaleDateString("en-CA"),todayRows=(bans?.bans||[]).filter(b=>b.date===today),active=new Set(todayRows.map(b=>b.country_code)),layers=[];
  for(const item of display){
-  const f=item.feature,geometry=item.geometry,code=f.properties["ISO3166-1-Alpha-3"],c=iso2[code],has=covered.has(c),hasBan=active.has(c),fill=!has?"#aab4c0":hasBan?"#dc5555":"#3185d5";
+  const f=item.feature,geometry=item.geometry,code=f.properties["ISO3166-1-Alpha-3"],c=iso2[code],has=covered.has(c),dayBans=todayRows.filter(b=>b.country_code===c),hasBan=dayBans.length>0,fill=!has?"#aab4c0":hasBan?"#dc5555":"#3185d5";
   const layer=L.geoJSON(geometry,{style:{color:"#174f70",weight:1,fillColor:fill,fillOpacity:.42},onEachFeature:(feature,lyr)=>{lyr.bindTooltip(names[code],{sticky:true});lyr.on("click",()=>showCountry(code,bans));}});
   layer.addTo(map);layers.push(layer);
-  const pts=allPoints(geometry.coordinates),center=L.latLng((Math.min(...pts.map(p=>p[1]))+Math.max(...pts.map(p=>p[1])))/2,(Math.min(...pts.map(p=>p[0]))+Math.max(...pts.map(p=>p[0])))/2);
-  L.marker(center,{interactive:false,icon:L.divIcon({className:"country-label",html:esc(names[code]),iconSize:[100,18],iconAnchor:[50,9]})}).addTo(map);
+  const center=layer.getBounds().getCenter();
+  let statusText="НЕТ ДАННЫХ",statusClass="unknown";
+  if(has){statusClass=hasBan?"yes":"no";if(!hasBan)statusText="НЕТ ЗАПРЕТА";else{const intervals=[...new Set(dayBans.map(b=>(b.time_from||"00:00")+(b.time_until?"–"+b.time_until:"")))];statusText=intervals.length===1?"ЗАПРЕТ "+intervals[0]:intervals.length>1?"ЗАПРЕТ · НЕСКОЛЬКО":"ЗАПРЕТ СЕГОДНЯ";}}
+  L.marker(center,{interactive:false,icon:L.divIcon({className:"country-label",html:'<span>'+esc(names[code])+'</span><span class="ban '+statusClass+'">'+esc(statusText)+'</span>',iconSize:[120,30],iconAnchor:[60,15]})}).addTo(map);
  }
  euBounds=L.latLngBounds(layers.map(x=>x.getBounds()));map.fitBounds(euBounds,{padding:[18,18]});
- status.textContent=bans?"Карта загружена: все 27 стран ЕС. Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по 18 из 27 стран.":"Границы загружены. Календарь запретов временно недоступен.";
+ status.textContent=bans?"Карта загружена: все 27 стран ЕС. Статус запретов на '+today+'. Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по 18 из 27 стран ЕС. Надписями отмечены запреты на текущую дату.":"Границы загружены. Календарь запретов временно недоступен.";
  setTimeout(()=>map.invalidateSize(),150);
 }catch(e){status.textContent="Ошибка загрузки карты: "+e.message;document.getElementById("map").innerHTML="<p style='padding:24px;color:#a22'>Не удалось загрузить интерактивную карту: "+esc(e.message)+"</p>";console.error(e);}
 })();
