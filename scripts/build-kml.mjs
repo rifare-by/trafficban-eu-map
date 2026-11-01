@@ -33,19 +33,31 @@ if (!geoResp.ok) throw new Error("GeoJSON fetch failed: "+geoResp.status);
 const geo = await geoResp.json();
 // This map covers Europe only: remove France's overseas polygons (e.g. French Guiana).
 // Retain metropolitan France and Corsica, and keep geometry valid for GeoJSON and KML.
-function europeanFrance(feature) {
-  if (feature.properties["ISO3166-1-Alpha-3"] !== "FRA") return feature;
-  const g = feature.geometry;
-  const inEurope = poly => poly[0].some(([lon, lat]) => lon >= -6 && lon <= 10 && lat >= 41 && lat <= 52);
-  if (g.type === "MultiPolygon") {
-    const polygons = g.coordinates.filter(inEurope);
-    return {...feature, geometry: polygons.length === 1
-      ? {type:"Polygon", coordinates:polygons[0]}
-      : {type:"MultiPolygon", coordinates:polygons}};
-  }
-  return feature;
+function keepEuropeanPart(feature) {
+  const code=feature.properties?.["ISO3166-1-Alpha-3"];
+  // Exclude the circled outlying territories, including Iceland, from this mainland-focused map.
+  if(code==="ISL")return null;
+  const geometry=feature.geometry;
+  if(!geometry||!["Polygon","MultiPolygon"].includes(geometry.type))return feature;
+  const polygons=geometry.type==="Polygon"?[geometry.coordinates]:geometry.coordinates;
+  const keep=poly=>{
+    const ring=poly[0]||[];
+    if(!ring.length)return false;
+    const lon=(Math.min(...ring.map(p=>p[0]))+Math.max(...ring.map(p=>p[0])))/2;
+    const lat=(Math.min(...ring.map(p=>p[1]))+Math.max(...ring.map(p=>p[1])))/2;
+    if(lon < -12||lon > 45||lat < 34||lat > 72)return false;
+    if(code==="DNK"&&lat>59)return false; // Faroe Islands
+    if(code==="NOR"&&lat>72)return false; // Svalbard
+    if(code==="FRA"&&(lon < -6||lon > 10||lat < 41||lat > 52))return false;
+    if(code==="PRT"&&(lon < -10||lon > -6||lat < 36||lat > 43))return false; // Azores/Madeira
+    if(code==="ESP"&&(lon < -10||lat < 35))return false; // Canary Islands
+    return true;
+  };
+  const selected=polygons.filter(keep);
+  if(!selected.length)return null;
+  return {...feature,geometry:selected.length===1?{type:"Polygon",coordinates:selected[0]}:{type:"MultiPolygon",coordinates:selected}};
 }
-const features = geo.features.filter(f => EU[f.properties["ISO3166-1-Alpha-3"]]).map(europeanFrance);
+const features = geo.features.filter(f=>EU[f.properties["ISO3166-1-Alpha-3"]]).map(keepEuropeanPart).filter(Boolean);
 await fs.mkdir("data", { recursive: true });
 await fs.writeFile("data/eu-countries.geojson", JSON.stringify({type:"FeatureCollection",features}));
 if (features.length < 27) throw new Error("Expected at least 27 EU countries, got "+features.length);
