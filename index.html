@@ -50,12 +50,19 @@ const info=document.getElementById("countryInfo"),status=document.getElementById
 const names={AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция",CHE:"Швейцария"};
 const capitals={AUT:[48.2082,16.3738],BEL:[50.8503,4.3517],BGR:[42.6977,23.3219],HRV:[45.815,15.9819],CYP:[35.1856,33.3823],CZE:[50.0755,14.4378],DNK:[55.6761,12.5683],EST:[59.437,24.7536],FIN:[60.1699,24.9384],FRA:[48.8566,2.3522],DEU:[52.52,13.405],GRC:[37.9838,23.7275],HUN:[47.4979,19.0402],IRL:[53.3498,-6.2603],ITA:[41.9028,12.4964],LVA:[56.9496,24.1052],LTU:[54.6872,25.2797],LUX:[49.6116,6.1319],MLT:[35.8992,14.5141],NLD:[52.3676,4.9041],POL:[52.2297,21.0122],PRT:[38.7223,-9.1393],ROU:[44.4268,26.1025],SVK:[48.1486,17.1077],SVN:[46.0569,14.5058],ESP:[40.4168,-3.7038],SWE:[59.3293,18.0686],CHE:[46.948,7.4474]};
 const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE",CHE:"CH"};
-let covered=new Set();
+const covered=new Set(["AT","BE","BG","HR","CZ","DE","GR","ES","FR","HU","IT","LU","PL","PT","RO","SE","SI","SK","CH"]);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function isMainTruckBan(b){
- // Не отбрасываем ограничения по типу, сезону, региону, дорогам или ADR.
- // Все записи источника должны быть доступны в календаре.
- return !!b;
+ const type=String(b?.restriction_type||"").trim().toLowerCase();
+ const details=String(b?.restriction_details||"").toLowerCase();
+ // В общей карте показываем только общенациональные календарные запреты.
+ // Сезонные, местные и ADR/опасные грузы исключаются из всех представлений.
+ if(/^(local|seasonal)$/i.test(type))return false;
+ if(/seasonal|saison|temporada|stagional|сезонн\w*/i.test(details))return false;
+ if(/dangerous goods|hazardous goods|hazmat|dangerous cargo|adr|gefahrgut|mati[eè]res dangereuses|mercanc[ií]as peligrosas|merci pericolose|gevaarlijke stoffen|опасн\w* груз|опасн\w* веществ/i.test(type+" "+details))return false;
+ if(/\broads?\b|\broad network\b|\bautoroutes?\b|\bmotorways?\b|\bhighways?\b|\bfreeways?\b|\bcarriageways?\b|дорог\w*|автотрасс\w*/i.test(details))return false;
+ if(/\b(?:A|AP|N|D|E|M|R|B|L|SR|Z)\s?-?\d{1,4}\b/i.test(details))return false;
+ return true;
 }
 function mainTruckBans(list){return (list||[]).filter(isMainTruckBan);}
 function ruType(v){return ({Sunday:"Воскресный запрет",Holiday:"Праздничный запрет","Regional Holiday":"Региональный запрет",General:"Общее ограничение",Seasonal:"Сезонное ограничение",Local:"Местное ограничение"})[v]||({Restriction:"Ограничение"})[v]||v||"Ограничение";}
@@ -137,10 +144,9 @@ try{
  const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson"),fetch("./data/truck-bans.json")]);
  if(!geoResp.ok)throw new Error("GeoJSON: HTTP "+geoResp.status);
  const geo=await geoResp.json();let bans=null;if(banResp.ok)bans=await banResp.json();
- covered=new Set((bans?.covered_countries||[]).filter(c=>Object.values(iso2).includes(c)));
  const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  const countryLabelMarkers=[];
- if(features.length!==27)throw new Error("В исходных границах найдено "+features.length+" стран ЕС вместо 27");
+ if(features.length!==28)throw new Error("В исходных границах найдено "+features.length+" стран Европы вместо 28");
  const display=features.map(f=>({feature:f,geometry:europeanGeometry(f.geometry)})).filter(x=>x.geometry);
  const missing=features.filter(f=>!display.some(x=>x.feature===f)).map(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
  if(missing.length)throw new Error("Не найдены на европейской карте: "+missing.join(", "));
@@ -170,7 +176,7 @@ try{
   countryLabelMarkers.push(labelMarker);
  }
  euBounds=L.latLngBounds(layers.map(x=>x.getBounds()));map.fitBounds(euBounds,{padding:[18,18]});refreshCountryLabels();
- status.textContent=bans?"Карта загружена: 27 стран ЕС + Швейцария. Статус запретов на '+today+'. Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по "+covered.size+" из 27 стран ЕС. Швейцария показана отдельно по официальному правилу ASTRA: ночной запрет 22:00–05:00 и воскресный запрет на весь день. Праздничные запреты Швейцарии пока не рассчитываются автоматически.":"Границы загружены. Календарь запретов временно недоступен.";
+ status.textContent=bans?"Карта загружена: 27 стран ЕС + Швейцария. Статус запретов на '+today+'. Календарь обновлён "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Данные Nakordoni доступны по 18 из 27 стран ЕС. Швейцария показана отдельно по официальному правилу ASTRA: ночной запрет 22:00–05:00 и воскресный запрет на весь день. Праздничные запреты Швейцарии пока не рассчитываются автоматически.":"Границы загружены. Календарь запретов временно недоступен.";
  setTimeout(()=>map.invalidateSize(),150);
 }catch(e){status.textContent="Ошибка загрузки карты: "+e.message;document.getElementById("map").innerHTML="<p style='padding:24px;color:#a22'>Не удалось загрузить интерактивную карту: "+esc(e.message)+"</p>";console.error(e);}
 })();
