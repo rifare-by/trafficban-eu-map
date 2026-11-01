@@ -26,7 +26,7 @@ jobs:
       - name: Fetch Nakordoni truck bans
         run: node scripts/fetch-truck-bans.mjs
         env:
-          NKD_API_KEY: ${{ secrets.NKD_API_KEY }}
+          NKD_API_KEY: ${{ secrets.NAKORDONI_API_KEY_V2 }}
       - name: Build KML and KMZ
         run: |
           npm install --no-save jszip
