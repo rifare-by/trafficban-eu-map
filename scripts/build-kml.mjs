@@ -31,7 +31,21 @@ const [geoResp, bans] = await Promise.all([
 ]);
 if (!geoResp.ok) throw new Error("GeoJSON fetch failed: "+geoResp.status);
 const geo = await geoResp.json();
-const features = geo.features.filter(f => EU[f.properties["ISO3166-1-Alpha-3"]]);
+// This map covers Europe only: remove France's overseas polygons (e.g. French Guiana).
+// Retain metropolitan France and Corsica, and keep geometry valid for GeoJSON and KML.
+function europeanFrance(feature) {
+  if (feature.properties["ISO3166-1-Alpha-3"] !== "FRA") return feature;
+  const g = feature.geometry;
+  const inEurope = poly => poly[0].some(([lon, lat]) => lon >= -6 && lon <= 10 && lat >= 41 && lat <= 52);
+  if (g.type === "MultiPolygon") {
+    const polygons = g.coordinates.filter(inEurope);
+    return {...feature, geometry: polygons.length === 1
+      ? {type:"Polygon", coordinates:polygons[0]}
+      : {type:"MultiPolygon", coordinates:polygons}};
+  }
+  return feature;
+}
+const features = geo.features.filter(f => EU[f.properties["ISO3166-1-Alpha-3"]]).map(europeanFrance);
 await fs.mkdir("data", { recursive: true });
 await fs.writeFile("data/eu-countries.geojson", JSON.stringify({type:"FeatureCollection",features}));
 if (features.length < 27) throw new Error("Expected at least 27 EU countries, got "+features.length);
