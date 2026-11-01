@@ -281,10 +281,15 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 .week-day{display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:9px;background:#edf7f7;border:1px solid #d4e7e7;overflow-wrap:anywhere}
 .week-day strong{font-size:13px}.week-day span{font-size:12px}.week-day small{font-size:11px;line-height:1.5}
 @media(max-width:680px){.week-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.summary-column .stat-row{flex-basis:130px}}
+
+/* RIFARE logo from supplied mark: no circle, outline or badge */
+header .brand-mark{width:56px!important;height:56px!important;flex:0 0 56px!important;display:flex!important;align-items:center!important;justify-content:center!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;padding:0!important}
+header .brand-mark svg{width:54px!important;height:54px!important;display:block!important;filter:none!important}
+@media(max-width:680px){header .brand-mark{width:44px!important;height:44px!important;flex-basis:44px!important}header .brand-mark svg{width:43px!important;height:43px!important}}
 </style>
 </head>
 <body>
-<header><a class="brand" href="/" aria-label="RIFARE — на главную"><div class="brand-mark"><img src="assets/rifare-mark.svg" alt="" width="58" height="58"></div><div><div class="brand-name">RIFARE</div><div class="brand-sub">DRIVER COMMUNITY</div></div></a><nav class="header-links"><a class="telegram-link" href="https://t.me/rifare_by" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 4.3 18.5 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6 13.5l-4.9-1.6c-1.1-.3-1.1-1.1.2-1.6L20.4 2.8c.9-.3 1.7.2 1.3 1.5z"/></svg><span>Telegram</span></a><a class="chat-link" href="https://t.me/rifare_chat" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3zm-4 8.1a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg><span>Чат водителей</span></a></nav></header>
+<header><a class="brand" href="/" aria-label="RIFARE — на главную"><div class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="#fff" d="M13.9 5.7 L11.5 12 L0 85.1 L1 91.3 L5.7 97.7 L10.6 99.8 L14.9 99.5 L91.2 74 L99.9 70.1 L49.3 70.1 L42 67.1 L37.5 61.2 L35.9 55 L37.3 46.9 L41.6 40.9 L49.5 37.5 L76.5 37.5 L29.8 1.8 L25.4 .1 L21.4 .1 L16.3 2.8 Z"/></svg></div><div><div class="brand-name">RIFARE</div><div class="brand-sub">DRIVER COMMUNITY</div></div></a><nav class="header-links"><a class="telegram-link" href="https://t.me/rifare_by" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 4.3 18.5 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6 13.5l-4.9-1.6c-1.1-.3-1.1-1.1.2-1.6L20.4 2.8c.9-.3 1.7.2 1.3 1.5z"/></svg><span>Telegram</span></a><a class="chat-link" href="https://t.me/rifare_chat" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3zm-4 8.1a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg><span>Чат водителей</span></a></nav></header>
 <main>
 <section class="hero"><div><div class="eyebrow">RIFARE · DRIVER COMMUNITY</div><h1>🚚 Запреты движения грузовиков в Европе</h1><p>Актуальные ограничения по странам · праздничные, воскресные, ночные и сезонные запреты</p></div></section>
 <section class="dashboard" aria-label="Карта и сведения о запретах">
@@ -316,7 +321,7 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
  mapTools.onAdd=()=>{
   const wrap=L.DomUtil.create("div","map-tools");
   wrap.setAttribute("role","group");wrap.setAttribute("aria-label","Управление картой");
-  wrap.innerHTML='<button type="button" id="zoomIn" aria-label="Приблизить карту" title="Приблизить">+</button><button type="button" id="zoomOut" aria-label="Отдалить карту" title="Отдалить">−</button><button type="button" id="zoomReset" aria-label="Сбросить масштаб" title="Сбросить масштаб"><span class="control-icon">⌖</span><span class="control-text">Сброс</span></button><button type="button" id="toggleFlags" aria-pressed="true" aria-label="Скрыть значки стран" title="Показать или скрыть флаги"><span class="control-icon">🏳️</span><span class="control-text">Вкл.</span></button>';
+  wrap.innerHTML='<button type="button" id="zoomIn" aria-label="Приблизить карту" title="Приблизить">+</button><button type="button" id="zoomOut" aria-label="Отдалить карту" title="Отдалить">−</button><button type="button" id="zoomReset" aria-label="Сбросить масштаб" title="Сбросить масштаб"><span class="control-icon">⌖</span><span class="control-text">Сброс</span></button><button type="button" id="toggleFlags" aria-pressed="false" aria-label="Показать значки стран" title="Показать или скрыть флаги"><span class="control-icon">🏳️</span><span class="control-text">Выкл.</span></button>';
   L.DomEvent.disableClickPropagation(wrap);L.DomEvent.disableScrollPropagation(wrap);
   return wrap;
  };
@@ -446,10 +451,10 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
   }
   const style=f=>{const code=f.properties["ISO3166-1-Alpha-3"];return {color:"#287e80",weight:1.5,fillColor:rowsFor(code).length?"#e9996c":"#a7cfc9",fillOpacity:.48};};
   const layer=L.geoJSON({type:"FeatureCollection",features},{style,onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.on("click",()=>{show(code);showSelectedOnMap(code);});}}).addTo(map);
-  const mapLabels=L.layerGroup().addTo(map);
+  const mapLabels=L.layerGroup();
   const selectedLabel=L.layerGroup().addTo(map);
   let pinnedCountry=null;
-  let labelsVisible=true;
+  let labelsVisible=false;
   const toggleFlags=document.getElementById("toggleFlags");
   toggleFlags.addEventListener("click",()=>{
    labelsVisible=!labelsVisible;
