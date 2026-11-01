@@ -2,6 +2,12 @@ name: Refresh truck bans data
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/refresh-truck-bans.yml"
+      - "scripts/fetch-truck-bans.mjs"
   schedule:
     - cron: "17 */6 * * *"
 
