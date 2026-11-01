@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <title>Запреты движения грузовиков — ЕС</title>
 <style>
@@ -41,6 +41,73 @@ main{max-width:1240px;margin:auto;padding:26px 20px 42px}.hero{display:flex;just
 }
 @media(max-width:380px){
  #map,.widget{width:calc(100% - 52px)}
+}
+
+/* Responsive layout and typography across phones, tablets and desktops */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:hidden}
+header,main{min-width:0}
+.hero h1{font-size:clamp(1.65rem,3.5vw,2.5rem);overflow-wrap:break-word}
+.hero p,.note,#dataStatus{overflow-wrap:anywhere}
+.header-links a,.map-tools button{touch-action:manipulation}
+#countryInfo,#countryInfo section{overflow-wrap:anywhere}
+.widget iframe{display:block;max-width:100%;margin-inline:auto}
+@media(min-width:681px) and (max-width:1024px){
+ header{padding:16px 24px}
+ main{padding:24px 24px 42px}
+ .hero{align-items:flex-start}
+ .hero-tag{white-space:normal;text-align:center}
+ #map{height:60vh;min-height:430px}
+ iframe{height:600px}
+ .legend{gap:12px}
+}
+@media(max-width:680px){
+ header{gap:8px;flex-wrap:wrap;justify-content:center}
+ .brand{margin-right:auto}
+ .header-links{margin-left:auto}
+ .header-links a{min-height:42px;justify-content:center}
+ .hero h1{font-size:clamp(1.55rem,6vw,2rem);line-height:1.15;letter-spacing:-.03em}
+ .hero p{font-size:clamp(13px,3.5vw,15px);line-height:1.55}
+ .hero-tag{white-space:normal;font-size:11px;max-width:100%}
+ .legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:9px;font-size:12px}
+ .legend span{align-items:flex-start;line-height:1.4}
+ .legend .dot{flex:0 0 10px;margin-top:3px}
+ .map-tools button{min-width:44px;min-height:44px}
+ #map{height:min(62dvh,600px);min-height:350px}
+ .widget h2{font-size:clamp(15px,4.5vw,18px)}
+ .widget iframe{height:600px}
+ #countryInfo{font-size:14px;line-height:1.6}
+ #countryInfo section{padding:11px}
+ .empty-country{gap:10px}
+ .empty-country-icon{width:40px;height:40px;flex-basis:40px}
+ .country-info-heading{gap:9px}
+ .country-info-heading div>b{font-size:18px}
+ .country-info-flag{width:42px;height:42px;flex-basis:42px;font-size:25px}
+}
+@media(max-width:420px){
+ header{padding:12px 10px;gap:6px}
+ .brand-name{font-size:15px}
+ .brand-sub{font-size:7px;letter-spacing:1px}
+ .header-links a{padding:8px;gap:5px;font-size:10px}
+ .header-links a svg{width:16px;height:16px;flex-basis:16px}
+ main{padding-top:16px}
+ .legend{grid-template-columns:1fr;gap:8px}
+ .hero-tag{padding:7px 10px}
+ .widget{padding:8px}
+ .widget iframe{height:560px}
+}
+@media(max-width:350px){
+ .header-links{width:100%;justify-content:space-between}
+ .header-links a{flex:1}
+ #map,.widget{width:calc(100% - 44px)}
+ .map-tools{gap:6px}
+}
+@media(min-width:1025px){
+ .hero{align-items:flex-end}
+ .widget{max-width:1200px;margin-inline:auto}
+}
+@media(prefers-reduced-motion:reduce){
+ .header-links a,.country-label .country-bubble{transition:none}
 }
 </style>
 </head>
