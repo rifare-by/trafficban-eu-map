@@ -156,7 +156,7 @@ try{
  let selectedCountryLayer=null;const today=bans?.window?.from||new Date().toLocaleDateString("en-CA"),todayRows=mainTruckBans(bans?.bans).filter(b=>b.date===today),active=new Set(todayRows.map(b=>b.country_code)),layers=[];
  for(const item of display){
   const f=item.feature,geometry=item.geometry,code=f.properties["ISO3166-1-Alpha-3"],c=iso2[code],has=covered.has(c),dayBans=todayRows.filter(b=>b.country_code===c),hasBan=dayBans.length>0,swiss=code==="CHE"?swissClock():null,swissDate=code==="CHE"?new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Zurich",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()):null,fill=code==="CHE"?(swissBanAt(swissDate,swiss.hour)?"#dc5555":"#3185d5"):!has?"#aab4c0":hasBan?"#dc5555":"#3185d5";
-  const baseStyle=code==="CHE"?{color:"#092f55",weight:3.2,opacity:1,fillColor:fill,fillOpacity:.42,lineCap:"round",lineJoin:"round"}:{color:"#174f70",weight:1.25,opacity:.95,fillColor:fill,fillOpacity:.42,lineCap:"round",lineJoin:"round"};
+  const baseStyle=code==="CHE"?{color:"#092f55",weight:2,opacity:1,fillColor:fill,fillOpacity:.42,lineCap:"round",lineJoin:"round"}:{color:"#174f70",weight:1.25,opacity:.95,fillColor:fill,fillOpacity:.42,lineCap:"round",lineJoin:"round"};
   const layer=L.geoJSON(geometry,{style:baseStyle,onEachFeature:(feature,lyr)=>{lyr.bindTooltip(names[code],{sticky:true});}});
   layer._baseCountryStyle=baseStyle;layer.addTo(map);layers.push(layer);countryTargets[code]={layer,marker:null};
   // Точка гарантированно внутри контура страны: центр масс может оказаться за её границами.
