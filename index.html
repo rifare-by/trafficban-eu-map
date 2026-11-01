@@ -553,18 +553,15 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
   // A green country has an explicit source-backed no-general-ban classification
   // AND no nationwide restriction for the selected day; missing records alone stay grey.
   const hasExplicitNoBan=code=>rawRecords.some(r=>r.country_code===iso2[code]&&r.date===selectedDate&&["no ban","no-ban","none"].includes(String(r.restriction_type||"").trim().toLowerCase())&&["official_confirmed_no_ban","verified_no_ban","confirmed"].includes(String(r.verification_status||"").toLowerCase()));
-  // No record is not proof of no ban. A green status needs affirmative evidence.
+  // User-selected display mode: any country/date without a nationwide ban
+  // record is shown green. This is an inferred status, NOT verified clearance.
   const countryStatusForDate=(code,date)=>{
+   if(!bans||!Array.isArray(bans.bans))return "unknown";
    const rows=records.filter(r=>r.country_code===iso2[code]&&r.date===date);
    if(rows.length)return "ban";
-   // A fully checked widget calendar can confirm either outcome for a date.
-   // Missing entries in an unchecked widget/date must NEVER imply no ban.
    const checked=widgetDay(code,date);
    if(checked)return checked;
-   if(code==="FRA"&&date>="2026-11-02"&&date<="2026-11-06")return "no-ban";
-   if(noGeneralBan(code))return "no-ban";
-   if(date===selectedDate&&hasExplicitNoBan(code))return "no-ban";
-   return "unknown";
+   return "no-ban";
   };
   const countryStatus=code=>countryStatusForDate(code,selectedDate);
   const hasVerifiedNoBan=code=>countryStatus(code)==="no-ban";
@@ -624,7 +621,7 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
   if(layer.getLayers().length)map.fitBounds(layer.getBounds(),{padding:[15,15]});
   render();
   renderTwoDays();
-  status.textContent="Красный — Запрет указан; зелёный — Запрета нет; серый — Нет данных. Календарь Nakordoni имеет неполное покрытие. События NAPSPAN доступны по странам, но не являются подтверждённым календарём запретов. TrafficBan доступен внизу страницы.";
+  status.textContent="Красный — запрет найден в загруженных записях; зелёный — запись о запрете отсутствует (это не подтверждение разрешённого движения); серый — база недоступна. Календарь Nakordoni имеет неполное покрытие. События NAPSPAN доступны по странам, но не являются подтверждённым календарём запретов. TrafficBan доступен внизу страницы.";
  }catch(e){status.textContent="Ошибка данных карты: "+e.message;stats.textContent="Данные временно недоступны";}
 })();
 </script>
