@@ -524,8 +524,11 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
    html+='<small>Источник доступных записей: ранее загруженный Nakordoni; данные могут быть неполными или устаревшими. '+(all.length?'Всего записей по стране в файле: '+all.length+'.':'Нет записей по стране.')+' Проверяйте актуальные ограничения по официальным правилам и в виджете TrafficBan ниже.</small>';
    info.innerHTML=html;
   }
-  const hasVerifiedNoBan=code=>noGeneralBan(code)&&!rowsFor(code).length;
-  const style=f=>{const code=f.properties["ISO3166-1-Alpha-3"];return {color:"#287e80",weight:1.5,fillColor:rowsFor(code).length?"#e9996c":hasVerifiedNoBan(code)?"#168e89":"#9ba9af",fillOpacity:.48};};
+  // A green country has an explicit source-backed no-general-ban classification
+  // AND no nationwide restriction for the selected day; missing records alone stay grey.
+  const countryStatus=code=>rowsFor(code).length?"ban":noGeneralBan(code)?"no-ban":"unknown";
+  const hasVerifiedNoBan=code=>countryStatus(code)==="no-ban";
+  const style=f=>{const code=f.properties["ISO3166-1-Alpha-3"];return {color:"#287e80",weight:1.5,fillColor:countryStatus(code)==="ban"?"#e74c62":hasVerifiedNoBan(code)?"#168e89":"#9ba9af",fillOpacity:.48};};
   const layer=L.geoJSON({type:"FeatureCollection",features},{style,onEachFeature:(f,l)=>{const code=f.properties["ISO3166-1-Alpha-3"];l.on("click",()=>{show(code);showSelectedOnMap(code);});}}).addTo(map);
   const mapLabels=L.layerGroup();
   const selectedLabel=L.layerGroup().addTo(map);
@@ -581,7 +584,7 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
   if(layer.getLayers().length)map.fitBounds(layer.getBounds(),{padding:[15,15]});
   render();
   renderTwoDays();
-  status.textContent="Отображены границы стран ЕС. Цвет выделяет страны с записями на выбранную дату; отсутствие записи не означает отсутствие запрета. Календарь Nakordoni имеет неполное покрытие. События NAPSPAN доступны по странам, но не являются подтверждённым календарём запретов. TrafficBan доступен внизу страницы.";
+  status.textContent="Красный — общенациональный запрет указан; зелёный — по справочнику нет общего запрета; серый — нет достаточных данных. отсутствие записи не означает отсутствие запрета. Календарь Nakordoni имеет неполное покрытие. События NAPSPAN доступны по странам, но не являются подтверждённым календарём запретов. TrafficBan доступен внизу страницы.";
  }catch(e){status.textContent="Ошибка данных карты: "+e.message;stats.textContent="Данные временно недоступны";}
 })();
 </script>
