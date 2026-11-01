@@ -36,6 +36,7 @@ for (let index = 0; index < batches.length; index++) {
   const truncated=data.truncated ?? data.total_bans?.truncated;
   console.log("Nakordoni batch "+(index+1)+"/"+batches.length+": "+batch.join(",")+" HTTP "+response.status+"; current="+data.current_bans.length+" upcoming="+data.upcoming_bans.length+"; returned="+String(stats)+" available="+String(available)+" truncated="+String(truncated)+"; covered="+data.covered_countries.join(","));
   if(truncated===true||(stats!=null&&available!=null&&Number.isFinite(Number(stats))&&Number.isFinite(Number(available))&&Number(stats)<Number(available)))throw new Error("Nakordoni response truncated for "+batch.join(",")+"; refuse partial data");
+  console.log("Nakordoni response shape "+batch.join(",")+": data keys="+Object.keys(data).join(",")+"; bans_by_country keys="+Object.keys(data.bans_by_country||{}).join(","));
   payloads.push(data);
 }
 const bans = [];
