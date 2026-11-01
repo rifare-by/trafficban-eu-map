@@ -23,6 +23,13 @@ main{max-width:1240px;margin:auto;padding:26px 20px 42px}.hero{display:flex;just
 .downloads{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.download{display:inline-block;padding:12px 16px;border-radius:9px;background:#174f91;color:white;text-decoration:none;font-weight:700}
 .note{font-size:13px;color:#526174;line-height:1.5;margin:12px 2px 18px}.info{background:white;padding:14px;border-radius:12px;margin:12px 0;min-height:48px;line-height:1.5;box-shadow:0 2px 10px #0000000c}.widget{background:white;padding:14px;border-radius:14px;margin-top:16px;box-shadow:0 2px 10px #00000012}.widget h2{font-size:18px;margin:0 0 10px}iframe{width:100%;height:620px;border:1px solid #bbb}
 @media(max-width:600px){#map{height:58vh;min-height:390px}.country-label{font-size:10px}iframe{height:620px}}
+
+/* Country detail panel */
+#countryInfo{background:linear-gradient(145deg,#172a40,#101e30)!important;border:1px solid #354d67!important;border-radius:16px!important;padding:20px!important;color:#eaf1f8!important;min-height:130px!important;box-shadow:0 12px 32px #0003!important}
+.empty-country{display:flex;align-items:center;gap:15px;min-height:88px}.empty-country-icon{width:48px;height:48px;flex:0 0 48px;border:1px solid #526982;border-radius:14px;background:#203851;color:#ffad55;display:grid;place-items:center;font-size:29px;font-weight:700}.empty-country strong{display:block;font-size:17px;color:#fff;margin-bottom:6px}.empty-country span{display:block;color:#aebed0;font-size:13px;line-height:1.55}
+#countryInfo> b{display:block;font-size:21px;color:#fff;margin-bottom:5px}#countryInfo small{color:#aebed0!important}#countryInfo hr{border:0;border-top:1px solid #354b63;margin:14px 0}
+#countryInfo section{margin:12px 0!important;padding:13px;background:#101e30;border:1px solid #344b64;border-radius:12px}#countryInfo section>b{display:inline-block;color:#ffad55;margin-bottom:7px}#countryInfo section p{font-size:12px;line-height:1.55;color:#d0dbe6;margin:8px 0 0!important;padding-top:8px;border-top:1px solid #2a3e54}#countryInfo section span{font-size:12px}#countryInfo a{color:#71bfff;text-decoration:none}#countryInfo a:hover{text-decoration:underline}
+@media(max-width:680px){#countryInfo{padding:14px!important}.empty-country{align-items:flex-start}.empty-country strong{font-size:15px}}
 </style>
 </head>
 <body>
@@ -31,8 +38,7 @@ main{max-width:1240px;margin:auto;padding:26px 20px 42px}.hero{display:flex;just
 <section class="hero"><div><div class="eyebrow">RIFARE MAPS · EUROPE</div><h1>Запреты движения грузовиков</h1><p>Проверь ограничения по странам Европы перед выездом.<br>Выбери страну на карте, чтобы посмотреть детали на сегодня и завтра.</p></div><div class="hero-tag">🚛 Инструмент для водителей</div></section>
 <div class="legend"><span><i class="dot" style="background:#dc5555"></i> Запрет сегодня</span><span><i class="dot" style="background:#3185d5"></i> Сегодня запретов нет</span><span><i class="dot" style="background:#aab4c0"></i> Нет данных</span></div>
 <div class="map-tools"><button type="button" id="zoomIn" aria-label="Приблизить">+</button><button type="button" id="zoomOut" aria-label="Отдалить">−</button><button type="button" class="reset" id="zoomReset">Сброс</button></div><div id="map" role="application" aria-label="Интерактивная карта стран Европейского союза"><p style="padding:24px;color:#526174">Загружается интерактивная карта…</p></div>
-<div class="downloads"><a class="download" href="https://github.com/rifare-by/trafficban-eu-map/raw/refs/heads/main/downloads/trafficban-eu-map.kml">Скачать KML</a><a class="download" href="https://github.com/rifare-by/trafficban-eu-map/raw/refs/heads/main/downloads/trafficban-eu-map.kmz">Скачать KMZ</a></div>
-<div class="info" id="countryInfo">Выберите страну на карте.</div>
+<div class="info" id="countryInfo"><div class="empty-country"><div class="empty-country-icon">⌖</div><div><strong>Выберите страну на карте</strong><span>Нажмите на флажок или контур страны — здесь появится подробный календарь ограничений на сегодня и завтра.</span></div></div></div>
 <p class="note" id="dataStatus">Загрузка данных…</p>
 <section class="widget"><h2>Запреты TrafficBan</h2><iframe src="https://trafficban.com/plugins/box.html?href=trafficban.com&language=ru" title="TrafficBan — запреты движения" loading="lazy"></iframe></section>
 </main>
