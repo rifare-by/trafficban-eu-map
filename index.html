@@ -265,200 +265,23 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
 <script>
-(async function(){
-const info=document.getElementById("countryInfo"),status=document.getElementById("dataStatus");
-const names={AUT:"Австрия",BEL:"Бельгия",BGR:"Болгария",HRV:"Хорватия",CYP:"Кипр",CZE:"Чехия",DNK:"Дания",EST:"Эстония",FIN:"Финляндия",FRA:"Франция",DEU:"Германия",GRC:"Греция",HUN:"Венгрия",IRL:"Ирландия",ITA:"Италия",LVA:"Латвия",LTU:"Литва",LUX:"Люксембург",MLT:"Мальта",NLD:"Нидерланды",POL:"Польша",PRT:"Португалия",ROU:"Румыния",SVK:"Словакия",SVN:"Словения",ESP:"Испания",SWE:"Швеция",CHE:"Швейцария"};
-const capitals={AUT:[48.2082,16.3738],BEL:[50.8503,4.3517],BGR:[42.6977,23.3219],HRV:[45.815,15.9819],CYP:[35.1856,33.3823],CZE:[50.0755,14.4378],DNK:[55.6761,12.5683],EST:[59.437,24.7536],FIN:[60.1699,24.9384],FRA:[48.8566,2.3522],DEU:[52.52,13.405],GRC:[37.9838,23.7275],HUN:[47.4979,19.0402],IRL:[53.3498,-6.2603],ITA:[41.9028,12.4964],LVA:[56.9496,24.1052],LTU:[54.6872,25.2797],LUX:[49.6116,6.1319],MLT:[35.8992,14.5141],NLD:[52.3676,4.9041],POL:[52.2297,21.0122],PRT:[38.7223,-9.1393],ROU:[44.4268,26.1025],SVK:[48.1486,17.1077],SVN:[46.0569,14.5058],ESP:[40.4168,-3.7038],SWE:[59.3293,18.0686],CHE:[46.948,7.4474]};
-const iso2={AUT:"AT",BEL:"BE",BGR:"BG",HRV:"HR",CYP:"CY",CZE:"CZ",DNK:"DK",EST:"EE",FIN:"FI",FRA:"FR",DEU:"DE",GRC:"GR",HUN:"HU",IRL:"IE",ITA:"IT",LVA:"LV",LTU:"LT",LUX:"LU",MLT:"MT",NLD:"NL",POL:"PL",PRT:"PT",ROU:"RO",SVK:"SK",SVN:"SI",ESP:"ES",SWE:"SE",CHE:"CH"};
-
-function drawDateStrip(bans){
- const el=document.getElementById("dateStrip");if(!el)return;
- const from=bans?.window?.from||new Date().toISOString().slice(0,10);
- const to=bans?.window?.to||from;const dates=[];
- for(let i=0;i<7;i++){const d=new Date(from+"T12:00:00Z");d.setUTCDate(d.getUTCDate()+i);const key=d.toISOString().slice(0,10);if(key>to)break;dates.push(key);}
- el.innerHTML=dates.map((d,i)=>'<button type="button" class="date-chip '+(i===0?'active':'')+'" data-date="'+d+'" aria-pressed="'+(i===0)+'">'+(i===0?'Начало периода':new Date(d+'T12:00:00Z').toLocaleDateString('ru-RU',{weekday:'short'}))+'<strong>'+new Date(d+'T12:00:00Z').toLocaleDateString('ru-RU',{day:'numeric',month:'short'})+'</strong></button>').join('');
- el.addEventListener('click',e=>{const b=e.target.closest('[data-date]');if(!b)return;el.querySelectorAll('button').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});updateSummary(bans,b.dataset.date);});
- updateSummary(bans,dates[0]||from);
-}
-function updateSummary(bans,date){
- const el=document.getElementById('summaryStats');if(!el)return;
- const rows=mainTruckBans(bans?.bans).filter(x=>x.date===date);
- const countries=new Set(rows.map(x=>x.country_code)).size;
- const coveredCount=(bans?.covered_countries||[]).length;
- el.innerHTML='<div class="stat-row banned"><span>Страны с записями о запретах</span><b>'+countries+'</b></div>'+
- '<div class="stat-row"><span>Записей об ограничениях</span><b>'+rows.length+'</b></div>'+
- '<div class="stat-row uncertain"><span>Страны без подтверждённого статуса</span><b>'+Math.max(0,28-countries)+'</b></div>'+
- '<small style="color:#607d83;line-height:1.5">Дата: '+esc(date)+'. Наличие записи не означает запрет на всех дорогах и для всех грузовиков. Отсутствие записи не означает разрешение движения. Покрытие API: '+coveredCount+' стран.</small>';
-}
-
-const covered=new Set(); // Coverage is taken from the live dataset, not a hardcoded list.
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-// Keep every restriction returned by the API; filtering can be added as user-selectable controls later.
-function mainTruckBans(list){return Array.isArray(list)?list:[];}
-function ruType(v){return ({Sunday:"Воскресный запрет",Holiday:"Праздничный запрет","Regional Holiday":"Региональный запрет",General:"Общее ограничение",Seasonal:"Сезонное ограничение",Local:"Местное ограничение"})[v]||({Restriction:"Ограничение"})[v]||v||"Ограничение";}
-function ruDetails(v){
- let x=String(v||"");
- const pairs=[
- ["Sunday & public-holiday ban","воскресный и праздничный запрет"],["year-round","круглогодично"],["nationwide","по всей стране"],["all roads","на всех дорогах"],
- ["vehicles without Lärmarmzertifikat","транспорт без сертификата низкого уровня шума"],["All Saints' Day","День всех святых"],["All Saints’ Day","День всех святых"],
- ["Public holiday:","Государственный праздник:"],["dangerous-goods transports","перевозка опасных грузов"],["selected road sections","отдельные участки дорог"],
- ["entire territory","вся территория страны"],["working days","в рабочие дни"],["heavy goods vehicles","тяжёлые грузовые автомобили"],
- ["trucks over","грузовики свыше"],["trucks >","грузовики свыше"],["and others","и другие"],["trucks","грузовики"],["roads","дороги"],
- ["Mon-Sat","пн–сб"],["vehicles","транспортные средства"],["since the September 2026 reform","согласно изменениям сентября 2026 года"],
- ["from 06:00 since the September 2026 reform","с 06:00 согласно изменениям сентября 2026 года"]
- ];
- for(const [from,to] of pairs)x=x.replace(new RegExp(from.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi"),to);
- x=x.replace(/([0-9.]+)\s*t\b/gi,"$1 т").replace(/Nat\.route/gi,"трасса").replace(/Autoroutes/gi,"автомагистрали").replace(/Province/gi,"провинция").replace(/Bucharest/gi,"Бухарест").replace(/Brasov/gi,"Брашов");
- return x;
-}
-function ruDate(d){return new Date(d+"T12:00:00").toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});}
-function allPoints(x,out=[]){if(Array.isArray(x)&&typeof x[0]==="number")out.push(x);else if(Array.isArray(x))x.forEach(v=>allPoints(v,out));return out;}
-function flagEmoji(iso){return iso.toUpperCase().replace(/[A-Z]/g,ch=>String.fromCodePoint(127397+ch.charCodeAt(0)));}
-const EUROPE={west:-12,east:35,south:34,north:72};
-function europeanGeometry(g){const polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;const kept=polys.filter(poly=>{const pts=allPoints(poly);if(!pts.length)return false;const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);return Math.max(...xs)>=EUROPE.west&&Math.min(...xs)<=EUROPE.east&&Math.max(...ys)>=EUROPE.south&&Math.min(...ys)<=EUROPE.north;});if(!kept.length)return null;return g.type==="Polygon"&&kept.length===1?{type:"Polygon",coordinates:kept[0]}:{type:"MultiPolygon",coordinates:kept};}
-function showCountry(code,bans){
- const country=names[code]||code,c=iso2[code],flag=c?flagEmoji(c):"🏳️";
- if(!bans){info.innerHTML="<b>"+flag+" "+esc(country)+"</b><br>Календарь запретов временно недоступен.";return;}
- if(!covered.has(c)){info.innerHTML="<b>"+flag+" "+esc(country)+"</b><br>Нет данных по этой стране. Это не означает, что запретов нет.";return;}
- const from=bans.window?.from||new Date().toLocaleDateString("en-CA");
- const to=String(bans.window?.to||from);
- const startDate=new Date(from+"T12:00:00");
- const days=[];
- for(let i=0;i<7;i++){
-  const d=new Date(startDate);d.setDate(d.getDate()+i);
-  const key=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-  if(key>to)break;
-  days.push(key);
- }
- function section(date,index){
-  const known=covered.has(c)&&date>=String(bans.window?.from||"")&&date<=to;
-  const rows=mainTruckBans(bans.bans).filter(b=>b.country_code===c&&b.date===date).sort((a,b)=>(a.time_from||"").localeCompare(b.time_from||""));
-  let out="<section><b>"+esc(ruDate(date))+"</b>";
-  if(!known)return out+"<br><span>Нет данных на эту дату</span></section>";
-  if(!rows.length)return out+"<br><span style='color:#ffcc80'><b>Нет подтверждённых сведений. Проверьте ограничения по официальным источникам.</b></span></section>";
-  out+="<br><b style='color:#ff8585'>Ограничений: "+rows.length+"</b>";
-  rows.forEach(b=>{out+="<p><b>"+esc(b.time_from||"Весь день")+(b.time_until?"–"+esc(b.time_until):"")+"</b> · "+esc(ruType(b.restriction_type))+(b.min_weight_tons?"<br>Для транспорта от "+esc(b.min_weight_tons)+" т":"")+(b.restriction_details?"<br>"+esc(ruDetails(b.restriction_details)):"")+( /^https:\/\//i.test(b.details_url||"")?"<br><a target='_blank' rel='noopener' href='"+esc(b.details_url)+"'>Подробнее</a>":"")+"</p>";});
-  return out+"</section>";
- }
- const daysHtml=days.map((date,i)=>section(date,i)).join("");
- info.innerHTML="<div class='country-info-heading'><span class='country-info-flag' aria-label='Флаг "+esc(country)+"'>"+flag+"</span><div><b>"+esc(country)+"</b><small>Календарь запретов на 7 дней</small></div></div><small>Источник календаря: Nakordoni · данные обновлены "+esc(new Date(bans.generated_at).toLocaleString("ru-RU"))+"</small><hr>"+daysHtml+"<small>«Нет данных» не означает отсутствие запрета.</small>";
-}
-try{
- if(!window.L)throw new Error("Не загрузилась библиотека интерактивной карты. Проверьте доступ к unpkg.com.");
- const roadLayerGroups={closure:L.layerGroup(),restriction:L.layerGroup(),other:L.layerGroup()};
- const roadControls=document.createElement("div");
- roadControls.style.cssText="display:flex;flex-wrap:wrap;gap:9px;margin:9px 0;padding:10px;border:1px solid #b9d5dd;border-radius:10px;background:#f1fafc;font-size:12px";
- roadControls.innerHTML='<strong style="width:100%">События NAPSPAN · данные агрегатора, не подтверждены ведомствами</strong><label><input type="checkbox" data-road="closure" checked> ⛔ Перекрытия <span data-count="closure">0</span></label><label><input type="checkbox" data-road="restriction" checked> 🚚 Ограничения грузовиков <span data-count="restriction">0</span></label><label><input type="checkbox" data-road="other"> ⚠️ Другие события <span data-count="other">0</span></label>';
- document.getElementById("map").insertAdjacentElement("beforebegin",roadControls);
- function roadCategory(e){
-  const raw=[e.type,e.event_type,e.category,e.subcategory,e.title,e.description,e.eventType,e.road_event_type].filter(Boolean).join(" ").toLowerCase();
-  if(/closur|closed|blocked|gesperrt|fermeture|chiusura|zamkn|uzav|stängd/.test(raw))return "closure";
-  if(/truck|hgv|heavy.goods|freight|lorry|weight|height|width|restriction|verbot|lkw|camion|pojazd|náklad/.test(raw))return "restriction";
-  return "other";
- }
- function roadCoordinates(e){
-  const g=e.geometry||e.geojson||e.location?.geometry||null;
-  if(g&&g.type==="Point"&&Array.isArray(g.coordinates))return [Number(g.coordinates[1]),Number(g.coordinates[0])];
-  const p=e.location||e.position||e.coordinates||e;
-  if(Array.isArray(p)&&p.length>=2)return [Number(p[1]),Number(p[0])];
-  const lat=Number(p.latitude??p.lat),lon=Number(p.longitude??p.lon??p.lng);
-  return [lat,lon];
- }
- function safeRoadText(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
- roadControls.querySelectorAll("input[data-road]").forEach(input=>input.addEventListener("change",()=>{const group=roadLayerGroups[input.dataset.road];if(input.checked)group.addTo(map);else map.removeLayer(group);}));
- fetch("./data/road-events.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(data=>{
-  if(!data||!Array.isArray(data.events))return;
-  const counts={closure:0,restriction:0,other:0};let unmapped=0;
-  for(const e of data.events){
-   const cat=roadCategory(e),point=roadCoordinates(e);
-   if(!point.every(Number.isFinite)||Math.abs(point[0])>90||Math.abs(point[1])>180){unmapped++;continue;}
-   counts[cat]++;
-   const color={closure:"#b91c1c",restriction:"#c97700",other:"#3777a6"}[cat];
-   const marker=L.circleMarker(point,{radius:5,color,fillColor:color,weight:1,fillOpacity:.75});
-   const name=e.title||e.description||e.event_type||e.type||"Дорожное событие";
-   const road=e.road_name||e.road||e.route||"";
-   marker.bindPopup("<b>"+safeRoadText(name)+"</b>"+(road?"<p>Дорога: "+safeRoadText(road)+"</p>":"")+"<small>Источник: NAPSPAN · не подтверждено официальным ведомством</small>");
-   marker.addTo(roadLayerGroups[cat]);
-  }
-  for(const [cat,count] of Object.entries(counts))roadControls.querySelector('[data-count="'+cat+'"]').textContent=count;
-  for(const cat of ["closure","restriction"])roadLayerGroups[cat].addTo(map);
-  roadControls.insertAdjacentHTML("beforeend","<small style='width:100%'>Без координат: "+unmapped+". Категории определены автоматически; проверьте исходный источник перед поездкой.</small>");
- }).catch(error=>console.warn("NAPSPAN map overlay:",error));
- const map=L.map("map",{zoomControl:true,scrollWheelZoom:true,touchZoom:true,dragging:true,doubleClickZoom:true,zoomAnimation:false,markerZoomAnimation:false,minZoom:3,maxZoom:13}).setView([51.2,13.5],4);
- L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
- document.getElementById("zoomIn").addEventListener("click",()=>map.zoomIn());
- document.getElementById("zoomOut").addEventListener("click",()=>map.zoomOut());
- function refreshCountryLabels(){
-  const compact=map.getZoom()<5,width=compact?25:142,height=compact?25:48,anchor=compact?[12.5,12.5]:[71,48],placed=[];
-  countryLabelMarkers.forEach(marker=>{
-   if(!marker._labelHtml||!marker._capital)return;
-   marker.setIcon(L.divIcon({className:"country-label",html:marker._labelHtml,iconSize:[width,height],iconAnchor:anchor}));
-   const base=map.latLngToLayerPoint(marker._capital),candidates=[[0,0]];
-   for(let r=1;r<=8;r++)for(let a=0;a<8;a++){const angle=a*Math.PI/4;candidates.push([Math.round(Math.cos(angle)*r*(compact?29:78)),Math.round(Math.sin(angle)*r*(compact?29:58))]);}
-   let chosen=candidates[candidates.length-1];
-   for(const off of candidates){const x=base.x+off[0],y=base.y+off[1],collision=placed.some(p=>Math.abs(p.x-x)<(compact?29:148)&&Math.abs(p.y-y)<(compact?29:54));if(!collision){chosen=off;break;}}
-   const target=map.layerPointToLatLng(L.point(base.x+chosen[0],base.y+chosen[1]));
-   marker.setLatLng(target);placed.push({x:base.x+chosen[0],y:base.y+chosen[1]});
-   if(marker._leader){if(chosen[0]||chosen[1]){marker._leader.setLatLngs([marker._capital,target]);if(!map.hasLayer(marker._leader))marker._leader.addTo(map);}else if(map.hasLayer(marker._leader))map.removeLayer(marker._leader);}
-  });
-}
- map.on("zoomend moveend",()=>{refreshCountryLabels();});
- let euBounds=null;
- document.getElementById("zoomReset").addEventListener("click",()=>{if(euBounds)map.fitBounds(euBounds,{padding:[18,18]});});
- const [geoResp,banResp]=await Promise.all([fetch("./data/eu-countries.geojson"),fetch("./data/truck-bans.json")]);
- if(!geoResp.ok)throw new Error("GeoJSON: HTTP "+geoResp.status);
- const geo=await geoResp.json();let bans=null;if(banResp.ok)bans=await banResp.json();
- const importNotice=document.createElement("div");
- importNotice.setAttribute("role","status");
- importNotice.style.cssText="margin:10px 0;padding:11px 14px;border:1px solid #e6c989;border-radius:10px;background:#fff8e7;color:#75521d;font-size:13px;line-height:1.5";
- const incomplete=!bans||bans.completeness_status!=="provider_reported_complete_unverified";
- importNotice.innerHTML=incomplete?'<strong>⚠ Данные запретов неполные</strong><div>Импорт Nakordoni не подтверждён для всех стран. Отсутствие запрета на карте не означает разрешение движения.</div>':'<strong>Данные Nakordoni загружены</strong><div>Ограничения ещё не сверены с официальными источниками.</div>';
- const mapElement=document.getElementById("map");mapElement?.parentElement?.insertBefore(importNotice,mapElement);
- const roadNotice=document.createElement("div");
- roadNotice.setAttribute("role","status");
- roadNotice.style.cssText="margin:8px 0 12px;padding:10px 14px;border:1px solid #a9c9d0;border-radius:10px;background:#eff9fa;color:#244a52;font-size:12px;line-height:1.6";
- roadNotice.textContent="Дорожные события NAPSPAN: проверка подключения…";
- importNotice.insertAdjacentElement("afterend",roadNotice);
- fetch("./data/road-events.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{
-  if(!d){roadNotice.textContent="NAPSPAN: данные ещё не опубликованы.";return;}
-  const n=Array.isArray(d.events)?d.events.length:0;
-  roadNotice.textContent=d.status==="not_configured"?"NAPSPAN: требуется API-ключ. Календарные запреты и дорожные события пока не объединены.":"NAPSPAN: получено "+n+" дорожных событий. Источник не подтверждён официальными ведомствами; данные обрабатываются отдельно от календарных запретов."+(d.warnings?.length?" Предупреждений: "+d.warnings.length+".":"");
- }).catch(()=>{roadNotice.textContent="NAPSPAN: данные временно недоступны.";});
- if(bans){for(const c of (bans.covered_countries||[]))if(/^[A-Z]{2}$/.test(c))covered.add(c);}drawDateStrip(bans);
- const features=geo.features.filter(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
- const countryLabelMarkers=[];
- if(features.length!==28)throw new Error("В исходных границах найдено "+features.length+" стран Европы вместо 28");
- const display=features.map(f=>({feature:f,geometry:europeanGeometry(f.geometry)})).filter(x=>x.geometry);
- const missing=features.filter(f=>!display.some(x=>x.feature===f)).map(f=>names[f.properties["ISO3166-1-Alpha-3"]]);
- if(missing.length)throw new Error("Не найдены на европейской карте: "+missing.join(", "));
- let selectedCountryLayer=null;const today=bans?.window?.from||new Date().toLocaleDateString("en-CA"),todayRows=mainTruckBans(bans?.bans).filter(b=>b.date===today),active=new Set(todayRows.map(b=>b.country_code)),layers=[];
- for(const item of display){
-  const f=item.feature,geometry=item.geometry,code=f.properties["ISO3166-1-Alpha-3"],c=iso2[code],has=covered.has(c),dayBans=todayRows.filter(b=>b.country_code===c),hasBan=dayBans.length>0,fill=!has?"#aab4c0":hasBan?"#e74c62":"#aab4c0";
-  const baseStyle={color:"#174f70",weight:1,fillColor:fill,fillOpacity:.42};
-  const layer=L.geoJSON(geometry,{style:baseStyle,onEachFeature:(feature,lyr)=>{lyr.bindTooltip(names[code],{sticky:true});}});
-  layer._baseCountryStyle=baseStyle;layer.addTo(map);layers.push(layer);
-  // Точка гарантированно внутри контура страны: центр масс может оказаться за её границами.
-  const center=capitals[code]?L.latLng(capitals[code][0],capitals[code][1]):layer.getBounds().getCenter();
-  const tomorrow=new Date(today+"T12:00:00");tomorrow.setDate(tomorrow.getDate()+1);const tomorrowKey=tomorrow.getFullYear()+"-"+String(tomorrow.getMonth()+1).padStart(2,"0")+"-"+String(tomorrow.getDate()).padStart(2,"0");const tomorrowRows=mainTruckBans(bans?.bans).filter(b=>b.date===tomorrowKey&&b.country_code===c);
-  const todayKnown=!!bans&&has&&today>=String(bans.window?.from||"")&&today<=String(bans.window?.to||"");const tomorrowKnown=!!bans&&has&&tomorrowKey>=String(bans.window?.from||"")&&tomorrowKey<=String(bans.window?.to||"");
-  const todayState={label:!todayKnown?"НЕТ ДАННЫХ":dayBans.length?"ЕСТЬ ЗАПИСЬ":"НЕТ ПОДТВЕРЖДЕНИЯ",cls:!todayKnown?"unknown":dayBans.length?"yes":"unknown"};
-  const tomorrowState={label:!tomorrowKnown?"НЕТ ДАННЫХ":tomorrowRows.length?"ЕСТЬ ЗАПИСЬ":"НЕТ ПОДТВЕРЖДЕНИЯ",cls:!tomorrowKnown?"unknown":tomorrowRows.length?"yes":"unknown"};
-  const dateLabel=ruDate(today),tomorrowLabel=ruDate(tomorrowKey);
-  function renderDay(title,date,rows,known){let out='<section style="margin:7px 0"><b>'+title+' — '+esc(date)+'</b><br>';if(!known)return out+'<span style="color:#66717e">Нет данных на эту дату</span></section>';if(!rows.length)return out+'<span style="color:#16723a"><b>Запретов в календаре не указано</b></span></section>';out+='<b style="color:#c62828">Ограничений: '+rows.length+'</b>';rows.slice(0,5).forEach(b=>{out+='<p style="margin:5px 0 0"><b>'+esc(b.time_from||"Весь день")+(b.time_until?"–"+esc(b.time_until):"")+'</b> · '+esc(ruType(b.restriction_type))+(b.min_weight_tons?'<br>Для транспорта от '+esc(b.min_weight_tons)+' т':'')+(b.restriction_details?'<br>'+esc(ruDetails(b.restriction_details)):"")+'</p>';});if(rows.length>5)out+='<small>И ещё '+(rows.length-5)+' ограничений</small>';const url=rows.find(b=>/^https:\/\//i.test(b.details_url||""))?.details_url;if(url)out+='<p style="margin:6px 0 0"><a target="_blank" rel="noopener" href="'+esc(url)+'">Подробнее</a></p>';return out+'</section>';}
-  let popupHtml='<div class="country-popup"><div class="popup-country-heading"><span class="popup-country-flag" aria-hidden="true">'+flagEmoji(c)+'</span><div><b>'+esc(names[code])+'</b><small>Информация по календарю запретов</small></div></div><hr style="margin:8px 0">';
-  popupHtml+=renderDay("СЕГОДНЯ",dateLabel,dayBans,todayKnown);
-  popupHtml+=renderDay("ЗАВТРА",tomorrowLabel,tomorrowRows,tomorrowKnown);
-  popupHtml+='<small style="color:#66717e">«Нет данных» не означает отсутствие запрета.</small></div>';
-
-  // Click anywhere inside the country instead of showing floating labels.
-  layer.bindPopup(popupHtml,{maxWidth:300,autoPan:true,closeButton:true});
-  layer.on("click",()=>{if(selectedCountryLayer){selectedCountryLayer.setStyle(selectedCountryLayer._baseCountryStyle);selectedCountryLayer=null;}layer.setStyle({color:"#ff9800",weight:3,fillOpacity:.55});layer.bringToFront();selectedCountryLayer=layer;showCountry(code,bans);});
-
- }
- euBounds=L.latLngBounds(layers.map(x=>x.getBounds()));map.fitBounds(euBounds,{padding:[18,18]});refreshCountryLabels();
- status.textContent=bans?"Источник карты: Nakordoni API. Обновлено "+new Date(bans.generated_at).toLocaleString("ru-RU")+". Период "+bans.window.from+" — "+bans.window.to+". Отсутствие записи не означает отсутствие запрета. Виджет TrafficBan ниже работает отдельно.":"Календарь Nakordoni недоступен. Виджет TrafficBan ниже работает отдельно.";
- setTimeout(()=>map.invalidateSize(),150);
-}catch(e){status.textContent="Ошибка загрузки карты: "+e.message;document.getElementById("map").innerHTML="<p style='padding:24px;color:#a22'>Не удалось загрузить интерактивную карту: "+esc(e.message)+"</p>";console.error(e);}
+(function(){
+ const ids=["summaryStats","countryInfo"];
+ for(const id of ids){const el=document.getElementById(id);if(el)el.innerHTML='<p style="color:#607d83">Информация удалена</p>';}
+ const status=document.getElementById("status");if(status)status.textContent="Карта без данных об ограничениях движения.";
+ document.querySelectorAll(".widget iframe").forEach(el=>el.remove());
+ document.querySelectorAll(".widget").forEach(el=>el.style.display="none");
+ document.querySelectorAll(".exports").forEach(el=>el.style.display="none");
+ document.querySelectorAll(".date-strip").forEach(el=>el.style.display="none");
+ document.querySelectorAll(".legend").forEach(el=>el.style.display="none");
+ try{
+  const map=L.map("map",{zoomControl:true,minZoom:3,maxZoom:13}).setView([51.2,13.5],4);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+  document.getElementById("zoomIn")?.addEventListener("click",()=>map.zoomIn());
+  document.getElementById("zoomOut")?.addEventListener("click",()=>map.zoomOut());
+  document.querySelectorAll(".map-tools button.reset").forEach(b=>b.addEventListener("click",()=>map.setView([51.2,13.5],4)));
+  setTimeout(()=>map.invalidateSize(),150);
+ }catch(error){if(status)status.textContent="Не удалось загрузить карту: "+error.message;}
 })();
 </script>
 </body></html>
