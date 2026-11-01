@@ -318,7 +318,7 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
 <header><a class="brand" href="/" aria-label="RIFARE — на главную"><img class="brand-original" src="assets/rifare-logo-white.svg" alt="RIFARE" width="220" height="93"></a><nav class="header-links"><a class="telegram-link" href="https://t.me/rifare_by" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 4.3 18.5 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6 13.5l-4.9-1.6c-1.1-.3-1.1-1.1.2-1.6L20.4 2.8c.9-.3 1.7.2 1.3 1.5z"/></svg><span>Telegram</span></a><a class="chat-link" href="https://t.me/rifare_chat" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3zm-4 8.1a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg><span>Чат водителей</span></a></nav><div class="header-community" aria-label="Driver Community"><span>DRIVER</span><span class="community-rule"></span><span>COMMUNITY</span></div></header>
 <main>
 <section class="hero"><div><h1>🚚 Запреты движения грузовиков в Европе</h1><p>Актуальные ограничения по странам · праздничные, воскресные, ночные и сезонные запреты</p></div></section>
-<div class="legend"><span><i class="dot" style="background:#e74c62"></i> Запрет указан</span><span><i class="dot" style="background:#168e89"></i> Запрета нет</span><span><i class="dot" style="background:#9ba9af"></i> Нет данных</span></div>
+<div class="legend"><span><i class="dot" style="background:#e74c62"></i> Запрет указан</span><span><i class="dot" style="background:#168e89"></i> Запрета нет</span><span><i class="dot" style="background:#9ba9af"></i> Нет проверенных данных</span></div>
 <section class="dashboard" aria-label="Карта и сведения о запретах">
 <div class="map-column"><div class="map-date-note">Карта: статус на начало периода данных API</div>
 <div id="map" role="application" aria-label="Интерактивная карта стран Европы"><p style="padding:24px;color:#526174">Загружается интерактивная карта…</p></div>
@@ -418,6 +418,20 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
   const noGeneralBanSource="https://dhl-freight-connections.com/en/business/truck-driving-bans-in-europe-in-the-summer-holidays-2026/";
   const noGeneralBan=code=>noGeneralBanCountries.has(iso2[code]);
 
+  // The embedded TrafficBan iframe is cross-origin. Its rows cannot be read by this
+  // page. Accept a separately verified day-by-day export only when the source
+  // explicitly declares complete country coverage for that exact date.
+  let widgetCalendar=null;
+  try{
+   const wr=await fetch("./data/trafficban-verified.json",{cache:"no-store"});
+   if(wr.ok){const w=await wr.json();if(w&&w.schema_version===1&&Array.isArray(w.days))widgetCalendar=w;}
+  }catch(_){/* no independent verified export: preserve unknown */ }
+  const widgetDay=(code,date)=>{
+   const day=widgetCalendar?.days.find(x=>x.date===date);
+   if(!day||!Array.isArray(day.covered_countries)||!day.covered_countries.includes(iso2[code]))return null;
+   if(!Array.isArray(day.national_bans))return null;
+   return day.national_bans.includes(iso2[code])?"ban":"no-ban";
+  };
   const roadData=nr.ok?await nr.json():null;
   const roadEvents=Array.isArray(roadData?.events)?roadData.events:[];
   const napCount=code=>roadEvents.filter(e=>[e.jurisdiction,e.country,e.country_code,e.countryCode,e.iso3,e.location?.country].some(v=>String(v||"").toUpperCase()===code||String(v||"").toUpperCase()===iso2[code])).length;
@@ -543,6 +557,10 @@ header .community-rule{display:block;flex:1 1 40px;max-width:160px;height:1px;ba
   const countryStatusForDate=(code,date)=>{
    const rows=records.filter(r=>r.country_code===iso2[code]&&r.date===date);
    if(rows.length)return "ban";
+   // A fully checked widget calendar can confirm either outcome for a date.
+   // Missing entries in an unchecked widget/date must NEVER imply no ban.
+   const checked=widgetDay(code,date);
+   if(checked)return checked;
    if(code==="FRA"&&date>="2026-11-02"&&date<="2026-11-06")return "no-ban";
    if(noGeneralBan(code))return "no-ban";
    if(date===selectedDate&&hasExplicitNoBan(code))return "no-ban";
