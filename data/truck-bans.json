@@ -2,7 +2,7 @@
   "source": "Nakordoni",
   "attribution": "Data by nakordoni.eu",
   "source_url": "https://nakordoni.eu/en/developers/docs/truck-bans",
-  "generated_at": "2026-11-01T13:23:14.100Z",
+  "generated_at": "2026-11-01T12:58:06.095Z",
   "window": {
     "from": "2026-11-01",
     "to": "2026-11-07",
@@ -44,63 +44,6 @@
     "MT",
     "NL"
   ],
-  "completeness": [
-    {
-      "returned": 17,
-      "total_available": 17,
-      "truncated": false,
-      "total_bans": 17
-    },
-    {
-      "returned": 4,
-      "total_available": 4,
-      "truncated": false,
-      "total_bans": 4
-    },
-    {
-      "returned": null,
-      "total_available": null,
-      "truncated": null,
-      "total_bans": 0
-    },
-    {
-      "returned": 6,
-      "total_available": 7,
-      "truncated": true,
-      "total_bans": 6
-    },
-    {
-      "returned": 10,
-      "total_available": 11,
-      "truncated": true,
-      "total_bans": 10
-    },
-    {
-      "returned": 4,
-      "total_available": 5,
-      "truncated": true,
-      "total_bans": 4
-    },
-    {
-      "returned": 1,
-      "total_available": 1,
-      "truncated": false,
-      "total_bans": 1
-    },
-    {
-      "returned": 22,
-      "total_available": 23,
-      "truncated": true,
-      "total_bans": 22
-    },
-    {
-      "returned": 21,
-      "total_available": 22,
-      "truncated": true,
-      "total_bans": 21
-    }
-  ],
-  "incomplete": true,
   "bans": [
     {
       "country_code": "PL",
