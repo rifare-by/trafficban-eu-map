@@ -1,7 +1,7 @@
 {
   "source": "NAPSPAN",
   "source_url": "https://napspan.com/docs.html",
-  "generated_at": "2026-11-01T15:12:05.462Z",
+  "generated_at": "2026-11-01T15:16:12.019Z",
   "status": "partial_unverified",
   "events": [
     {
@@ -2715,37 +2715,6 @@
       "created_at": "2026-05-21T18:42:43.375644Z",
       "latitude": 48.78095,
       "longitude": 9.18642,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "DEU-BY-evt-VIZ-BY/r_LMS-BY/r_LMS-BY/1526072_D  BY LMS-BY_TIC-VIZ-BY/1.1",
-      "source_id": "VIZ-BY/r_LMS-BY/r_LMS-BY/1526072_D  BY LMS-BY_TIC-VIZ-BY/1.1",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "restriction",
-      "severity": "moderate",
-      "status": "active",
-      "title": "Restriction",
-      "description": "MB22 zwischen Hundham und Bad Feilnbach\nin beiden Richtungen Feuerwehr regelt den Verkehr, für beide Richtungen nur ein Fahrstreifen abwechselnd frei, Unfallaufnahme",
-      "location": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            11.9701872,
-            47.764225
-          ],
-          [
-            11.98867,
-            47.7665749
-          ]
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-11-01T13:24:54Z",
-      "last_updated": "2026-11-01T13:30:42.691822Z",
-      "created_at": "2026-11-01T13:30:42.691822Z",
-      "latitude": 47.764225,
-      "longitude": 11.9701872,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -22001,6 +21970,40 @@
       "verification_status": "aggregator_unverified"
     },
     {
+      "id": "DEU-BW-evt-LMS-BW/r_IVLZ Stuttgart/r_IVLZ Stuttgart/23388_TIC-IVLZ Stuttgart/1_D  BW LMS-BW.2",
+      "source_id": "LMS-BW/r_IVLZ Stuttgart/r_IVLZ Stuttgart/23388_TIC-IVLZ Stuttgart/1_D  BW LMS-BW.2",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BW",
+      "type": "restriction",
+      "severity": "moderate",
+      "status": "active",
+      "title": "Restriction — GS29",
+      "description": "Stuttgart-Bad Cannstatt, Pragstraße\nzwischen Rosensteintunnel und Neckartalstraße\nin beiden Richtungen Baustelle, geänderte Verkehrsregelung, geänderte Verkehrsführung im Baustellenbereich, bis voraussichtlich 28.02.2027",
+      "location": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.19252,
+            48.807052
+          ],
+          [
+            9.21045,
+            48.805402
+          ]
+        ]
+      },
+      "affected_roads": [
+        "GS29"
+      ],
+      "start_time": "2025-05-21T16:41:34Z",
+      "last_updated": "2026-10-26T03:24:08.850029Z",
+      "created_at": "2026-05-21T18:42:27.051374Z",
+      "latitude": 48.807052,
+      "longitude": 9.19252,
+      "road_class": "local",
+      "verification_status": "aggregator_unverified"
+    },
+    {
       "id": "by-evt-4073615352997634020",
       "source_id": "DE.4073615352997634020",
       "source": "NAPSPAN",
@@ -22157,6 +22160,58 @@
       "verification_status": "aggregator_unverified"
     },
     {
+      "id": "by-evt-784692892039166081",
+      "source_id": "DE.784692892039166081",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.32297,
+          48.73229
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T15:01:01.524656Z",
+      "last_updated": "2026-11-01T15:01:01.524656Z",
+      "created_at": "2026-11-01T15:01:01.524656Z",
+      "latitude": 48.73229,
+      "longitude": 9.32297,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-301587576755939790",
+      "source_id": "DE.301587576755939790",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.3231,
+          48.73151
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T15:01:01.524656Z",
+      "last_updated": "2026-11-01T15:01:01.524656Z",
+      "created_at": "2026-11-01T15:01:01.524656Z",
+      "latitude": 48.73151,
+      "longitude": 9.3231,
+      "verification_status": "aggregator_unverified"
+    },
+    {
       "id": "by-evt-2044420054088721788",
       "source_id": "DE.2044420054088721788",
       "source": "NAPSPAN",
@@ -22180,6 +22235,32 @@
       "created_at": "2026-10-31T04:02:26.365024Z",
       "latitude": 48.25469,
       "longitude": 9.28066,
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "by-evt-2017379077204037119",
+      "source_id": "DE.2017379077204037119",
+      "source": "NAPSPAN",
+      "jurisdiction": "DEU-BY",
+      "type": "closure",
+      "sub_type": "full_closure",
+      "severity": "major",
+      "status": "active",
+      "title": "Road Closed",
+      "description": "",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          9.32156,
+          48.73285
+        ]
+      },
+      "affected_roads": [],
+      "start_time": "2026-11-01T15:01:01.524656Z",
+      "last_updated": "2026-11-01T15:01:01.524656Z",
+      "created_at": "2026-11-01T15:01:01.524656Z",
+      "latitude": 48.73285,
+      "longitude": 9.32156,
       "verification_status": "aggregator_unverified"
     },
     {
@@ -35125,84 +35206,6 @@
       "verification_status": "aggregator_unverified"
     },
     {
-      "id": "by-evt-1300191270611988000",
-      "source_id": "DE.1300191270611988000",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          10.03028,
-          49.25212
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-31T18:33:00.706982Z",
-      "last_updated": "2026-10-31T18:33:00.706982Z",
-      "created_at": "2026-10-31T18:33:00.706982Z",
-      "latitude": 49.25212,
-      "longitude": 10.03028,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-4138675704561880503",
-      "source_id": "DE.4138675704561880503",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.158108,
-          48.837506
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-28T10:07:30.410101Z",
-      "last_updated": "2026-10-31T18:27:30.674236Z",
-      "created_at": "2026-10-28T10:07:30.410101Z",
-      "latitude": 48.837506,
-      "longitude": 9.158108,
-      "verification_status": "aggregator_unverified"
-    },
-    {
-      "id": "by-evt-1209841135233338620",
-      "source_id": "DE.1209841135233338620",
-      "source": "NAPSPAN",
-      "jurisdiction": "DEU-BY",
-      "type": "closure",
-      "sub_type": "full_closure",
-      "severity": "major",
-      "status": "active",
-      "title": "Road Closed",
-      "description": "",
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          9.02643,
-          48.70491
-        ]
-      },
-      "affected_roads": [],
-      "start_time": "2026-10-31T18:22:01.407323Z",
-      "last_updated": "2026-10-31T18:22:01.407323Z",
-      "created_at": "2026-10-31T18:22:01.407323Z",
-      "latitude": 48.70491,
-      "longitude": 9.02643,
-      "verification_status": "aggregator_unverified"
-    },
-    {
       "id": "FRA-evt-261020-000568-1",
       "source_id": "261020-000568-1",
       "source": "NAPSPAN",
@@ -40714,6 +40717,68 @@
         },
         "type_code": "CO"
       },
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "FRA-evt-261101-003027-102",
+      "source_id": "261101-003027-102",
+      "source": "NAPSPAN",
+      "jurisdiction": "FRA",
+      "type": "closure",
+      "severity": "moderate",
+      "status": "active",
+      "title": "Closure — A28",
+      "description": "La mesure est obligatoire",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          1.525245,
+          49.83036
+        ]
+      },
+      "affected_roads": [
+        "A28"
+      ],
+      "start_time": "2026-11-01T14:50:26.639Z",
+      "last_updated": "2026-11-01T14:58:35.807661Z",
+      "created_at": "2026-11-01T14:58:35.807661Z",
+      "latitude": 49.83036,
+      "longitude": 1.525245,
+      "road_class": "local",
+      "verification_status": "aggregator_unverified"
+    },
+    {
+      "id": "FRA-evt-261101-003003-102",
+      "source_id": "261101-003003-102",
+      "source": "NAPSPAN",
+      "jurisdiction": "FRA",
+      "type": "closure",
+      "severity": "moderate",
+      "status": "active",
+      "title": "Closure — N0141",
+      "description": "La mesure est obligatoire",
+      "location": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.9525378,
+            45.906136
+          ],
+          [
+            0.94999015,
+            45.905872
+          ]
+        ]
+      },
+      "affected_roads": [
+        "N0141"
+      ],
+      "start_time": "2026-11-01T14:31:04.705Z",
+      "last_updated": "2026-11-01T14:58:35.807661Z",
+      "created_at": "2026-11-01T14:58:35.807661Z",
+      "latitude": 45.906136,
+      "longitude": 0.9525378,
+      "road_class": "local",
       "verification_status": "aggregator_unverified"
     },
     {
@@ -91133,35 +91198,35 @@
       "type": "restriction",
       "page": 0,
       "received": 100,
-      "total": 2538
+      "total": 2537
     },
     {
       "country": "DEU",
       "type": "restriction",
       "page": 1,
       "received": 100,
-      "total": 2538
+      "total": 2537
     },
     {
       "country": "DEU",
       "type": "restriction",
       "page": 2,
       "received": 100,
-      "total": 2538
+      "total": 2537
     },
     {
       "country": "DEU",
       "type": "restriction",
       "page": 3,
       "received": 100,
-      "total": 2538
+      "total": 2537
     },
     {
       "country": "DEU",
       "type": "restriction",
       "page": 4,
       "received": 100,
-      "total": 2538
+      "total": 2537
     },
     {
       "country": "DEU",
@@ -91217,14 +91282,14 @@
       "type": "closure",
       "page": 0,
       "received": 100,
-      "total": 102
+      "total": 104
     },
     {
       "country": "FRA",
       "type": "closure",
       "page": 1,
-      "received": 2,
-      "total": 102
+      "received": 4,
+      "total": 104
     },
     {
       "country": "NLD",
