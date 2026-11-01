@@ -246,7 +246,11 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
 \n.date-strip{display:flex;align-items:center;gap:8px;overflow:visible}\n.date-scroll{display:flex;gap:8px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:thin;scroll-behavior:smooth;padding:3px}\n.date-scroll .date-chip{flex:0 0 104px;white-space:nowrap}\n.date-arrow{flex:0 0 42px;height:54px;border:1px solid #bcdad9;border-radius:13px;background:#e6f4f3;color:#08736e;font-size:31px;cursor:pointer}\n.date-arrow:disabled{opacity:.35;cursor:not-allowed}\n.date-scroll .date-chip.active{box-shadow:0 3px 12px #08736e44}\n@media(max-width:680px){.date-scroll .date-chip{flex-basis:90px}.date-arrow{flex-basis:35px}}\n
 .two-day-heading{margin:18px 0 10px;font-size:18px}.two-day-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;max-height:480px;overflow:auto;padding:2px}.two-day-card{background:#172b40;color:#edf4fc;border:1px solid #39516b;border-radius:11px;padding:12px;text-align:left;cursor:pointer;width:100%}.two-day-card:hover,.two-day-card:focus-visible{border-color:#ff9b3d;background:#203851}.two-day-card .flag{font-size:25px;margin-right:8px}.two-day-card .country-title{font-weight:800}.two-day-card .day-line{display:block;margin-top:7px;font-size:12px;color:#c4d4e4}.two-day-card .has-bans{color:#ffb17d}.two-day-card .no-data{color:#a7bdcb}.two-day-card small{display:block;margin-top:5px;color:#a7bdcb}
 
-.map-country-label{background:transparent;border:0}.map-country-label .map-country-card{min-width:112px;max-width:160px;padding:6px 8px;background:#fffef5;border:1px solid #338c89;border-radius:10px;box-shadow:0 2px 9px #163c4055;color:#193b43;font:11px/1.35 Inter,Arial,sans-serif;cursor:pointer;text-align:left}.map-country-card strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.map-country-card .map-country-day{display:block;margin-top:3px;white-space:nowrap}.map-country-card .map-country-flag{font-size:17px;margin-right:3px}.map-country-label:hover .map-country-card{border-color:#ef8b2d;box-shadow:0 3px 12px #163c4077}@media(max-width:680px){.map-country-label .map-country-card{min-width:91px;max-width:120px;padding:4px 5px;font-size:10px}.map-country-card strong{font-size:10px}}
+.map-country-label{background:transparent;border:0}
+.map-country-label .map-country-round{width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid #268d89;border-radius:50%;font-size:25px;box-shadow:0 2px 8px #123c4766;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.map-country-label:hover .map-country-round{transform:scale(1.15);box-shadow:0 3px 13px #123c4788}
+.map-country-label .map-country-round:focus-visible{outline:2px solid #f28b2e}
+.map-country-label .map-country-card{min-width:112px;max-width:160px;padding:6px 8px;background:#fffef5;border:1px solid #338c89;border-radius:10px;box-shadow:0 2px 9px #163c4055;color:#193b43;font:11px/1.35 Inter,Arial,sans-serif;cursor:pointer;text-align:left}.map-country-card strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.map-country-card .map-country-day{display:block;margin-top:3px;white-space:nowrap}.map-country-card .map-country-flag{font-size:17px;margin-right:3px}.map-country-label:hover .map-country-card{border-color:#ef8b2d;box-shadow:0 3px 12px #163c4077}@media(max-width:680px){.map-country-label .map-country-card{min-width:91px;max-width:120px;padding:4px 5px;font-size:10px}.map-country-card strong{font-size:10px}}
 </style>
 </head>
 <body>
@@ -411,8 +415,11 @@ header .brand-sub{font-size:9px;letter-spacing:1.6px;margin-top:5px}
      const times=[...new Set(rows.map(x=>[x.time_from,x.time_until].filter(Boolean).join("–")).filter(Boolean))];
      return '<span class="map-country-day">'+(i?'Завтра: ':'Сегодня: ')+(rows.length?(times.length?esc(times.slice(0,2).join(", ")+(times.length>2?"…":"")):rows.length+' записей'):'нет данных')+'</span>';
     }).join("");
-    const label='<div class="map-country-card"><strong><span class="map-country-flag">'+flag(code)+'</span>'+esc(EU[code])+'</strong>'+(showDetails?lines:'<span class="map-country-day">Нажмите для сведений</span>')+'</div>';
-    const marker=L.marker(center,{icon:L.divIcon({className:"map-country-label",html:label,iconSize:[140,showDetails?66:43],iconAnchor:[70,20]}),keyboard:true,title:EU[code]});
+    const label=showDetails
+     ?'<div class="map-country-card"><strong><span class="map-country-flag">'+flag(code)+'</span>'+esc(EU[code])+'</strong>'+lines+'</div>'
+     :'<div class="map-country-round" aria-label="'+esc(EU[code])+'">'+flag(code)+'</div>';
+    const width=showDetails?140:38,height=showDetails?70:38;
+    const marker=L.marker(center,{icon:L.divIcon({className:"map-country-label",html:label,iconSize:[width,height],iconAnchor:[width/2,height/2]}),keyboard:true,title:EU[code]});
     marker.on("click",()=>{show(code);info.scrollIntoView({behavior:"smooth",block:"start"});});
     marker.addTo(mapLabels);
    });
