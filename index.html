@@ -341,11 +341,26 @@ header .brand-community{display:block!important;margin-top:-8px!important;font-s
   if(!gr.ok)throw Error("Не удалось загрузить границы стран");
   const geo=await gr.json(),bans=br.ok?await br.json():null;
   const features=(geo.features||[]).filter(f=>EU[f.properties?.["ISO3166-1-Alpha-3"]]).map(f=>{
-   if(f.properties["ISO3166-1-Alpha-3"]!=="FRA"||f.geometry?.type!=="MultiPolygon")return f;
-   const polygons=f.geometry.coordinates.filter(poly=>poly[0].some(([lon,lat])=>lon>=-6&&lon<=10&&lat>=41&&lat<=52));
-   return {...f,geometry:polygons.length===1?{type:"Polygon",coordinates:polygons[0]}:{type:"MultiPolygon",coordinates:polygons}};
-  });
-  const records=Array.isArray(bans?.bans)?bans.bans:[];
+   const code=f.properties["ISO3166-1-Alpha-3"];
+   if(code==="ISL")return null;
+   const g=f.geometry;
+   if(!g||!["Polygon","MultiPolygon"].includes(g.type))return f;
+   const polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;
+   const kept=polys.filter(poly=>{
+    const ring=poly[0]||[];if(!ring.length)return false;
+    const lon=(Math.min(...ring.map(p=>p[0]))+Math.max(...ring.map(p=>p[0])))/2;
+    const lat=(Math.min(...ring.map(p=>p[1]))+Math.max(...ring.map(p=>p[1])))/2;
+    if(lon < -12||lon > 45||lat < 34||lat > 72)return false;
+    if(code==="DNK"&&lat>59)return false;
+    if(code==="NOR"&&lat>72)return false;
+    if(code==="FRA"&&(lon < -6||lon > 10||lat < 41||lat > 52))return false;
+    if(code==="PRT"&&(lon < -10||lon > -6||lat < 36||lat > 43))return false;
+    if(code==="ESP"&&(lon < -10||lat < 35))return false;
+    return true;
+   });
+   return kept.length?{...f,geometry:kept.length===1?{type:"Polygon",coordinates:kept[0]}:{type:"MultiPolygon",coordinates:kept}}:null;
+  }).filter(Boolean);
+    const records=Array.isArray(bans?.bans)?bans.bans:[];
   const roadData=nr.ok?await nr.json():null;
   const roadEvents=Array.isArray(roadData?.events)?roadData.events:[];
   const napCount=code=>roadEvents.filter(e=>[e.jurisdiction,e.country,e.country_code,e.countryCode,e.iso3,e.location?.country].some(v=>String(v||"").toUpperCase()===code||String(v||"").toUpperCase()===iso2[code])).length;
