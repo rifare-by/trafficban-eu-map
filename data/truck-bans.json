@@ -2,7 +2,7 @@
   "source": "Nakordoni + published recurring rules",
   "attribution": "Nakordoni data and cited national rules",
   "source_url": "https://nakordoni.eu/en/developers/docs/truck-bans",
-  "generated_at": "2026-11-02T01:17:03.645Z",
+  "generated_at": "2026-11-02T07:37:33.846Z",
   "window": {
     "from": "2026-11-02",
     "to": "2026-11-08",
@@ -17,7 +17,7 @@
       "returned": 16,
       "total_available": 16,
       "truncated": false,
-      "extracted": 35,
+      "extracted": 33,
       "window": {
         "from": "2026-11-02",
         "to": "2026-11-08",
@@ -338,7 +338,7 @@
       "returned": 3,
       "total_available": 3,
       "truncated": false,
-      "extracted": 7,
+      "extracted": 9,
       "window": {
         "from": "2026-11-02",
         "to": "2026-11-08",
@@ -767,7 +767,7 @@
       "returned": 10,
       "total_available": 10,
       "truncated": false,
-      "extracted": 21,
+      "extracted": 23,
       "window": {
         "from": "2026-11-02",
         "to": "2026-11-08",
@@ -804,7 +804,7 @@
       "returned": 11,
       "total_available": 11,
       "truncated": false,
-      "extracted": 23,
+      "extracted": 26,
       "window": {
         "from": "2026-11-02",
         "to": "2026-11-08",
@@ -952,7 +952,7 @@
       "returned": 7,
       "total_available": 7,
       "truncated": false,
-      "extracted": 15,
+      "extracted": 17,
       "window": {
         "from": "2026-11-02",
         "to": "2026-11-08",
@@ -989,7 +989,7 @@
       "returned": 13,
       "total_available": 13,
       "truncated": false,
-      "extracted": 29,
+      "extracted": 27,
       "window": {
         "from": "2026-11-02",
         "to": "2026-11-08",
@@ -1026,7 +1026,7 @@
       "returned": 13,
       "total_available": 13,
       "truncated": false,
-      "extracted": 29,
+      "extracted": 27,
       "window": {
         "from": "2026-11-02",
         "to": "2026-11-08",
@@ -1675,12 +1675,6 @@
       "min_weight_tons": 7.5
     },
     {
-      "date": "2026-11-02",
-      "time_from": "00:00",
-      "time_until": "05:00",
-      "country_code": "AT"
-    },
-    {
       "country_code": "AT",
       "time_from": "00:00",
       "time_until": "05:00",
@@ -1733,12 +1727,6 @@
       "restriction_type": "Seasonal",
       "restriction_details": "Night ban (Art. 91 VRV)",
       "min_weight_tons": 3.5
-    },
-    {
-      "date": "2026-11-02",
-      "time_from": "00:00",
-      "time_until": "05:00",
-      "country_code": "CH"
     },
     {
       "country_code": "CH",
@@ -1874,12 +1862,6 @@
       "min_weight_tons": 3.5
     },
     {
-      "date": "2026-11-02",
-      "time_from": "00:00",
-      "time_until": "05:00",
-      "country_code": "LI"
-    },
-    {
       "country_code": "LI",
       "country_name": "Liechtenstein",
       "date": "2026-11-02",
@@ -1925,12 +1907,6 @@
       "min_weight_tons": null
     },
     {
-      "date": "2026-11-02",
-      "time_from": "06:00",
-      "time_until": "22:00",
-      "country_code": "RO"
-    },
-    {
       "country_code": "RO",
       "country_name": "Romania",
       "date": "2026-11-02",
@@ -1940,6 +1916,12 @@
       "restriction_type": "Local",
       "restriction_details": "DN7 Valea Oltului, Călimănești–Căciulata – Căinenii Mari; vehicles >7.5 t; Mon-Sat 08:00-17:30 (CNAIR works, until 15.11.2026)",
       "min_weight_tons": 7.5
+    },
+    {
+      "date": "2026-11-02",
+      "time_from": "08:00",
+      "time_until": "17:30",
+      "country_code": "RO"
     },
     {
       "country_code": "SE",
@@ -2127,6 +2109,12 @@
       "min_weight_tons": null
     },
     {
+      "date": "2026-11-03",
+      "time_from": "07:00",
+      "time_until": "21:00",
+      "country_code": "PT"
+    },
+    {
       "country_code": "RO",
       "country_name": "Romania",
       "date": "2026-11-03",
@@ -2136,6 +2124,12 @@
       "restriction_type": "Local",
       "restriction_details": "DN1, Bucharest - Brasov",
       "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-03",
+      "time_from": "06:00",
+      "time_until": "22:00",
+      "country_code": "RO"
     },
     {
       "country_code": "RO",
@@ -2158,6 +2152,12 @@
       "restriction_type": "Seasonal",
       "restriction_details": "dangerous-goods transports; selected road sections",
       "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-03",
+      "time_from": "07:00",
+      "time_until": "19:00",
+      "country_code": "SE"
     },
     {
       "country_code": "AT",
@@ -2841,6 +2841,12 @@
       "restriction_type": "Saturday",
       "restriction_details": "Weekend ban begins (Sat & public-holiday eves from 22:00, running to 22:00 Sun/holiday) — Arrêté du 2 mars 2015, nationwide, trucks >7.5t",
       "min_weight_tons": 7.5
+    },
+    {
+      "date": "2026-11-07",
+      "time_from": "22:00",
+      "time_until": "23:59",
+      "country_code": "FR"
     },
     {
       "country_code": "FR",
