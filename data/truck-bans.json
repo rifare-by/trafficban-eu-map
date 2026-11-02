@@ -2,7 +2,7 @@
   "source": "Nakordoni + published recurring rules",
   "attribution": "Nakordoni data and cited national rules",
   "source_url": "https://nakordoni.eu/en/developers/docs/truck-bans",
-  "generated_at": "2026-11-02T07:37:33.846Z",
+  "generated_at": "2026-11-02T13:19:50.193Z",
   "window": {
     "from": "2026-11-02",
     "to": "2026-11-08",
@@ -338,7 +338,7 @@
       "returned": 3,
       "total_available": 3,
       "truncated": false,
-      "extracted": 9,
+      "extracted": 7,
       "window": {
         "from": "2026-11-02",
         "to": "2026-11-08",
@@ -1826,12 +1826,6 @@
       "restriction_type": "Local",
       "restriction_details": "Autoroutes l'Ile-de-France, Province->Paris",
       "min_weight_tons": null
-    },
-    {
-      "date": "2026-11-02",
-      "time_from": "06:00",
-      "time_until": "10:00",
-      "country_code": "FR"
     },
     {
       "country_code": "HU",
