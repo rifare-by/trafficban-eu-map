@@ -2,13 +2,13 @@
   "source": "Nakordoni + published recurring rules",
   "attribution": "Nakordoni data and cited national rules",
   "source_url": "https://nakordoni.eu/en/developers/docs/truck-bans",
-  "generated_at": "2026-11-03T13:14:47.103Z",
+  "generated_at": "2026-11-03T19:03:24.204Z",
   "window": {
     "from": "2026-11-03",
     "to": "2026-11-09",
     "days": 7
   },
-  "provider_response_count": 7,
+  "provider_response_count": 3,
   "provider_audit": [
     {
       "country": "LT",
@@ -82,40 +82,6 @@
       ]
     },
     {
-      "country": "AD",
-      "from": "2026-11-03",
-      "to": "2026-11-09",
-      "returned": null,
-      "total_available": null,
-      "truncated": false,
-      "extracted": 0,
-      "window": {
-        "from": "2026-11-03",
-        "to": "2026-11-09",
-        "days": 7,
-        "requested": true
-      },
-      "keys": [
-        "success",
-        "lang",
-        "ppid",
-        "country",
-        "relevant_countries",
-        "countries_not_covered",
-        "current_bans",
-        "is_ban_active",
-        "upcoming_bans",
-        "bans_by_country",
-        "total_bans",
-        "covered_countries",
-        "window",
-        "as_of",
-        "source",
-        "page_url",
-        "summary"
-      ]
-    },
-    {
       "country": "BY",
       "from": "2026-11-03",
       "to": "2026-11-09",
@@ -144,108 +110,6 @@
         "returned",
         "total_available",
         "truncated",
-        "covered_countries",
-        "window",
-        "as_of",
-        "source",
-        "page_url",
-        "summary"
-      ]
-    },
-    {
-      "country": "SM",
-      "from": "2026-11-03",
-      "to": "2026-11-09",
-      "returned": null,
-      "total_available": null,
-      "truncated": false,
-      "extracted": 0,
-      "window": {
-        "from": "2026-11-03",
-        "to": "2026-11-09",
-        "days": 7,
-        "requested": true
-      },
-      "keys": [
-        "success",
-        "lang",
-        "ppid",
-        "country",
-        "relevant_countries",
-        "countries_not_covered",
-        "current_bans",
-        "is_ban_active",
-        "upcoming_bans",
-        "bans_by_country",
-        "total_bans",
-        "covered_countries",
-        "window",
-        "as_of",
-        "source",
-        "page_url",
-        "summary"
-      ]
-    },
-    {
-      "country": "MC",
-      "from": "2026-11-03",
-      "to": "2026-11-09",
-      "returned": null,
-      "total_available": null,
-      "truncated": false,
-      "extracted": 0,
-      "window": {
-        "from": "2026-11-03",
-        "to": "2026-11-09",
-        "days": 7,
-        "requested": true
-      },
-      "keys": [
-        "success",
-        "lang",
-        "ppid",
-        "country",
-        "relevant_countries",
-        "countries_not_covered",
-        "current_bans",
-        "is_ban_active",
-        "upcoming_bans",
-        "bans_by_country",
-        "total_bans",
-        "covered_countries",
-        "window",
-        "as_of",
-        "source",
-        "page_url",
-        "summary"
-      ]
-    },
-    {
-      "country": "VA",
-      "from": "2026-11-03",
-      "to": "2026-11-09",
-      "returned": null,
-      "total_available": null,
-      "truncated": false,
-      "extracted": 0,
-      "window": {
-        "from": "2026-11-03",
-        "to": "2026-11-09",
-        "days": 7,
-        "requested": true
-      },
-      "keys": [
-        "success",
-        "lang",
-        "ppid",
-        "country",
-        "relevant_countries",
-        "countries_not_covered",
-        "current_bans",
-        "is_ban_active",
-        "upcoming_bans",
-        "bans_by_country",
-        "total_bans",
         "covered_countries",
         "window",
         "as_of",
@@ -288,46 +152,25 @@
     "Failed IS: Nakordoni IS 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for IS, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed GB: Nakordoni GB 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for GB, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed AL: Nakordoni AL 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for AL, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
+    "Failed AD: Nakordoni AD 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for AD, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed BA: Nakordoni BA 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for BA, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed ME: Nakordoni ME 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for ME, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed MK: Nakordoni MK 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for MK, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed RS: Nakordoni RS 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for RS, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed MD: Nakordoni MD 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for MD, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed UA: Nakordoni UA 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for UA, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
-    "Failed TR: Nakordoni TR 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for TR, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null"
+    "Failed TR: Nakordoni TR 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for TR, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
+    "Failed SM: Nakordoni SM 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for SM, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
+    "Failed MC: Nakordoni MC 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for MC, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
+    "Failed VA: Nakordoni VA 2026-11-03..2026-11-09 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for VA, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null"
   ],
   "status_note": "Not independently verified against official country authorities or TrafficBan. Missing bans do not prove unrestricted travel.",
   "covered_countries": [
-    "AT",
-    "BE",
-    "BG",
     "BY",
-    "CH",
-    "CZ",
-    "DE",
-    "ES",
-    "FR",
-    "GR",
-    "HR",
-    "HU",
-    "IT",
-    "LI",
-    "LU",
-    "ME",
-    "MK",
-    "PL",
-    "PT",
-    "RO",
-    "SE",
-    "SI",
-    "SK"
+    "PL"
   ],
   "countries_not_covered": [
-    "Andorra",
-    "Lithuania",
-    "Monaco",
-    "San Marino",
-    "Vatican City"
+    "Lithuania"
   ],
   "bans": [
     {
