@@ -2,7 +2,7 @@
   "source": "Nakordoni + published recurring rules",
   "attribution": "Nakordoni data and cited national rules",
   "source_url": "https://nakordoni.eu/en/developers/docs/truck-bans",
-  "generated_at": "2026-11-04T01:16:38.359Z",
+  "generated_at": "2026-11-04T07:28:01.595Z",
   "window": {
     "from": "2026-11-04",
     "to": "2026-11-10",
@@ -145,7 +145,7 @@
     "Failed SK: Nakordoni SK 2026-11-04..2026-11-10 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for SK, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed SI: Nakordoni SI 2026-11-04..2026-11-10 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for SI, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed ES: Nakordoni ES 2026-11-04..2026-11-10 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for ES, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
-    "Failed SE: fetch failed",
+    "Failed SE: Nakordoni SE 2026-11-04..2026-11-10 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for SE, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed CH: Nakordoni CH 2026-11-04..2026-11-10 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for CH, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed LI: Nakordoni LI 2026-11-04..2026-11-10 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for LI, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
     "Failed NO: Nakordoni NO 2026-11-04..2026-11-10 HTTP 200; ok=true; data_keys=; markets_filtered=1; markets_notice=\"This request is for NO, which is not one of your approved countries (BY, PL, LT), so its data was removed. Add the country in the developer portal to receive it.\"; error=null",
