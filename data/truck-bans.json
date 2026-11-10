@@ -2,7 +2,7 @@
   "source": "Nakordoni + published recurring rules",
   "attribution": "Nakordoni data and cited national rules",
   "source_url": "https://nakordoni.eu/en/developers/docs/truck-bans",
-  "generated_at": "2026-11-10T13:14:57.421Z",
+  "generated_at": "2026-11-10T19:04:59.181Z",
   "window": {
     "from": "2026-11-10",
     "to": "2026-11-16",
@@ -51,7 +51,7 @@
       "returned": 2,
       "total_available": 2,
       "truncated": false,
-      "extracted": 5,
+      "extracted": 7,
       "window": {
         "from": "2026-11-10",
         "to": "2026-11-16",
@@ -304,6 +304,12 @@
       "restriction_type": "Holiday",
       "restriction_details": "Independence Day",
       "min_weight_tons": null
+    },
+    {
+      "date": "2026-11-11",
+      "time_from": "08:00",
+      "time_until": "22:00",
+      "country_code": "PL"
     },
     {
       "country_code": "AT",
